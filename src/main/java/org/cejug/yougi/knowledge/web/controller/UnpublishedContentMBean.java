@@ -24,7 +24,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import org.cejug.yougi.knowledge.business.ArticleBean;
+import org.cejug.yougi.knowledge.business.WebSourceBean;
 import org.cejug.yougi.knowledge.entity.Article;
 import org.cejug.yougi.knowledge.entity.WebSource;
 
@@ -38,7 +38,7 @@ public class UnpublishedContentMBean {
     private WebSource webSource;
 
     @EJB
-    private ArticleBean articleBean;
+    private WebSourceBean webSourceBean;
 
     public WebSource getWebSource() {
         return webSource;
@@ -77,7 +77,7 @@ public class UnpublishedContentMBean {
     }
 
     public void loadWebSource() {
-        this.webSource = articleBean.loadWebSource(this.webSource);
+        this.webSource = webSourceBean.loadWebSource(this.webSource);
     }
 
     public void addArticle(Article article) {

@@ -112,7 +112,7 @@ public class WebSourceMBean {
                 this.webSource = new WebSource();
                 this.webSource.setProvider(this.provider);
             }
-            this.webSource = articleBean.loadWebSource(this.webSource);
+            this.webSource = webSourceBean.loadWebSource(this.webSource);
             this.unpublishedContentMBean.setWebSource(this.webSource);
         }
     }

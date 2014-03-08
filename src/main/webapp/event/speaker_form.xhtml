@@ -34,7 +34,7 @@
                         <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
                         <h:panelGrid>
                             <h:outputLabel for="userAccount" value="#{bundle.user}" styleClass="fieldLabel"/>
-                            <h:selectOneMenu id="userAccount" label="#{bundle.user}" value="#{speakerMBean.selectedUserAccount}">
+                            <h:selectOneMenu id="userAccount" label="#{bundle.user}" value="#{speakerMBean.selectedUserAccount}" required="true">
                                 <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
                                 <f:selectItems value="#{speakerMBean.userAccounts}" var="usr" itemLabel="#{usr.fullName}" itemValue="#{usr.id}"/>
                             </h:selectOneMenu>

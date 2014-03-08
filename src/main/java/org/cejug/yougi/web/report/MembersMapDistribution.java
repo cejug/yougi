@@ -26,7 +26,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import org.cejug.yougi.business.LocationBean;
+import org.cejug.yougi.business.CityBean;
 import org.cejug.yougi.entity.City;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
@@ -41,9 +41,10 @@ import org.primefaces.model.map.Marker;
 public class MembersMapDistribution implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private MapModel simpleModel;
+    private final MapModel simpleModel;
+
     @EJB
-    private LocationBean locationBean;
+    private CityBean cityBean;
 
     public MembersMapDistribution() {
         simpleModel = new DefaultMapModel();
@@ -51,7 +52,7 @@ public class MembersMapDistribution implements Serializable {
 
     @PostConstruct
     public void load() {
-        List<City> cities = locationBean.findValidatedCities();
+        List<City> cities = cityBean.findValidatedCities();
         LatLng coord;
         Double latitude = null;
         Double longitude = null;

@@ -21,12 +21,11 @@
 package org.cejug.yougi.event.business;
 
 import java.util.List;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.event.entity.Venue;
-import org.cejug.yougi.entity.EntitySupport;
 import org.cejug.yougi.event.entity.Event;
 
 /**
@@ -35,19 +34,18 @@ import org.cejug.yougi.event.entity.Event;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class VenueBean {
+public class VenueBean extends AbstractBean<Venue> {
 
     @PersistenceContext
     private EntityManager em;
 
-    public Venue findVenue(String id) {
-        if(id != null) {
-            return em.find(Venue.class, id);
-        }
-        else {
-            return null;
-        }
+    public VenueBean() {
+        super(Venue.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
 
     public List<Venue> findVenues() {
@@ -69,22 +67,5 @@ public class VenueBean {
         }
 
         return venues;
-    }
-
-    public void save(Venue venue) {
-    	if(EntitySupport.INSTANCE.isIdNotValid(venue)) {
-            venue.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(venue);
-        }
-        else {
-            em.merge(venue);
-        }
-    }
-
-    public void remove(String id) {
-        Venue venue = findVenue(id);
-        if(venue != null) {
-            em.remove(venue);
-        }
     }
 }

@@ -64,7 +64,7 @@ public class ProfileMBean {
     @PostConstruct
     public void load() {
         if(id != null && !id.isEmpty()) {
-            this.userAccount = userAccountBean.findUserAccount(this.id);
+            this.userAccount = userAccountBean.find(this.id);
         }
         else {
             this.userAccount = new UserAccount();

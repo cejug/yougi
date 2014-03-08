@@ -154,12 +154,12 @@ public class SponsorshipEventMBean implements Serializable {
     @PostConstruct
     public void load() {
         if (this.eventId != null && !this.eventId.isEmpty()) {
-            this.event = eventBean.findEvent(eventId);
+            this.event = eventBean.find(eventId);
             this.selectedEvent = this.event.getId();
         }
 
         if (this.id != null && !this.id.isEmpty()) {
-            this.sponsorshipEvent = sponsorshipEventBean.findSponsorshipEvent(id);
+            this.sponsorshipEvent = sponsorshipEventBean.find(id);
             this.selectedEvent = this.sponsorshipEvent.getEvent().getId();
             this.selectedPartner = this.sponsorshipEvent.getPartner().getId();
         } else {
@@ -168,10 +168,10 @@ public class SponsorshipEventMBean implements Serializable {
     }
 
     public String save() {
-        Event evt = eventBean.findEvent(selectedEvent);
+        Event evt = eventBean.find(selectedEvent);
         this.sponsorshipEvent.setEvent(evt);
 
-        Partner spon = partnerBean.findPartner(selectedPartner);
+        Partner spon = partnerBean.find(selectedPartner);
         this.sponsorshipEvent.setPartner(spon);
 
         sponsorshipEventBean.save(this.sponsorshipEvent);

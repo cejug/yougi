@@ -21,7 +21,6 @@
 package org.cejug.yougi.business;
 
 import java.util.List;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,7 +30,6 @@ import org.cejug.yougi.entity.Language;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
 public class LanguageBean {
 
     @PersistenceContext

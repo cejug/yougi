@@ -21,47 +21,32 @@
 package org.cejug.yougi.business;
 
 import java.util.List;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.cejug.yougi.entity.MessageTemplate;
-import org.cejug.yougi.entity.EntitySupport;
 
 /**
  * Business logic related to MessageTemplate entity class.
- * 
+ *
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class MessageTemplateBean {
+public class MessageTemplateBean extends AbstractBean<MessageTemplate> {
 
     @PersistenceContext
     private EntityManager em;
 
-    public MessageTemplate findMessageTemplate(String id) {
-        return em.find(MessageTemplate.class, id);
+    public MessageTemplateBean() {
+        super(MessageTemplate.class);
     }
 
-    public List<MessageTemplate> findMessageTemplates() {
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+
+    public List<MessageTemplate> findAll() {
         return em.createQuery("select mt from MessageTemplate mt order by mt.title").getResultList();
-    }
-
-    public void save(MessageTemplate messageTemplate) {
-        if(EntitySupport.INSTANCE.isIdNotValid(messageTemplate)) {
-            messageTemplate.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(messageTemplate);
-        }
-        else {
-            em.merge(messageTemplate);
-        }
-    }
-
-    public void remove(String id) {
-        MessageTemplate messageTemplate = em.find(MessageTemplate.class, id);
-        if(messageTemplate != null) {
-            em.remove(messageTemplate);
-        }
     }
 }

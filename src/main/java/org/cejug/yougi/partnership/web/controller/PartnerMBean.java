@@ -126,7 +126,7 @@ public class PartnerMBean implements Serializable {
     public void load() {
 
         if (this.id != null && !this.id.isEmpty()) {
-            this.partner = partnerBean.findPartner(id);
+            this.partner = partnerBean.find(id);
 
             locationMBean.initialize();
 

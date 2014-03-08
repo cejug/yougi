@@ -27,7 +27,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-import org.cejug.yougi.business.LocationBean;
+import org.cejug.yougi.business.CityBean;
 import org.cejug.yougi.business.TimezoneBean;
 import org.cejug.yougi.business.UserAccountBean;
 import org.cejug.yougi.entity.City;
@@ -45,7 +45,7 @@ public class CityMBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @EJB
-    private LocationBean locationBean;
+    private CityBean cityBean;
 
     @EJB
     private TimezoneBean timezoneBean;
@@ -94,7 +94,7 @@ public class CityMBean implements Serializable {
 
     public List<City> getCities() {
         if(this.cities == null) {
-            this.cities = locationBean.findCities();
+            this.cities = cityBean.findAll();
         }
         return this.cities;
     }
@@ -113,7 +113,7 @@ public class CityMBean implements Serializable {
     @PostConstruct
     public void load() {
         if (this.id != null && !this.id.isEmpty()) {
-            this.city = locationBean.findCity(id);
+            this.city = cityBean.find(id);
 
             locationMBean.initialize();
 
@@ -138,13 +138,13 @@ public class CityMBean implements Serializable {
             this.city.setProvince(province);
         }
 
-        locationBean.saveCity(this.city);
+        cityBean.save(this.city);
 
         return "cities?faces-redirect=true";
     }
 
     public String remove() {
-        locationBean.removeCity(city.getId());
+        cityBean.remove(city.getId());
         return "cities?faces-redirect=true";
     }
 }

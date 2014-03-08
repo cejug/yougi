@@ -190,13 +190,13 @@ public class SpeakerMBean implements Serializable {
     @PostConstruct
     public void load() {
         if (this.id != null && !this.id.isEmpty()) {
-            this.speaker = speakerBean.findSpeaker(id);
+            this.speaker = speakerBean.find(id);
             this.selectedUserAccount = this.speaker.getUserAccount().getId();
         }
     }
 
     public String save() {
-        UserAccount usrAcc = userAccountBean.findUserAccount(selectedUserAccount);
+        UserAccount usrAcc = userAccountBean.find(selectedUserAccount);
         this.speaker.setUserAccount(usrAcc);
 
         speakerBean.save(this.speaker);
@@ -207,7 +207,7 @@ public class SpeakerMBean implements Serializable {
         speakerBean.remove(this.speaker.getId());
         return getNextPage();
     }
-    
+
     private String getNextPage() {
         if (this.eventId != null && !this.eventId.isEmpty()) {
             return "event?faces-redirect=true&tab=3&id="+ this.eventId;

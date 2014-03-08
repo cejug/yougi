@@ -61,13 +61,13 @@ public class MessageTemplateMBean {
     }
 
     public List<MessageTemplate> getMessageTemplates() {
-        return messageTemplateBean.findMessageTemplates();
+        return messageTemplateBean.findAll();
     }
 
     @PostConstruct
     public void load() {
         if (id != null && !id.isEmpty()) {
-            this.messageTemplate = messageTemplateBean.findMessageTemplate(id);
+            this.messageTemplate = messageTemplateBean.find(id);
         } else {
             this.messageTemplate = new MessageTemplate();
         }

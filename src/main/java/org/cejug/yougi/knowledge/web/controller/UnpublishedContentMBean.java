@@ -20,6 +20,7 @@
  * */
 package org.cejug.yougi.knowledge.web.controller;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -33,7 +34,7 @@ import org.cejug.yougi.knowledge.entity.WebSource;
  */
 @ManagedBean
 @SessionScoped
-public class UnpublishedContentMBean {
+public class UnpublishedContentMBean implements Serializable {
 
     private WebSource webSource;
 

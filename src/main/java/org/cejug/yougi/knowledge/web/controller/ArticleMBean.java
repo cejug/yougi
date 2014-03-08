@@ -28,6 +28,8 @@ import javax.faces.bean.RequestScoped;
 import org.cejug.yougi.knowledge.business.ArticleBean;
 import org.cejug.yougi.knowledge.entity.Article;
 
+import java.util.List;
+
 /**
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
@@ -38,19 +40,18 @@ public class ArticleMBean {
     @EJB
     private ArticleBean articleBean;
 
+    private Article article;
+
+    private List<Article> articlesFromSameSource;
+
     @ManagedProperty(value="#{param.id}")
     private String id;
 
     @ManagedProperty(value="#{param.pl}")
     private String permanentLink;
 
-    @ManagedProperty(value="#{unpublishedContentMBean}")
-    private UnpublishedContentMBean unpublishedContentMBean;
-
-    @ManagedProperty(value="#{articleStateMBean}")
-    private ArticleStateMBean articleStateMBean;
-
-    private Article article;
+    @ManagedProperty(value="#{unpublishedArticlesMBean}")
+    private UnpublishedArticlesMBean unpublishedArticlesMBean;
 
     public String getId() {
         return id;
@@ -60,24 +61,12 @@ public class ArticleMBean {
         this.id = id;
     }
 
-    public String getPermanentLink() {
-        return permanentLink;
-    }
-
     public void setPermanentLink(String permanentLink) {
         this.permanentLink = permanentLink;
     }
 
-    public UnpublishedContentMBean getUnpublishedContentMBean() {
-        return unpublishedContentMBean;
-    }
-
-    public void setUnpublishedContentMBean(UnpublishedContentMBean unpublishedContentMBean) {
-        this.unpublishedContentMBean = unpublishedContentMBean;
-    }
-
-    public void setArticleStateMBean(ArticleStateMBean articleStateMBean) {
-        this.articleStateMBean = articleStateMBean;
+    public void setUnpublishedArticlesMBean(UnpublishedArticlesMBean unpublishedArticlesMBean) {
+        this.unpublishedArticlesMBean = unpublishedArticlesMBean;
     }
 
     public Article getArticle() {
@@ -88,19 +77,20 @@ public class ArticleMBean {
         this.article = article;
     }
 
-    public Boolean getPublished() {
-        return this.articleStateMBean.getState();
+    public List<Article> getArticlesFromSameSource() {
+        if(this.articlesFromSameSource == null) {
+            this.articlesFromSameSource = articleBean.findPublishedArticles(this.article);
+        }
+        return articlesFromSameSource;
     }
 
     @PostConstruct
     public void load() {
         if(id != null && !id.isEmpty()) {
-            this.article = articleBean.findArticle(id);
-            this.articleStateMBean.setState(this.article.getPublished());
+            this.article = articleBean.find(id);
         }
         else if(permanentLink != null && !permanentLink.isEmpty()) {
-            this.article = this.unpublishedContentMBean.getArticle(this.permanentLink);
-            this.articleStateMBean.setState(this.article.getPublished());
+            this.article = this.unpublishedArticlesMBean.getArticle(this.permanentLink);
         }
         else {
             this.article = new Article();
@@ -108,24 +98,19 @@ public class ArticleMBean {
     }
 
     public String publish() {
-        this.unpublishedContentMBean.removeArticle(this.article);
+        this.unpublishedArticlesMBean.removeArticle(this.article);
         articleBean.publish(this.article);
-        return "websites?faces-redirect=true";
+        return "web_source?faces-redirect=true&id="+ this.article.getWebSource().getId();
     }
 
     public String unpublish() {
-        this.unpublishedContentMBean.addArticle(this.article);
+        this.unpublishedArticlesMBean.addArticle(this.article);
         articleBean.unpublish(this.article);
-        return "websites?faces-redirect=true";
+        return "web_source?faces-redirect=true&id="+ this.article.getWebSource().getId();
     }
 
     public String save() {
         articleBean.save(this.article);
-        return "websites?faces-redirect=true";
-    }
-
-    public String remove() {
-        articleBean.remove(this.article.getId());
-        return "websites?faces-redirect=true";
+        return "web_source?faces-redirect=true&id="+ this.article.getWebSource().getId();
     }
 }

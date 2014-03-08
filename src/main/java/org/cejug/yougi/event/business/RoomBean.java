@@ -21,11 +21,10 @@
 package org.cejug.yougi.event.business;
 
 import java.util.List;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.cejug.yougi.entity.EntitySupport;
+import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.event.entity.Room;
 import org.cejug.yougi.event.entity.Venue;
 
@@ -35,41 +34,23 @@ import org.cejug.yougi.event.entity.Venue;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class RoomBean {
+public class RoomBean extends AbstractBean<Room> {
 
     @PersistenceContext
     private EntityManager em;
 
-    public Room findRoom(String id) {
-        if(id != null) {
-            return em.find(Room.class, id);
-        }
-        else {
-            return null;
-        }
+    public RoomBean() {
+        super(Room.class);
     }
-    
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+
     public List<Room> findRooms(Venue venue) {
         return em.createQuery("select r from Room r where r.venue = :venue order by r.name asc")
                  .setParameter("venue", venue)
                  .getResultList();
-    }
-    
-    public void save(Room room) {
-    	if(EntitySupport.INSTANCE.isIdNotValid(room)) {
-            room.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(room);
-        }
-        else {
-            em.merge(room);
-        }
-    }
-
-    public void remove(String id) {
-        Room room = findRoom(id);
-        if(room != null) {
-            em.remove(room);
-        }
     }
 }

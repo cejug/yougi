@@ -22,9 +22,64 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd" >
 
-    <include file="org/cejug/yougi/db/changelog/mysql-create.sql"/>
-    <include file="org/cejug/yougi/db/changelog/mysql-init.sql"/>
-    <include file="org/cejug/yougi/db/changelog/mysql-update.sql"/>
+    <!-- The <changeSet> style is used for retro-compatibility the 
+    logicalFilePath will be used to simulate the old changeset files, you don't need to use the
+    tag to make a changeSet, you still can use changeset sql formated and do the file include normaly -->
+    <changeSet id="1" author="htmfilho" logicalFilePath="org/cejug/yougi/db/changelog/mysql-create.sql"  >
+         <validCheckSum>3:59df8c155c8cc1db4e2bc3321fd09e35</validCheckSum>
+         <sqlFile path="org/cejug/yougi/db/changelog/20140225-1-htmfilho.sql" stripComments="true"  />
+    </changeSet>
+    <changeSet id="2" author="htmfilho" logicalFilePath="org/cejug/yougi/db/changelog/mysql-init.sql" >
+         <validCheckSum>3:c79be3baed4ba6531738174d03a91175</validCheckSum>
+         <sqlFile path="org/cejug/yougi/db/changelog/20140225-2-htmfilho.sql" stripComments="true"  />
+    </changeSet>
+    <changeSet id="3" author="htmfilho" logicalFilePath="org/cejug/yougi/db/changelog/mysql-update.sql"  >
+         <validCheckSum>3:169119118cfdbabe479f121efb8a1ddf</validCheckSum>
+         <sqlFile path="org/cejug/yougi/db/changelog/20140225-3-htmfilho.sql" stripComments="true"  />
+    </changeSet>
+    <changeSet id="4" author="htmfilho" logicalFilePath="org/cejug/yougi/db/changelog/mysql-update.sql" >
+         <validCheckSum>3:9fece58e4bc3109045c0453fbb3c01cd</validCheckSum>
+         <sqlFile path="org/cejug/yougi/db/changelog/20140225-4-htmfilho.sql" stripComments="true" />
+    </changeSet>
+    <changeSet id="5" author="htmfilho" logicalFilePath="org/cejug/yougi/db/changelog/mysql-update.sql" >
+         <validCheckSum>3:c2717c0a3a25f0f05c49c6dcd1bcbee4</validCheckSum>
+         <sqlFile path="org/cejug/yougi/db/changelog/20140225-5-htmfilho.sql" stripComments="true" />
+    </changeSet>
+    <changeSet id="6" author="htmfilho" logicalFilePath="org/cejug/yougi/db/changelog/mysql-update.sql" >
+         <validCheckSum>3:2b4f64940fdda59e8e0d41664f3e92de</validCheckSum>
+         <sqlFile path="org/cejug/yougi/db/changelog/20140225-6-htmfilho.sql" stripComments="true" />
+    </changeSet>
+    <changeSet id="7" author="htmfilho" logicalFilePath="org/cejug/yougi/db/changelog/mysql-update.sql" >
+         <validCheckSum>3:3afb3ae4efafe432cc3a7f0126107f68</validCheckSum>
+         <sqlFile path="org/cejug/yougi/db/changelog/20140225-7-htmfilho.sql" stripComments="true" />
+    </changeSet>
+    <changeSet id="8" author="htmfilho" logicalFilePath="org/cejug/yougi/db/changelog/mysql-update.sql" >
+         <validCheckSum>3:b5640489d6dfbb71a08669551073837b</validCheckSum>
+         <sqlFile path="org/cejug/yougi/db/changelog/20140225-8-htmfilho.sql" stripComments="true" />
+    </changeSet>
+    <changeSet id="9" author="htmfilho" logicalFilePath="org/cejug/yougi/db/changelog/mysql-update.sql" >
+         <validCheckSum>3:635c7c4b9e91aa89e62dba1eb9a366ee</validCheckSum>
+         <sqlFile path="org/cejug/yougi/db/changelog/20140225-9-htmfilho.sql" stripComments="true" />
+    </changeSet>
+    <changeSet id="10" author="htmfilho" logicalFilePath="org/cejug/yougi/db/changelog/mysql-update.sql" >
+         <validCheckSum>3:681c52bb65ddd03bd38a9bb06815b6b3</validCheckSum>
+         <sqlFile path="org/cejug/yougi/db/changelog/20140225-10-htmfilho.sql" stripComments="true" />
+    </changeSet>
+    <changeSet id="11" author="joewong" logicalFilePath="org/cejug/yougi/db/changelog/mysql-update.sql" >
+         <validCheckSum>3:d612b4549bafd4d76f446ce93144953f</validCheckSum>
+         <sqlFile path="org/cejug/yougi/db/changelog/20140225-11-joewong.sql" stripComments="true" />
+    </changeSet>
+    <changeSet id="12" author="htmfilho" logicalFilePath="org/cejug/yougi/db/changelog/mysql-update.sql" >
+         <validCheckSum>3:19f7957e1ebb92e8d191afecbd044a6f</validCheckSum>
+         <sqlFile path="org/cejug/yougi/db/changelog/20140225-12-htmfilho.sql" stripComments="true" />
+    </changeSet>
+    <changeSet id="13" author="htmfilho" logicalFilePath="org/cejug/yougi/db/changelog/mysql-update.sql" >
+         <validCheckSum>3:aebc3c8fa6228244f5f4b9117d3802df</validCheckSum>
+         <sqlFile path="org/cejug/yougi/db/changelog/20140225-13-htmfilho.sql" stripComments="true" />
+    </changeSet>
+    
+    <!-- Includes -->
+    
 </databaseChangeLog>

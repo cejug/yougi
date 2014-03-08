@@ -46,21 +46,21 @@ public class AttendeeMBean implements Serializable {
 
     @EJB
     private AttendeeBean attendeeBean;
-    
+
     @EJB
     private EventBean eventBean;
 
     @ManagedProperty(value = "#{param.id}")
     private String id;
-    
+
     @ManagedProperty(value = "#{param.eventId}")
     private String eventId;
-    
+
     @ManagedProperty(value = "#{userProfileMBean}")
     private UserProfileMBean userProfileMBean;
 
     private Attendee attendee;
-    
+
     private List<Event> attendedEvents;
 
     public String getId() {
@@ -70,11 +70,11 @@ public class AttendeeMBean implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public String getEventId() {
         return this.eventId;
     }
-    
+
     public void setEventId(String eventId) {
         this.eventId = eventId;
     }
@@ -94,7 +94,7 @@ public class AttendeeMBean implements Serializable {
     public void setAttendee(Attendee attendee) {
         this.attendee = attendee;
     }
-    
+
     public Boolean getIsAttending() {
         if(this.attendee.getId() != null) {
             return Boolean.TRUE;
@@ -103,20 +103,20 @@ public class AttendeeMBean implements Serializable {
             return Boolean.FALSE;
         }
     }
-    
+
     public List<Event> getAttendedEvents() {
         if(this.attendedEvents == null && this.attendee != null) {
             this.attendedEvents = attendeeBean.findAttendeedEvents(this.attendee.getUserAccount());
         }
         return this.attendedEvents;
     }
-    
+
     public String attendEvent() {
         this.attendee.setRegistrationDate(Calendar.getInstance().getTime());
         attendeeBean.save(this.attendee);
         return "attendee?id="+ this.attendee.getId();
     }
-    
+
     public String cancelAttendance() {
         attendeeBean.remove(this.attendee.getId());
         this.attendee.setId(null);
@@ -126,13 +126,13 @@ public class AttendeeMBean implements Serializable {
     @PostConstruct
     public void load() {
         if (this.id != null && !this.id.isEmpty()) {
-            this.attendee = attendeeBean.findAttendee(id);
+            this.attendee = attendeeBean.find(id);
         }
         else if(eventId != null && !eventId.isEmpty()) {
-            Event event = eventBean.findEvent(eventId);
+            Event event = eventBean.find(eventId);
             UserAccount userAccount = userProfileMBean.getUserAccount();
-            this.attendee = attendeeBean.findAttendee(event, userAccount);
-            
+            this.attendee = attendeeBean.find(event, userAccount);
+
             if(this.attendee == null) {
                 this.attendee = new Attendee();
                 this.attendee.setEvent(event);

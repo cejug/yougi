@@ -33,7 +33,7 @@ public enum EntitySupport {
      * @return Returns a 32 characteres string to be used as id of entities that
      * implements the interface org.cejug.persistence.Identified.
      */
-    public String generateEntityId() {
+    public final String generateEntityId() {
         UUID uuid = UUID.randomUUID();
         return uuid.toString().replaceAll("-", "").toUpperCase();
     }
@@ -45,7 +45,7 @@ public enum EntitySupport {
      * org.cejug.persistence.Identified.
      * @return true if the id is not valid.
      */
-    public boolean isIdNotValid(Identified identified) {
+    public final boolean isIdNotValid(Identified identified) {
         if(identified == null) {
             throw new IllegalArgumentException("Identified entity is null");
         }

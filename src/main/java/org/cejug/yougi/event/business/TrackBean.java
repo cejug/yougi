@@ -22,29 +22,29 @@ package org.cejug.yougi.event.business;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.event.entity.Event;
-import org.cejug.yougi.entity.EntitySupport;
 import org.cejug.yougi.event.entity.Track;
 
 /**
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class TrackBean {
+public class TrackBean extends AbstractBean<Track> {
 
     @PersistenceContext
     private EntityManager em;
 
-    public Track findTrack(String id) {
-        if (id != null) {
-            return em.find(Track.class, id);
-        }
-        return null;
+    public TrackBean() {
+        super(Track.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
 
     /**
@@ -63,21 +63,5 @@ public class TrackBean {
             tracks.addAll(findTracks(event.getParent()));
         }
         return tracks;
-    }
-
-    public void save(Track track) {
-        if (EntitySupport.INSTANCE.isIdNotValid(track)) {
-            track.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(track);
-        } else {
-            em.merge(track);
-        }
-    }
-
-    public void remove(String id) {
-        Track track = em.find(Track.class, id);
-        if (track != null) {
-            em.remove(track);
-        }
     }
 }

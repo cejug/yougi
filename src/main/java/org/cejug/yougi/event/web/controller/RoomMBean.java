@@ -152,7 +152,7 @@ public class RoomMBean implements Serializable {
     @PostConstruct
     public void load() {
         if (this.eventId != null && !this.eventId.isEmpty()) {
-            this.event = eventBean.findEvent(eventId);
+            this.event = eventBean.find(eventId);
         }
 
         if (this.venueId != null && !this.venueId.isEmpty()) {
@@ -160,7 +160,7 @@ public class RoomMBean implements Serializable {
         }
 
         if (this.id != null && !this.id.isEmpty()) {
-            this.room = roomBean.findRoom(id);
+            this.room = roomBean.find(id);
             this.selectedVenue = this.room.getVenue().getId();
         }
     }

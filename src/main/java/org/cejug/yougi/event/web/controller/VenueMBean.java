@@ -151,11 +151,11 @@ public class VenueMBean implements Serializable {
     @PostConstruct
     public void load() {
         if (this.eventId != null && !this.eventId.isEmpty()) {
-            this.event = eventBean.findEvent(eventId);
+            this.event = eventBean.find(eventId);
         }
 
         if (this.id != null && !this.id.isEmpty()) {
-            this.venue = venueBean.findVenue(id);
+            this.venue = venueBean.find(id);
 
             locationMBean.initialize();
 

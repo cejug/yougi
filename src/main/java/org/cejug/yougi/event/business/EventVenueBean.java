@@ -22,12 +22,11 @@ package org.cejug.yougi.event.business;
 
 import java.util.List;
 import java.util.logging.Logger;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.event.entity.Event;
-import org.cejug.yougi.entity.EntitySupport;
 import org.cejug.yougi.event.entity.EventVenue;
 import org.cejug.yougi.event.entity.Venue;
 
@@ -37,16 +36,20 @@ import org.cejug.yougi.event.entity.Venue;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class EventVenueBean {
+public class EventVenueBean extends AbstractBean<EventVenue> {
 
     @PersistenceContext
     private EntityManager em;
 
     static final Logger LOGGER = Logger.getLogger(EventVenueBean.class.getName());
 
-    public EventVenue findEventVenue(String id) {
-        return em.find(EventVenue.class, id);
+    public EventVenueBean() {
+        super(EventVenue.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
 
     public List<Venue> findEventVenues(Event event) {
@@ -60,33 +63,16 @@ public class EventVenueBean {
                  .setParameter("event", except)
                  .getResultList();
     }
-    
+
     public List<Event> findEvents(Venue except) {
         return em.createQuery("select e from Event e where e not in (select ev.event from EventVenue ev where ev.venue = :venue) order by e.name asc")
                  .setParameter("venue", except)
                  .getResultList();
     }
-    
+
     public List<Event> findEventsVenue(Venue venue) {
         return em.createQuery("select ev.event from EventVenue ev where ev.venue = :venue order by ev.event.name asc")
                                          .setParameter("venue", venue)
                                          .getResultList();
-    }
-
-    public void save(EventVenue eventVenue) {
-        if(EntitySupport.INSTANCE.isIdNotValid(eventVenue)) {
-            eventVenue.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(eventVenue);
-        }
-        else {
-            em.merge(eventVenue);
-        }
-    }
-
-    public void remove(String id) {
-        EventVenue eventVenue = findEventVenue(id);
-        if(eventVenue != null) {
-            em.remove(eventVenue);
-        }
     }
 }

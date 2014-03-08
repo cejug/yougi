@@ -20,6 +20,8 @@
  * */
 package org.cejug.yougi.knowledge.entity;
 
+import org.cejug.yougi.exception.BusinessLogicException;
+
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -45,8 +47,8 @@ public class Topic implements Serializable {
 
     public Topic() {}
 
-    public Topic(String name) {
-        this.name = name;
+    public Topic(String name) throws BusinessLogicException {
+        setName(name);
     }
 
     /**
@@ -58,7 +60,10 @@ public class Topic implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
+    public final void setName(String name) throws BusinessLogicException {
+        if(this.name == null || this.name.isEmpty() || this.name.contains(",")) {
+            throw new BusinessLogicException("errorCode0006");
+        }
         this.name = name.trim().toUpperCase();
     }
 

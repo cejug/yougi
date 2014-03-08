@@ -135,17 +135,17 @@ public class MemberMBean implements Serializable {
 
     public List<UserAccount> getDeactivatedUserAccounts() {
         if(deactivatedUsers == null) {
-            deactivatedUsers = userAccountBean.findDeactivatedUserAccounts();
+            deactivatedUsers = userAccountBean.findAllDeactivatedUserAccounts();
         }
         return deactivatedUsers;
     }
 
     public String findUserAccountByEmail() {
         if (this.emailCriteria == null || this.emailCriteria.isEmpty()) {
-            this.userAccounts = userAccountBean.findNotVerifiedUsers();
+            this.userAccounts = userAccountBean.findAllNotVerifiedAccounts();
         } else {
             List<UserAccount> uas = new ArrayList<>(1);
-            UserAccount ua = userAccountBean.findUserAccountByEmail(this.emailCriteria);
+            UserAccount ua = userAccountBean.findByEmail(this.emailCriteria);
             if (ua != null) {
                 uas.add(ua);
             }
@@ -157,10 +157,10 @@ public class MemberMBean implements Serializable {
 
     public String findUserAccountByFirstLetter(String firstLetterCriteria) {
         if (firstLetterCriteria == null || firstLetterCriteria.isEmpty()) {
-            this.userAccounts = userAccountBean.findNotVerifiedUsers();
+            this.userAccounts = userAccountBean.findAllNotVerifiedAccounts();
         } else {
             this.firstLetterCriteria = firstLetterCriteria;
-            this.userAccounts = userAccountBean.findUserAccountsStartingWith(this.firstLetterCriteria);
+            this.userAccounts = userAccountBean.findAllStartingWith(this.firstLetterCriteria);
             this.emailCriteria = null;
         }
 
@@ -213,14 +213,14 @@ public class MemberMBean implements Serializable {
 
     @PostConstruct
     public void load() {
-        this.userAccounts = userAccountBean.findNotVerifiedUsers();
+        this.userAccounts = userAccountBean.findAllNotVerifiedAccounts();
     }
 
     public String load(String userId) {
         this.userId = userId;
-        this.userAccount = userAccountBean.findUserAccount(this.userId);
+        this.userAccount = userAccountBean.find(this.userId);
         this.authentication = authenticationBean.findByUserAccount(this.userAccount);
-        this.historicMessages = messageHistoryBean.findHistoricalMessageByRecipient(this.userAccount);
+        this.historicMessages = messageHistoryBean.findByRecipient(this.userAccount);
         this.attendedEvents = attendeeBean.findAttendeedEvents(this.userAccount);
 
         locationMBean.initialize();
@@ -249,7 +249,7 @@ public class MemberMBean implements Serializable {
      * @param verified if true, the user account if saved with the status of verified.
      */
     private void save(Boolean verified) {
-        UserAccount existingUserAccount = userAccountBean.findUserAccount(userAccount.getId());
+        UserAccount existingUserAccount = userAccountBean.find(userAccount.getId());
 
         existingUserAccount.setCountry(this.locationMBean.getCountry());
         existingUserAccount.setProvince(this.locationMBean.getProvince());

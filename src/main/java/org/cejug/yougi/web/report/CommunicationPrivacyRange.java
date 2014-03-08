@@ -44,7 +44,7 @@ public class CommunicationPrivacyRange implements Serializable {
 
     @EJB
     private UserAccountBean userAccountBean;
-    
+
     private CartesianChartModel communicationPrivacyModel;
 
     public CommunicationPrivacyRange() {
@@ -62,7 +62,7 @@ public class CommunicationPrivacyRange implements Serializable {
                 totalGeneralOffer = 0, totalJobOffer = 0, totalEvent = 0,
                 totalSponsor = 0, totalSpeaker = 0;
 
-        List<UserAccount> userAccounts = userAccountBean.findUserAccounts();
+        List<UserAccount> userAccounts = userAccountBean.findAllActiveAccounts();
         for (UserAccount userAccount : userAccounts) {
             if (userAccount.getPublicProfile()) {
                 totalPublicProfile++;

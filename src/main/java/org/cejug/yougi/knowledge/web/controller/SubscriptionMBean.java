@@ -166,7 +166,7 @@ public class SubscriptionMBean {
 
     public List<UserAccount> getUsersAccount() {
         if (this.usersAccount == null) {
-            this.usersAccount = userAccountBean.findUserAccounts();
+            this.usersAccount = userAccountBean.findAllActiveAccounts();
         }
         return this.usersAccount;
     }
@@ -187,7 +187,7 @@ public class SubscriptionMBean {
                 this.selectedUserAccount = this.subscription.getUserAccount().getId();
             }
             else {
-                UserAccount possibleUserAccount = userAccountBean.findUserAccountByEmail(this.subscription.getEmailAddress());
+                UserAccount possibleUserAccount = userAccountBean.findByEmail(this.subscription.getEmailAddress());
                 if(possibleUserAccount != null) {
                     this.selectedUserAccount = possibleUserAccount.getId();
                 }
@@ -195,7 +195,7 @@ public class SubscriptionMBean {
         }
 
         if(mailingListId != null && !mailingListId.isEmpty()) {
-            this.mailingList = mailingListBean.findMailingList(mailingListId);
+            this.mailingList = mailingListBean.find(mailingListId);
         }
     }
 
@@ -207,10 +207,10 @@ public class SubscriptionMBean {
     }
 
     public String save() {
-        this.subscription.setMailingList(mailingListBean.findMailingList(this.selectedMailingList));
+        this.subscription.setMailingList(mailingListBean.find(this.selectedMailingList));
 
         if(this.selectedUserAccount != null && !this.selectedUserAccount.isEmpty()) {
-            this.subscription.setUserAccount(userAccountBean.findUserAccount(this.selectedUserAccount));
+            this.subscription.setUserAccount(userAccountBean.find(this.selectedUserAccount));
         }
 
         subscriptionBean.save(this.subscription);
@@ -232,9 +232,9 @@ public class SubscriptionMBean {
             return "subscription";
         }
 
-        this.subscription.setMailingList(mailingListBean.findMailingList(this.selectedMailingList));
+        this.subscription.setMailingList(mailingListBean.find(this.selectedMailingList));
         if(this.selectedUserAccount != null && !this.selectedUserAccount.isEmpty()) {
-            this.subscription.setUserAccount(userAccountBean.findUserAccount(this.selectedUserAccount));
+            this.subscription.setUserAccount(userAccountBean.find(this.selectedUserAccount));
         }
 
         subscriptionBean.subscribe(this.subscription.getMailingList(),
@@ -259,9 +259,9 @@ public class SubscriptionMBean {
             return "subscription";
         }
 
-        this.subscription.setMailingList(mailingListBean.findMailingList(this.selectedMailingList));
+        this.subscription.setMailingList(mailingListBean.find(this.selectedMailingList));
         if(this.selectedUserAccount != null && !this.selectedUserAccount.isEmpty()) {
-            this.subscription.setUserAccount(userAccountBean.findUserAccount(this.selectedUserAccount));
+            this.subscription.setUserAccount(userAccountBean.find(this.selectedUserAccount));
         }
         subscriptionBean.unsubscribe(this.subscription);
         return "mailing_list_view?faces-redirect=true&id="+ this.subscription.getMailingList().getId();

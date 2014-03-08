@@ -58,6 +58,11 @@ public class WebSource implements Serializable, Identified {
         this.id = id;
     }
 
+    public WebSource(String title, String feed) {
+        this.title = title;
+        this.feed = feed;
+    }
+
     @Override
     public String getId() {
         return id;

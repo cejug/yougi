@@ -130,12 +130,7 @@ public class AuthenticationBean {
 
     public void changeUsername(UserAccount userAccount) {
         Authentication existingAuthentication = findByUserAccount(userAccount);
-
-        //Authentication newAuthentication = new Authentication();
-        //newAuthentication.setUsername(userAccount.getEmail());
-        //newAuthentication.setPassword(existingAuthentication.getPassword());
-        //newAuthentication.setUserAccount(userAccount);
-
+        
         remove(userAccount);
         em.detach(existingAuthentication);
         existingAuthentication.setUsername(userAccount.getEmail());

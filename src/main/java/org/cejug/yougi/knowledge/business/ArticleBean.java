@@ -21,13 +21,13 @@
 package org.cejug.yougi.knowledge.business;
 
 import java.util.List;
-import javax.ejb.LocalBean;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.knowledge.entity.Article;
 import org.cejug.yougi.knowledge.entity.WebSource;
-import org.cejug.yougi.entity.EntitySupport;
 
 /**
  * Business logic dealing with articles from a web source.
@@ -35,26 +35,39 @@ import org.cejug.yougi.entity.EntitySupport;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class ArticleBean {
+public class ArticleBean extends AbstractBean<Article> {
+
+    private static final Logger LOGGER = Logger.getLogger(ArticleBean.class.getName());
 
     @PersistenceContext
     private EntityManager em;
 
-    public Article findArticle(String id) {
-        return em.find(Article.class, id);
+    public ArticleBean() {
+        super(Article.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
 
     public List<Article> findPublishedArticles() {
-            return em.createQuery("select a from Article a where a.published = :published order by a.publication desc")
+            return em.createQuery("select a from Article a where a.published = :published order by a.publication desc", Article.class)
                      .setParameter("published", Boolean.TRUE)
                      .getResultList();
     }
 
     public List<Article> findPublishedArticles(WebSource webSource) {
-            return em.createQuery("select a from Article a where a.webSource = :webSource order by a.title asc")
+            return em.createQuery("select a from Article a where a.webSource = :webSource order by a.title asc", Article.class)
                                  .setParameter("webSource", webSource)
                                  .getResultList();
+    }
+
+    public List<Article> findPublishedArticles(Article except) {
+        return em.createQuery("select a from Article a where a.webSource = :webSource and a <> :except order by a.title asc", Article.class)
+                .setParameter("webSource", except.getWebSource())
+                .setParameter("except", except)
+                .getResultList();
     }
 
     public void publish(Article article) {
@@ -64,22 +77,5 @@ public class ArticleBean {
 
     public void unpublish(Article article) {
         remove(article.getId());
-    }
-
-    public void save(Article article) {
-        if(EntitySupport.INSTANCE.isIdNotValid(article)) {
-            article.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(article);
-        }
-        else {
-            em.merge(article);
-        }
-    }
-
-    public void remove(String id) {
-        Article article = em.find(Article.class, id);
-        if(article != null) {
-            em.remove(article);
-        }
     }
 }

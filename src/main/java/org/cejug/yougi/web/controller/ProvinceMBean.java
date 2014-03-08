@@ -28,7 +28,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
-import org.cejug.yougi.business.LocationBean;
+import org.cejug.yougi.business.CountryBean;
+import org.cejug.yougi.business.ProvinceBean;
 import org.cejug.yougi.entity.Country;
 import org.cejug.yougi.entity.Province;
 
@@ -40,7 +41,11 @@ import org.cejug.yougi.entity.Province;
 public class ProvinceMBean {
 
     @EJB
-    private LocationBean locationBean;
+    private CountryBean countryBean;
+
+    @EJB
+    private ProvinceBean provinceBean;
+
     @ManagedProperty(value = "#{param.id}")
     private String id;
     private Country selectedCountry;
@@ -66,8 +71,8 @@ public class ProvinceMBean {
     }
 
     public List<SelectItem> getCountries() {
-        List<Country> countries = locationBean.findCountries();
-        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        List<Country> countries = countryBean.findCountries();
+        List<SelectItem> selectItems = new ArrayList<>();
         SelectItem selectItem = new SelectItem("", "Select...");
         selectItems.add(selectItem);
         for (Country country : countries) {
@@ -78,7 +83,7 @@ public class ProvinceMBean {
     }
 
     public SelectItem[] getAssociatedCountries() {
-        List<Country> countries = locationBean.findAssociatedCountries();
+        List<Country> countries = countryBean.findAssociatedCountries();
         SelectItem[] options = new SelectItem[countries.size() + 1];
         options[0] = new SelectItem("", "Select");
         for (int i = 0; i < countries.size(); i++) {
@@ -88,7 +93,7 @@ public class ProvinceMBean {
     }
 
     public List<Province> getProvinces() {
-        return locationBean.findProvinces();
+        return provinceBean.findAll();
     }
 
     public String getSelectedCountry() {
@@ -104,13 +109,13 @@ public class ProvinceMBean {
             return;
         }
 
-        this.selectedCountry = locationBean.findCountry(acronym);
+        this.selectedCountry = countryBean.findCountry(acronym);
     }
 
     @PostConstruct
     public void load() {
         if (id != null && !id.isEmpty()) {
-            this.province = locationBean.findProvince(id);
+            this.province = provinceBean.find(id);
             this.selectedCountry = this.province.getCountry();
         } else {
             this.province = new Province();
@@ -119,12 +124,12 @@ public class ProvinceMBean {
 
     public String save() {
         this.province.setCountry(selectedCountry);
-        locationBean.saveProvince(this.province);
+        provinceBean.save(this.province);
         return "provinces?faces-redirect=true";
     }
 
     public String remove() {
-        locationBean.removeProvince(province.getId());
+        provinceBean.remove(province.getId());
         return "provinces?faces-redirect=true";
     }
 }

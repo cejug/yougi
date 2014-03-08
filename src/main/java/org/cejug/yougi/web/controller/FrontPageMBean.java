@@ -20,6 +20,7 @@
  * */
 package org.cejug.yougi.web.controller;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -37,7 +38,7 @@ import org.cejug.yougi.knowledge.entity.Article;
  */
 @ManagedBean
 @ViewScoped
-public class FrontPageMBean {
+public class FrontPageMBean implements Serializable {
 
     @EJB
     private EventBean eventBean;

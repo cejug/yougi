@@ -21,71 +21,33 @@
 package org.cejug.yougi.business;
 
 import java.util.List;
-import javax.ejb.EJB;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.cejug.yougi.entity.City;
 import org.cejug.yougi.entity.Country;
 import org.cejug.yougi.entity.Province;
-import org.cejug.yougi.entity.EntitySupport;
 
 /**
- * Manages data of countries, states or provinces and cities because these
- * three entities are strongly related and because they are too simple to
- * have an exclusive business class.
  *
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class LocationBean {
+public class CityBean extends AbstractBean<City> {
+
     @PersistenceContext
     private EntityManager em;
 
-    @EJB
-    private UserAccountBean userAccountBean;
-
-    public Country findCountry(String acronym) {
-        if(acronym != null) {
-            return em.find(Country.class, acronym);
-        }
-        else {
-            return null;
-        }
+    public CityBean() {
+        super(City.class);
     }
 
-    public List<Country> findCountries() {
-        return em.createQuery("select c from Country c order by c.name asc")
-                 .getResultList();
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
 
-    public List<Country> findAssociatedCountries() {
-        return em.createQuery("select distinct p.country from Province p order by p.country")
-                 .getResultList();
-    }
-
-    public Province findProvince(String id) {
-        return em.find(Province.class, id);
-    }
-
-    public List<Province> findProvinces() {
-        return em.createQuery("select p from Province p order by p.country.name, p.name asc")
-                 .getResultList();
-    }
-
-    public List<Province> findProvinces(Country country) {
-        return em.createQuery("select p from Province p where p.country = :country order by p.name asc")
-                 .setParameter("country", country)
-                 .getResultList();
-    }
-
-    public City findCity(String id) {
-        return em.find(City.class, id);
-    }
-
-    public List<City> findCities() {
+    public List<City> findAll() {
         return em.createQuery("select c from City c order by c.country.name, c.name asc")
                  .getResultList();
     }
@@ -96,7 +58,7 @@ public class LocationBean {
                  .getResultList();
     }
 
-    public List<City> findCities(Country country, Boolean includingInvalids) {
+    public List<City> findByCountry(Country country, Boolean includingInvalids) {
         if(includingInvalids) {
             return em.createQuery("select c from City c where c.country = :country order by c.name asc")
                  .setParameter("country", country)
@@ -110,7 +72,7 @@ public class LocationBean {
         }
     }
 
-    public List<City> findCities(Province province, Boolean includingInvalids) {
+    public List<City> findByProvince(Province province, Boolean includingInvalids) {
         if(includingInvalids) {
             return em.createQuery("select c from City c where c.province = :province order by c.name asc")
                  .setParameter("province", province)
@@ -124,7 +86,7 @@ public class LocationBean {
         }
     }
 
-    public List<City> findCitiesStartingWith(String initials) {
+    public List<City> findStartingWith(String initials) {
         return em.createQuery("select c from City c where c.name like '"+ initials +"%' order by c.name").getResultList();
     }
 
@@ -132,7 +94,7 @@ public class LocationBean {
      * @param name The name of the city.
      * @return An instance of city or null if there is not city with the given name.
      */
-    public City findCityByName(String name) {
+    public City findByName(String name) {
         List<City> candidates = em.createQuery("select c from City c where c.name = :name")
                  .setParameter("name", name)
                  .getResultList();
@@ -141,58 +103,5 @@ public class LocationBean {
         }
 
         return null;
-    }
-
-    public void saveCountry(Country country) {
-        Country existing = em.find(Country.class, country.getAcronym());
-        if(existing == null) {
-            em.persist(country);
-        }
-        else {
-            em.merge(country);
-        }
-    }
-
-    public void removeCountry(String id) {
-        Country country = em.find(Country.class, id);
-        if(country != null) {
-            em.remove(country);
-        }
-    }
-
-    public void saveProvince(Province province) {
-        if(EntitySupport.INSTANCE.isIdNotValid(province)) {
-            province.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(province);
-        }
-        else {
-            em.merge(province);
-        }
-    }
-
-    public void removeProvince(String id) {
-        Province province = em.find(Province.class, id);
-        if(province != null) {
-            em.remove(province);
-        }
-    }
-
-    public void saveCity(City city) {
-        if(EntitySupport.INSTANCE.isIdNotValid(city)) {
-            city.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(city);
-        }
-        else {
-            em.merge(city);
-        }
-
-        userAccountBean.updateTimeZoneInhabitants(city);
-    }
-
-    public void removeCity(String id) {
-        City city = em.find(City.class, id);
-        if(city != null) {
-            em.remove(city);
-        }
     }
 }

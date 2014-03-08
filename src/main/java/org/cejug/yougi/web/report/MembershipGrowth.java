@@ -98,7 +98,7 @@ public class MembershipGrowth {
         lastDay.set(Calendar.AM_PM, Calendar.AM);
         Date from = firstDay.getTime();
 
-        List<UserAccount> userAccounts = userAccountBean.findConfirmedUserAccounts(from, to);
+        List<UserAccount> userAccounts = userAccountBean.findConfirmedAccounts(from, to);
 
         Calendar registrationDate;
         Calendar deactivationDate;

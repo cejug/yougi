@@ -298,7 +298,7 @@ public class EventMBean {
     @PostConstruct
     public void load() {
         if (id != null && !id.isEmpty()) {
-            this.event = eventBean.findEvent(id);
+            this.event = eventBean.find(id);
 
             if(this.event.getParent() != null) {
                 this.selectedParent = this.event.getParent().getId();
@@ -306,8 +306,8 @@ public class EventMBean {
 
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String username = request.getRemoteUser();
-            UserAccount person = userAccountBean.findUserAccountByUsername(username);
-            this.attendee = attendeeBean.findAttendee(this.event, person);
+            UserAccount person = userAccountBean.findByUsername(username);
+            this.attendee = attendeeBean.find(this.event, person);
 
             this.numberPeopleAttending = attendeeBean.findNumberPeopleAttending(this.event);
             this.numberPeopleAttended = attendeeBean.findNumberPeopleAttended(this.event);
@@ -319,9 +319,9 @@ public class EventMBean {
     public String confirmAttendance() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String username = request.getRemoteUser();
-        UserAccount person = userAccountBean.findUserAccountByUsername(username);
+        UserAccount person = userAccountBean.findByUsername(username);
 
-        this.event = eventBean.findEvent(event.getId());
+        this.event = eventBean.find(event.getId());
 
         Attendee newAttendee = new Attendee();
         newAttendee.setEvent(this.event);
@@ -339,11 +339,11 @@ public class EventMBean {
     public String cancelAttendance() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String username = request.getRemoteUser();
-        UserAccount person = userAccountBean.findUserAccountByUsername(username);
+        UserAccount person = userAccountBean.findByUsername(username);
 
-        this.event = eventBean.findEvent(event.getId());
+        this.event = eventBean.find(event.getId());
 
-        Attendee existingAttendee = attendeeBean.findAttendee(event, person);
+        Attendee existingAttendee = attendeeBean.find(event, person);
         attendeeBean.remove(existingAttendee.getId());
 
         return "events?faces-redirect=true";

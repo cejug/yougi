@@ -21,9 +21,9 @@
  * -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <h:head>
@@ -55,7 +55,7 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">#{bundle.knowledge} <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#{request.contextPath}/knowledge/websites.xhtml">#{bundle.websites}</a></li>
+                                    <li><a href="#{request.contextPath}/knowledge/web_sources.xhtml">#{bundle.webSources}</a></li>
                                     <li><a href="#{request.contextPath}/knowledge/topics.xhtml">#{bundle.topics}</a></li>
                                     <li><a href="#{request.contextPath}/knowledge/mailing_lists.xhtml">#{bundle.mailingList}</a></li>
                                 </ul>
@@ -128,7 +128,7 @@
         <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
             <div class="container">
                 <p class="navbar-text">Created and maintained by the <a href="http://www.cejug.org" target="_blank">CEJUG</a> Community!
-                    - <b><a href="http://www.yougi.org" target="_blank">#{bundle.versionNumber}</a></b>
+                    - <b><a href="http://www.yougi.org" target="_blank">@Version@</a></b>
                     - Timezone: #{userProfileMBean.timeZone}
                     (<h:outputText value="#{userProfileMBean.whatTimeIsIt}">
                         <f:convertDateTime type="time" timeStyle="short" pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
@@ -137,6 +137,7 @@
                 </p>
             </div>
         </nav>
+        <ui:insert name="jquery"><script src="#{request.contextPath}/resources/js/jquery-1.10.2.min.js"></script></ui:insert>
         <script src="#{request.contextPath}/resources/js/bootstrap.min.js"></script>
         <script src="#{request.contextPath}/resources/js/main.js"></script>
     </h:body>

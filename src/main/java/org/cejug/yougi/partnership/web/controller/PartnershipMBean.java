@@ -129,7 +129,7 @@ public class PartnershipMBean {
     public void load() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String username = request.getRemoteUser();
-        UserAccount person = userAccountBean.findUserAccountByUsername(username);
+        UserAccount person = userAccountBean.findByUsername(username);
         this.representative = representativeBean.findRepresentative(person);
 
         if (this.representative == null) {
@@ -207,7 +207,7 @@ public class PartnershipMBean {
             /* Loads the representative related to the logged user. */
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String username = request.getRemoteUser();
-            UserAccount person = userAccountBean.findUserAccountByUsername(username);
+            UserAccount person = userAccountBean.findByUsername(username);
             this.representative = representativeBean.findRepresentative(person);
 
             /* Write the inputStream to a FileOutputStream */

@@ -23,30 +23,45 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core">
     <body>
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.article}</ui:define>
             <ui:define name="content">
                 <div class="content">
-                    <h1>#{bundle.article}</h1>
-                    <h:form>
-                        <h:panelGrid columns="2">
-                            <h:graphicImage value="#{profilePictureFinder.getPictureFromEmail(articleMBean.article.webSource.provider.email)}" style="margin-right: 10px;"/>
-                            <h:panelGroup>
-                                <h:outputText value="#{articleMBean.article}" style="font-size: 26px; font-weight: bold; color: steelblue;"/><br/>
-                                <h:outputLink value="http://#{articleMBean.article.webSource.provider.website}" target="_blank" style="font-size: 18px;">
-                                    <h:outputText value="#{bundle.by} "/>
-                                    <h:outputText value="#{articleMBean.article.author}"/>
-                                </h:outputLink>
-                            </h:panelGroup>
-
-                            <h:outputText value="" style="font-size: 16px; font-style: italic;" escape="false"/>
+                    <div class="row">
+                        <div class="col-md-1">
+                            <h:graphicImage value="#{profilePictureFinder.getPictureFromEmail(articleMBean.article.webSource.provider.email)}" style="margin-right: 10px;" width="85" height="85"/>
+                        </div>
+                        <div class="col-md-7">
+                            <h:outputText value="#{articleMBean.article}" style="font-size: 26px; font-weight: bold; color: steelblue;"/><br/>
+                            <h:outputText value="#{bundle.by} "/>
+                            <h:outputLink value="http://#{articleMBean.article.webSource.provider.website}" rendered="#{! empty articleMBean.article.webSource.provider.website}" target="_blank" style="font-size: 18px;">
+                                <h:outputText value="#{articleMBean.article.author}"/>
+                            </h:outputLink>
+                            <h:outputText value="#{articleMBean.article.author}" rendered="#{empty articleMBean.article.webSource.provider.website}"/>
+                            <br/>
                             <h:outputText value="#{articleMBean.article.summary}" escape="false" styleClass="lead"/>
-                        </h:panelGrid>
-                        <p:separator/>
-                        <h:outputText value="#{articleMBean.article.text}" escape="false" style="font-size: 14px;"/>
-                    </h:form>
+                            <p/>
+                            <h:outputText value="#{articleMBean.article.text}" escape="false" style="font-size: 14px;"/>
+                        </div>
+                        <div class="col-md-4">
+                            <h4 class="text-info">
+                                <h:outputText value="#{bundle.articlesSameSource}"/>
+                            </h4>
+
+                            <ul class="list-group">
+                                <c:forEach var="article" items="#{articleMBean.articlesFromSameSource}">
+                                    <li class="list-group-item">
+                                        <h:link outcome="article" value="#{article.title}">
+                                            <f:param name="id" value="#{article.id}"/>
+                                        </h:link>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </ui:define>
         </ui:composition>

@@ -56,6 +56,6 @@ public class ProfilePictureFinder {
     }
 
     private String getDefaultAvatar() {
-        return "/images/logo.png";
+        return "/images/default_avatar.jpg";
     }
 }

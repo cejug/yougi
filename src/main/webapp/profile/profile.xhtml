@@ -34,109 +34,68 @@
                     <h:form>
                         <p:tabView dynamic="false" cache="true" activeIndex="#{param.tab}">
                             <p:tab title="#{bundle.personalData}">
-                                <h:graphicImage value="#{profilePictureFinder.getPictureFromEmail(userAccountMBean.userAccount.email)}"/>
-                                <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
-                                <h:panelGrid columns="2" cellpadding="3">
-                                    <h:outputText value="#{bundle.firstName}" styleClass="fieldLabel"/>
-                                    <h:outputText value="#{bundle.lastName}" styleClass="fieldLabel"/>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <h:graphicImage value="#{profilePictureFinder.getPictureFromEmail(userAccountMBean.userAccount.email)}" width="85" height="85"/>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
 
-                                    <h:outputText value="#{userAccountMBean.userAccount.firstName}"/>
-                                    <h:outputText value="#{userAccountMBean.userAccount.lastName}"/>
+                                        <dl class="dl-horizontal">
+                                            <dt><h:outputText value="#{bundle.firstName}"/></dt>
+                                            <dd><h:outputText value="#{userAccountMBean.userAccount.firstName}"/></dd>
+                                            <dt><h:outputText value="#{bundle.lastName}"/></dt>
+                                            <dd><h:outputText value="#{userAccountMBean.userAccount.lastName}"/></dd>
+                                            <dt><h:outputText value="#{bundle.gender}"/></dt>
+                                            <dd><h:outputText value="#{userAccountMBean.userAccount.gender}">
+                                                    <f:converter converterId="GenderToString"/>
+                                                </h:outputText></dd>
+                                            <dt><h:outputText value="#{bundle.email}"/></dt>
+                                            <dd><h:outputText value="#{userAccountMBean.userAccount.email}"/></dd>
+                                            <dt><h:outputText value="#{bundle.website}"/></dt>
+                                            <dd><h:outputLink value="http://#{userAccountMBean.userAccount.website}" target="_blank">#{userAccountMBean.userAccount.website}</h:outputLink></dd>
+                                            <dt><h:outputText value="#{bundle.twitter}"/></dt>
+                                            <dd><h:outputLink value="http://twitter.com/#{userAccountMBean.userAccount.twitter}" target="_blank">#{userAccountMBean.userAccount.twitter}</h:outputLink></dd>
+                                            <dt><h:outputText value="#{bundle.country}"/></dt>
+                                            <dd><h:outputText value="#{userAccountMBean.userAccount.country}"/></dd>
+                                            <dt><h:outputText value="#{bundle.province}"/></dt>
+                                            <dd><h:outputText value="#{userAccountMBean.userAccount.province}"/></dd>
+                                            <dt><h:outputText value="#{bundle.city}"/></dt>
+                                            <dd><h:outputText value="#{userAccountMBean.userAccount.city}"/></dd>
+                                            <dt><h:outputText value="#{bundle.timeZone}"/></dt>
+                                            <dd><h:outputText value="#{userAccountMBean.userAccount.timeZone}"/></dd>
+                                        </dl>
 
-                                    <h:outputText value="#{bundle.gender}" styleClass="fieldLabel"/>
-                                    <h:outputText/>
-
-                                    <h:outputText value="#{userAccountMBean.userAccount.gender}">
-                                        <f:converter converterId="GenderToString"/>
-                                    </h:outputText>
-                                    <h:outputText/>
-
-                                    <h:outputText value="#{bundle.email}" styleClass="fieldLabel"/>
-                                    <h:outputText/>
-
-                                    <h:outputText value="#{userAccountMBean.userAccount.email}"/>
-                                    <h:outputText/>
-
-                                    <h:outputText value="#{bundle.website}" styleClass="fieldLabel"/>
-                                    <h:outputText value="#{bundle.twitter}" styleClass="fieldLabel"/>
-
-                                    <h:outputLink value="http://#{userAccountMBean.userAccount.website}" target="_blank">#{userAccountMBean.userAccount.website}</h:outputLink>
-                                    <h:outputLink value="http://twitter.com/#{userAccountMBean.userAccount.twitter}" target="_blank">#{userAccountMBean.userAccount.twitter}</h:outputLink>
-
-                                    <h:outputText value="#{bundle.country}" styleClass="fieldLabel"/>
-                                    <h:outputText value="#{bundle.province}" styleClass="fieldLabel"/>
-
-                                    <h:outputText value="#{userAccountMBean.userAccount.country}"/>
-                                    <h:outputText value="#{userAccountMBean.userAccount.province}"/>
-
-                                    <h:outputText value="#{bundle.city}" styleClass="fieldLabel"/>
-                                    <h:outputText/>
-
-                                    <h:outputText value="#{userAccountMBean.userAccount.city}"/>
-                                    <h:outputText/>
-                                </h:panelGrid>
-                                <p></p>
-                                <h:panelGrid columns="2">
-                                    <h:button outcome="member.xhtml" value="#{bundle.update}"/>
-                                    <h:button outcome="member_deactivation.xhtml" value="#{bundle.deactivateMembership}"/>
-                                </h:panelGrid>
+                                        <h:button outcome="member" value="#{bundle.update}" styleClass="btn btn-default" style="margin-right: 5px;"/>
+                                        <h:button outcome="member_deactivation" value="#{bundle.deactivateMembership}" styleClass="btn btn-default"/>
+                                    </div>
+                                </div>
                             </p:tab>
-                            <p:tab title="#{bundle.privacy}">
-                                <h:panelGrid columns="2" width="700">
-                                    <h:graphicImage rendered="#{userAccountMBean.userAccount.publicProfile}" url="/images/success-icon.png"/>
-                                    <h:outputText rendered="#{userAccountMBean.userAccount.publicProfile}" value="#{bundle.publicProfileMessage}"/>
+                            <p:tab title="#{bundle.partnership}">
+                                <h:panelGroup rendered="#{partnershipMBean.representativeExists}">
+                                    <h:graphicImage value="#{partnershipMBean.logoImage}" rendered="#{! empty partnershipMBean.logoImage}" />
 
-                                    <h:graphicImage rendered="#{userAccountMBean.userAccount.mailingList}" url="/images/success-icon.png"/>
-                                    <h:outputText rendered="#{userAccountMBean.userAccount.mailingList}" value="#{bundle.mailingListMessage}"/>
+                                    <dl class="dl-horizontal">
+                                        <dt><h:outputText value="#{bundle.name}"/></dt>
+                                        <dd><h:outputText value="#{partnershipMBean.representative.partner.name}"/></dd>
+                                        <dt><h:outputText value="#{bundle.description}"/></dt>
+                                        <dd><h:outputText value="#{partnershipMBean.formattedPartnerDescription}" escape="false"/></dd>
+                                        <dt><h:outputText value="#{bundle.website}"/></dt>
+                                        <dd><h:outputLink value="#{partnershipMBean.representative.partner.url}" target="_blank">#{partnershipMBean.representative.partner.url}</h:outputLink></dd>
+                                        <dt><h:outputText value="#{bundle.address}"/></dt>
+                                        <dd><h:outputText value="#{partnershipMBean.formattedPartnerAddress}"/></dd>
+                                        <dt><h:outputText value="#{bundle.representative}"/></dt>
+                                        <dd><h:outputText value="#{partnershipMBean.representative.person}"/></dd>
+                                        <dt><h:outputText value="#{bundle.position}"/></dt>
+                                        <dd><h:outputText value="#{partnershipMBean.representative.position}"/></dd>
+                                        <dt><h:outputText value="#{bundle.phone}"/></dt>
+                                        <dd><h:outputText value="#{partnershipMBean.representative.phone}"/></dd>
+                                    </dl>
 
-                                    <h:graphicImage rendered="#{userAccountMBean.userAccount.event}" url="/images/success-icon.png"/>
-                                    <h:outputText rendered="#{userAccountMBean.userAccount.event}" value="#{bundle.eventMessage}"/>
-
-                                    <h:graphicImage rendered="#{userAccountMBean.userAccount.news}" url="/images/success-icon.png"/>
-                                    <h:outputText rendered="#{userAccountMBean.userAccount.news}" value="#{bundle.newsMessage}"/>
-
-                                    <h:graphicImage rendered="#{userAccountMBean.userAccount.generalOffer}" url="/images/success-icon.png"/>
-                                    <h:outputText rendered="#{userAccountMBean.userAccount.generalOffer}" value="#{bundle.generalOfferMessage}"/>
-
-                                    <h:graphicImage rendered="#{userAccountMBean.userAccount.jobOffer}" url="/images/success-icon.png"/>
-                                    <h:outputText rendered="#{userAccountMBean.userAccount.jobOffer}" value="#{bundle.jobOfferMessage}"/>
-
-                                    <h:graphicImage rendered="#{userAccountMBean.userAccount.sponsor}" url="/images/success-icon.png"/>
-                                    <h:outputText rendered="#{userAccountMBean.userAccount.sponsor}" value="#{bundle.sponsorMessage}"/>
-
-                                    <h:graphicImage rendered="#{userAccountMBean.userAccount.speaker}" url="/images/success-icon.png"/>
-                                    <h:outputText rendered="#{userAccountMBean.userAccount.speaker}" value="#{bundle.speakerMessage}"/>
-                                </h:panelGrid>
-                                <p></p>
-                                <h:button outcome="privacy.xhtml" value="#{bundle.update}"/>
-                            </p:tab>
-                            <p:tab title="#{bundle.partnership}" rendered="#{securityBackingMBean.isUserPartner}">
-                                <h:panelGrid columns="1" cellpadding="3" rendered="#{partnershipMBean.representativeExists}">
-                                    <p:graphicImage value="#{partnershipMBean.logoImage}" rendered="#{! empty partnershipMBean.logoImage}" />
-
-                                    <h:outputText value="#{partnershipMBean.representative.partner.name}" styleClass="header3"/>
-
-                                    <h:outputText value="#{partnershipMBean.formattedPartnerDescription}" escape="false"/>
-
-                                    <h:outputLink value="#{partnershipMBean.representative.partner.url}" target="_blank">#{partnershipMBean.representative.partner.url}</h:outputLink>
-
-                                    <h:outputText value="#{partnershipMBean.formattedPartnerAddress}"/>
-
-                                    <h:panelGrid columns="3" cellpadding="5">
-                                        <h:outputText value="#{bundle.representative}" styleClass="fieldLabel"/>
-                                        <h:outputText value="#{bundle.position}" styleClass="fieldLabel"/>
-                                        <h:outputText value="#{bundle.phone}" styleClass="fieldLabel"/>
-
-                                        <h:outputText value="#{partnershipMBean.representative.person}"/>
-                                        <h:outputText value="#{partnershipMBean.representative.position}"/>
-                                        <h:outputText value="#{partnershipMBean.representative.phone}"/>
-                                    </h:panelGrid>
-                                    <h:panelGrid columns="2">
-                                        <h:button outcome="partnership.xhtml" value="#{bundle.update}"/>
-                                        <h:button outcome="partnership_logo.xhtml" value="#{bundle.changeLogo}"/>
-                                    </h:panelGrid>
-                                </h:panelGrid>
-                                <h:button outcome="partnership.xhtml" value="#{bundle.becomePartner}" rendered="#{!partnershipMBean.representativeExists}"/>
+                                    <h:button outcome="partnership" value="#{bundle.update}" styleClass="btn btn-default"/>
+                                    <h:button outcome="partnership_logo" value="#{bundle.changeLogo}" styleClass="btn btn-default"/>
+                                </h:panelGroup>
+                                <h:button outcome="partnership" value="#{bundle.becomePartner}" rendered="#{!partnershipMBean.representativeExists}" styleClass="btn btn-default"/>
                             </p:tab>
                         </p:tabView>
                     </h:form>

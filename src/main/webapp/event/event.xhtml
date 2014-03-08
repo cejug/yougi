@@ -57,7 +57,7 @@
                                         <h:outputText value="#{eventMBean.event.startDate}">
                                             <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
                                         </h:outputText>
-                                        <h:outputText value=" #{bundle.from} " rendered="#{! empty eventMBean.event.startTime}"/>
+                                        <h:outputText value=" #{bundle.at} " rendered="#{! empty eventMBean.event.startTime}"/>
                                         <h:outputText value="#{eventMBean.event.startTime}" rendered="#{! empty eventMBean.event.startTime}">
                                             <f:convertDateTime type="time" timeStyle="short" pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
                                         </h:outputText>

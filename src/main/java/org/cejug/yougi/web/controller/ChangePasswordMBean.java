@@ -133,7 +133,7 @@ public class ChangePasswordMBean {
     @PostConstruct
     public void load() {
         if(confirmationCode != null && !confirmationCode.isEmpty()) {
-            UserAccount userAccount = userAccountBean.findUserAccountByConfirmationCode(confirmationCode);
+            UserAccount userAccount = userAccountBean.findByConfirmationCode(confirmationCode);
             Authentication authentication = authenticationBean.findByUserAccount(userAccount);
             if(userAccount != null) {
                 this.username = authentication.getUsername();
@@ -167,7 +167,7 @@ public class ChangePasswordMBean {
      * @return returns the next step in the navigation flow.
      */
     public String changeForgottenPassword() {
-        UserAccount userAccount = userAccountBean.findUserAccountByConfirmationCode(confirmationCode.trim().toUpperCase());
+        UserAccount userAccount = userAccountBean.findByConfirmationCode(confirmationCode.trim().toUpperCase());
 
         if(userAccount == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundleHelper.INSTANCE.getMessage("errorCode0012"), null));
@@ -191,7 +191,7 @@ public class ChangePasswordMBean {
     public String changePassword() {
         HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
         username = request.getRemoteUser();
-        UserAccount userAccount = userAccountBean.findUserAccountByUsername(username);
+        UserAccount userAccount = userAccountBean.findByUsername(username);
         if(!authenticationBean.passwordMatches(userAccount, currentPassword)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The current password does not match."));
             return "change_password";

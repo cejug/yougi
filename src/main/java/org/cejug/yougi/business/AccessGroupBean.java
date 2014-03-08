@@ -20,12 +20,12 @@
  * */
 package org.cejug.yougi.business;
 
+import com.itextpdf.tool.xml.exceptions.NotImplementedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
@@ -45,14 +45,12 @@ import org.cejug.yougi.exception.BusinessLogicException;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class AccessGroupBean {
+public class AccessGroupBean extends AbstractBean<AccessGroup> {
+
+    static final Logger LOGGER = Logger.getLogger(AccessGroupBean.class.getName());
 
     @PersistenceContext
     private EntityManager em;
-
-    @EJB
-    private UserAccountBean userAccountBean;
 
     @EJB
     private AuthenticationBean authenticationBean;
@@ -66,13 +64,16 @@ public class AccessGroupBean {
     @EJB
     private MessageTemplateBean messageTemplateBean;
 
-    static final Logger LOGGER = Logger.getLogger(AccessGroupBean.class.getName());
-
     public static final String ADMIN_GROUP = "admins";
     public static final String DEFAULT_GROUP = "members";
 
-    public AccessGroup findAccessGroup(String groupId) {
-        return em.find(AccessGroup.class, groupId);
+    public AccessGroupBean() {
+        super(AccessGroup.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
 
     public AccessGroup findAccessGroupByName(String name) {
@@ -124,7 +125,7 @@ public class AccessGroupBean {
     }
 
     public void sendGroupAssignmentAlert(UserAccount userAccount, AccessGroup accessGroup) throws BusinessLogicException {
-        MessageTemplate messageTemplate = messageTemplateBean.findMessageTemplate("09JDIIE82O39IDIDOSJCHXUDJJXHCKP0");
+        MessageTemplate messageTemplate = messageTemplateBean.find("09JDIIE82O39IDIDOSJCHXUDJJXHCKP0");
         messageTemplate.setVariable("userAccount.firstName", userAccount.getFirstName());
         messageTemplate.setVariable("accessGroup.name", accessGroup.getName());
         EmailMessage emailMessage = messageTemplate.buildEmailMessage();
@@ -136,6 +137,11 @@ public class AccessGroupBean {
         catch(MessagingException me) {
             LOGGER.log(Level.WARNING, "Error when sending the group assignment alert to "+ userAccount.getFullName(), me);
         }
+    }
+
+    @Override
+    public AccessGroup save(AccessGroup entity) {
+        throw new NotImplementedException("Please use the save method that accepts the list of members by parameter");
     }
 
     public void save(AccessGroup accessGroup, List<UserAccount> members) {
@@ -169,10 +175,5 @@ public class AccessGroupBean {
             }
             userGroupBean.update(accessGroup, usersGroup);
         }
-    }
-
-    public void remove(String groupId) {
-        AccessGroup accessGroup = em.find(AccessGroup.class, groupId);
-        em.remove(accessGroup);
     }
 }

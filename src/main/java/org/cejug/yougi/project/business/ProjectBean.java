@@ -18,28 +18,33 @@
  * find it, write to the Free Software Foundation, Inc., 59 Temple Place,
  * Suite 330, Boston, MA 02111-1307 USA.
  * */
-package org.cejug.yougi.knowledge.web.controller;
+package org.cejug.yougi.project.business;
 
-import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import java.util.List;
 
-/**
- * @author Hildeberto Mendonca - http://www.hildeberto.com
- */
-@ManagedBean
-@ViewScoped
-public class ArticleStateMBean implements Serializable {
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-    private Boolean articleState;
+import org.cejug.yougi.business.AbstractBean;
+import org.cejug.yougi.project.entity.Project;
 
-    public void setState(Boolean state) {
-        if(articleState == null) {
-            articleState = state;
-        }
-    }
+@Stateless
+public class ProjectBean extends AbstractBean<Project> {
+	
+	@PersistenceContext
+    private EntityManager em;
 
-    public Boolean getState() {
-        return articleState;
-    }
+	@Override
+	protected EntityManager getEntityManager() {
+		return em;
+	}
+
+	public ProjectBean() {
+		super(Project.class);
+	}
+	
+	public List<Project> findProjects() {
+		return em.createQuery("select p from Project p order by p.name asc", Project.class).getResultList();
+	}
 }

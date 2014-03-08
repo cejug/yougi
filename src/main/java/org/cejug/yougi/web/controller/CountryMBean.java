@@ -26,7 +26,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-import org.cejug.yougi.business.LocationBean;
+import org.cejug.yougi.business.CountryBean;
 import org.cejug.yougi.entity.Country;
 
 /**
@@ -37,7 +37,7 @@ import org.cejug.yougi.entity.Country;
 public class CountryMBean {
 
     @EJB
-    private LocationBean locationBean;
+    private CountryBean locationBean;
 
     @ManagedProperty(value="#{param.acronym}")
     private String acronym;

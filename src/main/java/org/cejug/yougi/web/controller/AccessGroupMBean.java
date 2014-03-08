@@ -90,11 +90,11 @@ public class AccessGroupMBean {
 
     @PostConstruct
     public void load() {
-        List<UserAccount> allUsers = userAccountBean.findUserAccounts();
-        List<UserAccount> target = new ArrayList<UserAccount>();
+        List<UserAccount> allUsers = userAccountBean.findAllActiveAccounts();
+        List<UserAccount> target = new ArrayList<>();
 
         if(groupId != null && !groupId.isEmpty()) {
-            this.group = accessGroupBean.findAccessGroup(this.groupId);
+            this.group = accessGroupBean.find(this.groupId);
 
             target.addAll(userGroupBean.findUsersGroup(group));
             allUsers.removeAll(target);
@@ -102,12 +102,12 @@ public class AccessGroupMBean {
         else {
             this.group = new AccessGroup();
         }
-        this.members = new DualListModel<UserAccount>(allUsers, target);
+        this.members = new DualListModel<>(allUsers, target);
     }
 
     @SuppressWarnings("rawtypes")
     public String save() {
-        List<UserAccount> selectedMembers = new ArrayList<UserAccount>();
+        List<UserAccount> selectedMembers = new ArrayList<>();
         List membersIds = this.members.getTarget();
         UserAccount userAccount;
         for(int i = 0;i < membersIds.size();i++) {

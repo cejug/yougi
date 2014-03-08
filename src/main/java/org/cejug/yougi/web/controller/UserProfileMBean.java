@@ -20,9 +20,11 @@
  * */
 package org.cejug.yougi.web.controller;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -44,11 +46,11 @@ import org.cejug.yougi.entity.UserAccount;
  */
 @ManagedBean
 @SessionScoped
-public class UserProfileMBean {
+public class UserProfileMBean implements Serializable {
 
     @EJB
     private LanguageBean languageBean;
-    
+
     @EJB
     private TimezoneBean timezoneBean;
 
@@ -60,6 +62,7 @@ public class UserProfileMBean {
 
     private Language language;
     private UserAccount userAccount;
+    private String timezone;
 
     static final Logger LOGGER = Logger.getLogger(UserProfileMBean.class.getName());
 
@@ -94,7 +97,7 @@ public class UserProfileMBean {
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpServletRequest request = (HttpServletRequest)fc.getExternalContext().getRequest();
             String username = request.getRemoteUser();
-            this.userAccount = userAccountBean.findUserAccountByUsername(username);
+            this.userAccount = userAccountBean.findByUsername(username);
     	}
     	return userAccount;
     }
@@ -105,25 +108,30 @@ public class UserProfileMBean {
      * properties. If the time zone was not defined in the application
      * properties yet, then it returns the default time zone where the system is
      * running.
+     * @return The time zone of the authenticated user.
      */
     public String getTimeZone() {
-        // It gives priority to the user preference.
-        UserAccount userAcc = getUserAccount();
-        if(userAcc != null && userAcc.getTimeZone() != null && !userAcc.getTimeZone().isEmpty()) {
-            return userAcc.getTimeZone();
+        if(userAccount != null && userAccount.getTimeZone() != null && !userAccount.getTimeZone().isEmpty()) {
+            if(timezone == null) {
+                timezone = userAccount.getTimeZone();
+                LOGGER.log(Level.INFO, "User timezone: {0}",timezone);
+            }
+            return timezone;
         }
         else {
             ApplicationProperty appPropTimeZone = applicationPropertyBean.findApplicationProperty(Properties.TIMEZONE);
             if(appPropTimeZone.getPropertyValue() == null || appPropTimeZone.getPropertyValue().isEmpty()) {
                 Timezone tz = timezoneBean.findDefaultTimezone();
+                LOGGER.log(Level.INFO, "Default timezone: {0}",tz.getId());
                 return tz.getId();
             }
             else {
+                LOGGER.log(Level.INFO, "App timezone: {0}",appPropTimeZone.getPropertyValue());
                 return appPropTimeZone.getPropertyValue();
             }
         }
     }
-    
+
     public Date getWhatTimeIsIt() {
         return Calendar.getInstance().getTime();
     }

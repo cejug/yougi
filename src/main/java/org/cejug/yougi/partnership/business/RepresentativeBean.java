@@ -23,11 +23,11 @@ package org.cejug.yougi.partnership.business;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.entity.UserAccount;
 import org.cejug.yougi.partnership.entity.Partner;
 import org.cejug.yougi.partnership.entity.Representative;
@@ -39,8 +39,7 @@ import org.cejug.yougi.entity.EntitySupport;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class RepresentativeBean {
+public class RepresentativeBean extends AbstractBean<Representative> {
 
     @PersistenceContext
     private EntityManager em;
@@ -48,20 +47,20 @@ public class RepresentativeBean {
     @EJB
     private PartnerBean partnerBean;
 
-    public Representative findRepresentative(String id) {
-        if(id != null) {
-            return em.find(Representative.class, id);
-        }
-        else {
-            return null;
-        }
+    public RepresentativeBean() {
+        super(Representative.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
 
     public Representative findRepresentative(UserAccount person) {
     	try {
-    		return (Representative) em.createQuery("select r from Representative r where r.person = :person")
-                                          .setParameter("person", person)
-                                          .getSingleResult();
+            return (Representative) em.createQuery("select r from Representative r where r.person = :person")
+                                      .setParameter("person", person)
+                                      .getSingleResult();
     	}
     	catch(NoResultException nre) {
     		return null;
@@ -80,16 +79,6 @@ public class RepresentativeBean {
     	         .getResultList();
     }
 
-    public void save(Representative representative) {
-    	if(EntitySupport.INSTANCE.isIdNotValid(representative)) {
-            representative.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(representative);
-        }
-        else {
-            em.merge(representative);
-        }
-    }
-
     /**
      * Update the list of representatives of a partner according to the number
      * of persons informed.
@@ -106,8 +95,8 @@ public class RepresentativeBean {
         List<Representative> representatives = new ArrayList<>();
         Representative representative;
         for(UserAccount person: persons) {
-        	representative = new Representative(partner, person);
-        	representative.setId(EntitySupport.INSTANCE.generateEntityId());
+            representative = new Representative(partner, person);
+            representative.setId(EntitySupport.INSTANCE.generateEntityId());
             representatives.add(representative);
         }
 
@@ -133,13 +122,6 @@ public class RepresentativeBean {
             if(!currentRepresentatives.contains(rep)) {
                 em.persist(rep);
             }
-        }
-    }
-
-    public void remove(String id) {
-        Representative representative = em.find(Representative.class, id);
-        if(representative != null) {
-            em.remove(representative);
         }
     }
 }

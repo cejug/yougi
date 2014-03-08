@@ -25,18 +25,17 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.business.MessageTemplateBean;
 import org.cejug.yougi.business.MessengerBean;
 import org.cejug.yougi.entity.EmailMessage;
 import org.cejug.yougi.entity.MessageTemplate;
 import org.cejug.yougi.entity.UserAccount;
 import org.cejug.yougi.event.entity.Event;
-import org.cejug.yougi.entity.EntitySupport;
 import org.cejug.yougi.util.TextUtils;
 
 /**
@@ -45,8 +44,7 @@ import org.cejug.yougi.util.TextUtils;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class EventBean {
+public class EventBean extends AbstractBean<Event> {
 
     @PersistenceContext
     private EntityManager em;
@@ -62,7 +60,17 @@ public class EventBean {
 
     static final Logger LOGGER = Logger.getLogger(EventBean.class.getName());
 
-    public Event findEvent(String id) {
+    public EventBean() {
+        super(Event.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+
+    @Override
+    public Event find(String id) {
         Event event = em.find(Event.class, id);
         event.setVenues(venueBean.findEventVenues(event));
         return event;
@@ -100,7 +108,7 @@ public class EventBean {
     }
 
     public void sendConfirmationEventAttendance(UserAccount userAccount, Event event, String dateFormat, String timeFormat, String timezone) {
-        MessageTemplate messageTemplate = messageTemplateBean.findMessageTemplate("KJDIEJKHFHSDJDUWJHAJSNFNFJHDJSLE");
+        MessageTemplate messageTemplate = messageTemplateBean.find("KJDIEJKHFHSDJDUWJHAJSNFNFJHDJSLE");
         messageTemplate.setVariable("userAccount.firstName", userAccount.getFirstName());
         messageTemplate.setVariable("event.name", event.getName());
         messageTemplate.setVariable("event.venue", "");
@@ -115,23 +123,6 @@ public class EventBean {
         }
         catch(MessagingException e) {
             LOGGER.log(Level.WARNING, "Error when sending the confirmation of event attendance to user "+ userAccount.getPostingEmail(), e);
-        }
-    }
-
-    public void save(Event event) {
-        if(EntitySupport.INSTANCE.isIdNotValid(event)) {
-            event.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(event);
-        }
-        else {
-            em.merge(event);
-        }
-    }
-
-    public void remove(String id) {
-        Event event = findEvent(id);
-        if(event != null) {
-            em.remove(event);
         }
     }
 }

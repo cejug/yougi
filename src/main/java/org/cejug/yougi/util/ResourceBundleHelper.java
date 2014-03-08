@@ -37,6 +37,8 @@ import javax.faces.context.FacesContext;
 public enum ResourceBundleHelper {
     INSTANCE;
 
+    private static final String BUNDLE_NAME = "org.cejug.yougi.web.bundles.Resources";
+
     private Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 
     public String getMessage(String key) {
@@ -61,11 +63,10 @@ public enum ResourceBundleHelper {
 
     private String getMessageFromResourceBundle(String key) {
         ResourceBundle bundle;
-        String bundleName = "org.cejug.yougi.web.bundles.Resources";
         String message = "";
 
         try {
-            bundle = ResourceBundle.getBundle(bundleName, locale, getCurrentLoader(bundleName));
+            bundle = ResourceBundle.getBundle(BUNDLE_NAME, locale, getCurrentLoader(BUNDLE_NAME));
         } catch (MissingResourceException e) {
             return "?";
         }

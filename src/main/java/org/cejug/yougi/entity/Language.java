@@ -32,10 +32,13 @@ import javax.persistence.Table;
 public class Language implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     public static final String DEFAULT_LANGUAGE = "en";
+
     @Id
     @Column(name = "acronym", nullable = false)
     private String acronym;
+
     @Column(name = "name", nullable = false)
     private String name;
 

@@ -32,6 +32,7 @@ import org.cejug.yougi.knowledge.business.ArticleBean;
 import org.cejug.yougi.knowledge.business.WebSourceBean;
 import org.cejug.yougi.knowledge.entity.Article;
 import org.cejug.yougi.knowledge.entity.WebSource;
+import org.cejug.yougi.util.UrlUtils;
 
 /**
  * @author Hildeberto Mendonca - http://www.hildeberto.com
@@ -49,51 +50,96 @@ public class WebSourceMBean {
     @EJB
     private ArticleBean articleBean;
 
-    private UserAccount provider;
     private WebSource webSource;
 
-    private List<UserAccount> usersWithWebsite;
+    private List<WebSource> webSources;
     private List<Article> publishedArticles;
 
-    @ManagedProperty(value="#{param.user}")
-    private String userId;
+    private List<UserAccount> membersWithWebsite;
+    private String selectedMember;
+    private String website;
 
-    @ManagedProperty(value="#{unpublishedContentMBean}")
-    private UnpublishedContentMBean unpublishedContentMBean;
+    @ManagedProperty(value="#{param.id}")
+    private String id;
 
-    public UserAccount getProvider() {
-        return this.provider;
-    }
+    @ManagedProperty(value="#{unpublishedArticlesMBean}")
+    private UnpublishedArticlesMBean unpublishedArticlesMBean;
 
     public WebSource getWebSource() {
         return this.webSource;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        return id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(String userId) {
+        this.id = userId;
     }
 
-    public List<UserAccount> getUsersWithWebsite() {
-        if(this.usersWithWebsite == null) {
-            this.usersWithWebsite = userAccountBean.findUserAccountsWithWebsite();
+    public List<WebSource> getWebSources() {
+        if(this.webSources == null) {
+            this.webSources = webSourceBean.findWebResources();
         }
-        return this.usersWithWebsite;
+        return this.webSources;
     }
 
-    public UnpublishedContentMBean getUnpublishedContentMBean() {
-        return unpublishedContentMBean;
+    public List<UserAccount> getMembersWithWebsite() {
+        if(this.membersWithWebsite == null) {
+            this.membersWithWebsite = webSourceBean.findNonReferencedProviders();
+        }
+        return this.membersWithWebsite;
     }
 
-    public void setUnpublishedContentMBean(UnpublishedContentMBean unpublishedContentMBean) {
-        this.unpublishedContentMBean = unpublishedContentMBean;
+    public String getSelectedMember() {
+        return this.selectedMember;
     }
 
-    public List<Article> getUnpublishedArticles() {
-        return this.unpublishedContentMBean.getArticles();
+    public void setSelectedMember(String selectedMember) {
+        this.selectedMember = selectedMember;
+    }
+
+    public String getWebsite() {
+        if(this.selectedMember != null && !this.selectedMember.isEmpty() && this.website == null) {
+            this.webSource.setProvider(userAccountBean.find(this.selectedMember));
+            this.website = this.webSource.getProvider().getWebsite();
+            this.website = UrlUtils.INSTANCE.setProtocol(this.website);
+        }
+        return this.website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getTitle() {
+        if(this.selectedMember != null && !this.selectedMember.isEmpty() && this.webSource.getTitle() == null) {
+            this.webSource = webSourceBean.loadWebSource(this.webSource);
+        }
+        return this.webSource.getTitle();
+    }
+
+    public void setTitle(String title) {
+        this.webSource.setTitle(title);
+    }
+
+    public String getFeed() {
+        if(this.selectedMember != null && !this.selectedMember.isEmpty() && this.webSource.getFeed() == null) {
+            this.webSource = webSourceBean.loadWebSource(this.webSource);
+        }
+        return this.webSource.getFeed();
+    }
+
+    public void setFeed(String feed) {
+        this.webSource.setFeed(feed);
+    }
+
+    public void updateWebSource() {
+        this.webSource = webSourceBean.loadWebSource(this.website);
+        UserAccount userAccount = userAccountBean.findByWebsite(this.website);
+        if(userAccount != null) {
+            this.selectedMember = userAccount.getId();
+        }
     }
 
     public List<Article> getPublishedArticles() {
@@ -103,34 +149,42 @@ public class WebSourceMBean {
         return this.publishedArticles;
     }
 
+    public void setUnpublishedArticlesMBean(UnpublishedArticlesMBean unpublishedArticlesMBean) {
+        this.unpublishedArticlesMBean = unpublishedArticlesMBean;
+    }
+
+    public List<Article> getUnpublishedArticles() {
+        if(unpublishedArticlesMBean.getUnpublishedArticles() == null) {
+            unpublishedArticlesMBean.setUnpublishedArticles(webSourceBean.loadUnpublishedArticles(this.webSource));
+        }
+        return this.unpublishedArticlesMBean.getUnpublishedArticles();
+    }
+
     @PostConstruct
     public void load() {
-        if(this.userId != null && !this.userId.isEmpty()) {
-            this.provider = userAccountBean.findUserAccount(this.userId);
-            this.webSource = webSourceBean.findWebSourceByProvider(this.provider);
-            if(this.webSource == null) {
-                this.webSource = new WebSource();
-                this.webSource.setProvider(this.provider);
+        if(this.id != null && !this.id.isEmpty()) {
+            this.webSource = webSourceBean.find(this.id);
+            if(this.webSource.getProvider() != null) {
+                this.selectedMember = this.webSource.getProvider().getId();
             }
-            this.webSource = webSourceBean.loadWebSource(this.webSource);
-            this.unpublishedContentMBean.setWebSource(this.webSource);
+            unpublishedArticlesMBean.setWebSource(this.webSource);
+        }
+        else {
+            this.webSource = new WebSource();
         }
     }
 
-    public String reference() {
+    public String save() {
+        if(this.selectedMember != null && !this.selectedMember.isEmpty()) {
+            this.webSource.setProvider(userAccountBean.find(this.selectedMember));
+        }
         webSourceBean.save(this.webSource);
-        return "website";
+        return "web_sources";
     }
 
     public String undoReference() {
         webSourceBean.remove(this.webSource.getId());
         this.webSource.setId(null);
-        this.unpublishedContentMBean.reset();
-        return "website";
-    }
-
-    public String refreshUnpublishedContent() {
-        this.unpublishedContentMBean.loadWebSource();
-        return "website";
+        return "web_sources";
     }
 }

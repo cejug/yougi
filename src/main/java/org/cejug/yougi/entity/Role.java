@@ -29,6 +29,7 @@ public enum Role {
 
     ADMIN, LEADER, HELPER, MEMBER, PARTNER, SPEAKER;
 
+    @Override
     public String toString() {
         return this.name().toLowerCase();
     }

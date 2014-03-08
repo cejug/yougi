@@ -22,32 +22,39 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html">
     <body>
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.language}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.language}</h1>
-                    <h:form>
-                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
-                        <h:panelGrid columns="1">
-                            <h:outputLabel for="name" value="#{bundle.name} *" styleClass="fieldLabel"/>
-                            <h:inputText id="name" label="#{bundle.name}" required="true" size="20" maxlength="20" value="#{languageMBean.language.name}"/>
-                            <h:message for="name" errorClass="errorMessage"/>
+                <div class="page-header">
+		            <h1>#{bundle.language}</h1>
+		        </div>
+                
+                <h:form>
+                    <div class="form-group">
+                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+                    <h:panelGrid columns="1">
+                        <h:outputLabel for="name" value="#{bundle.name} *" styleClass="fieldLabel"/>
+                        <h:inputText id="name" label="#{bundle.name}" required="true" size="20" maxlength="20" value="#{languageMBean.language.name}" styleClass="form-control" >
+                            <f:validateRegex pattern="[a-zA-Z]+"/>
+                        </h:inputText>
+                        <h:message for="name" errorClass="errorMessage"/>
 
-                            <h:outputText value="#{bundle.acronym}" styleClass="fieldLabel"/>
-                            <h:outputText value="#{languageMBean.language.acronym}"/>
+                        <h:outputText value="#{bundle.acronym}" styleClass="fieldLabel"/>
+                        <h:outputText value="#{languageMBean.language.acronym}" styleClass="form-control"/>
 
-                            <h:inputHidden id="acronym" value="#{languageMBean.language.acronym}"/>
-                        </h:panelGrid>
+                        <h:inputHidden id="acronym" value="#{languageMBean.language.acronym}"/>
+                    </h:panelGrid>
 
-                        <h:panelGrid columns="2">
-                            <h:commandButton value="#{bundle.save}" action="#{languageMBean.save}"/>
-                            <h:button value="#{bundle.cancel}" outcome="languages"/>
-                        </h:panelGrid>
-                    </h:form>
-                </div>
+                    <h:panelGrid columns="2">
+                        <h:commandButton value="#{bundle.save}" action="#{languageMBean.save}" styleClass="btn btn-primary"/>
+                        <h:button value="#{bundle.cancel}" outcome="languages" styleClass="btn btn-default"/>
+                    </h:panelGrid>
+                    </div>
+                </h:form>
+                
             </ui:define>
         </ui:composition>
     </body>

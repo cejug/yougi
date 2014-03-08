@@ -26,14 +26,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import javax.ejb.EJB;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.event.entity.Event;
 import org.cejug.yougi.event.entity.Session;
 import org.cejug.yougi.knowledge.business.TopicBean;
-import org.cejug.yougi.entity.EntitySupport;
 import org.cejug.yougi.event.entity.Room;
 import org.cejug.yougi.event.entity.Speaker;
 import org.cejug.yougi.event.entity.Track;
@@ -43,8 +42,7 @@ import org.cejug.yougi.event.entity.Venue;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class SessionBean {
+public class SessionBean extends AbstractBean<Session> {
 
     @PersistenceContext
     private EntityManager em;
@@ -54,9 +52,18 @@ public class SessionBean {
 
     @EJB
     private SpeakerBean speakerBean;
-    
+
     @EJB
     private RoomBean roomBean;
+
+    public SessionBean() {
+        super(Session.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
 
     public Session findSession(String id) {
         Session session = null;
@@ -87,7 +94,7 @@ public class SessionBean {
 
         return loadSpeakers(sessions);
     }
-    
+
     private List<Session> loadSpeakers(List<Session> sessions) {
         if(sessions != null) {
             for(Session session: sessions) {
@@ -138,14 +145,14 @@ public class SessionBean {
                  .setParameter("track", track)
                  .getResultList();
     }
-    
+
     public List<Session> findSessionsByRoom(Event event, Room room) {
         return em.createQuery("select s from Session s where s.event = :event and s.room = :room order by s.startDate asc")
                  .setParameter("event", event)
                  .setParameter("room", room)
                  .getResultList();
     }
-    
+
     public List<Session> findSessionsByVenue(Event event, Venue venue) {
         List<Room> rooms = roomBean.findRooms(venue);
         List<Session> sessions = new ArrayList<>();
@@ -154,19 +161,19 @@ public class SessionBean {
         }
         return sessions;
     }
-        
+
     public List<Session> findSessionsSpeaker(Speaker speaker) {
         return em.createQuery("select ss.session from SpeakerSession ss where ss.speaker = :speaker")
                  .setParameter("speaker", speaker)
                  .getResultList();
     }
-            
+
     public List<Event> findEventsSpeaker(Speaker speaker) {
         return em.createQuery("select ss.session.event from SpeakerSession ss where ss.speaker = :speaker")
                  .setParameter("speaker", speaker)
                  .getResultList();
     }
-    
+
     public List<Speaker> findSessionSpeakersByRoom(Event event, Room room) {
         List<Session> sessions = findSessionsByRoom(event, room);
         sessions = loadSpeakers(sessions);
@@ -176,7 +183,7 @@ public class SessionBean {
         }
         return new ArrayList<>(speakers);
     }
-    
+
     public List<Speaker> findSessionSpeakersByTrack(Track track) {
         List<Session> sessions = findSessionsByTrack(track);
         sessions = loadSpeakers(sessions);
@@ -188,14 +195,14 @@ public class SessionBean {
     }
 
     public List<Session> findSessionsInTheSameRoom(Session session) {
-        return em.createQuery("select s from Session s where s != :session and s.room = :room order by s.startDate asc")
+        return em.createQuery("select s from Session s where s <> :session and s.room = :room order by s.startDate asc")
                  .setParameter("session", session)
                  .setParameter("room", session.getRoom())
                  .getResultList();
     }
 
     public List<Session> findSessionsInParallel(Session session) {
-        return em.createQuery("select s from Session s where s != :except and s.startDate = :date and (s.startTime between :otherStartTime1 and :otherEndTime1 or s.endTime between :otherStartTime2 and :otherEndTime2)")
+        return em.createQuery("select s from Session s where s <> :except and s.startDate = :date and (s.startTime between :otherStartTime1 and :otherEndTime1 or s.endTime between :otherStartTime2 and :otherEndTime2)")
                  .setParameter("except", session)
                  .setParameter("date", session.getStartDate())
                  .setParameter("otherStartTime1", session.getStartTime())
@@ -220,23 +227,5 @@ public class SessionBean {
         }
         relatedSessions.remove(session);
         return new ArrayList<>(relatedSessions);
-    }
-
-    public void save(Session session) {
-        if (EntitySupport.INSTANCE.isIdNotValid(session)) {
-            session.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(session);
-        } else {
-            em.merge(session);
-        }
-
-        topicBean.consolidateTopics(session.getTopics());
-    }
-
-    public void remove(String id) {
-        Session session = em.find(Session.class, id);
-        if (session != null) {
-            em.remove(session);
-        }
     }
 }

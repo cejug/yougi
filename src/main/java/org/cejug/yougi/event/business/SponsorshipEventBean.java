@@ -22,14 +22,13 @@
 package org.cejug.yougi.event.business;
 
 import java.util.List;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.event.entity.Event;
 import org.cejug.yougi.event.entity.SponsorshipEvent;
 import org.cejug.yougi.partnership.entity.Partner;
-import org.cejug.yougi.entity.EntitySupport;
 
 /**
  * This class implements the business logic of event sponsorship.
@@ -37,18 +36,18 @@ import org.cejug.yougi.entity.EntitySupport;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class SponsorshipEventBean {
+public class SponsorshipEventBean extends AbstractBean<SponsorshipEvent> {
 
     @PersistenceContext
     private EntityManager em;
 
-    public SponsorshipEvent findSponsorshipEvent(String id) {
-        if (id != null) {
-            return em.find(SponsorshipEvent.class, id);
-        } else {
-            return null;
-        }
+    public SponsorshipEventBean() {
+        super(SponsorshipEvent.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
 
     public List<SponsorshipEvent> findSponsorshipsEvent(Event event) {
@@ -57,21 +56,5 @@ public class SponsorshipEventBean {
 
     public List<SponsorshipEvent> findSponsorshipsEvents(Partner sponsor) {
         return em.createQuery("select se from SponsorshipEvent se where se.partner = :sponsor order by se.event.name asc").setParameter("sponsor", sponsor).getResultList();
-    }
-
-    public void save(SponsorshipEvent sponsorshipEvent) {
-        if (EntitySupport.INSTANCE.isIdNotValid(sponsorshipEvent)) {
-            sponsorshipEvent.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(sponsorshipEvent);
-        } else {
-            em.merge(sponsorshipEvent);
-        }
-    }
-
-    public void remove(String id) {
-        SponsorshipEvent eventSponsor = em.find(SponsorshipEvent.class, id);
-        if (eventSponsor != null) {
-            em.remove(eventSponsor);
-        }
     }
 }

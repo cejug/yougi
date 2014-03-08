@@ -22,17 +22,17 @@ package org.cejug.yougi.knowledge.business;
 
 import java.util.List;
 import java.util.StringTokenizer;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import org.cejug.yougi.exception.BusinessLogicException;
 import org.cejug.yougi.knowledge.entity.Topic;
 
 /**
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
 public class TopicBean {
 
     @PersistenceContext
@@ -64,7 +64,7 @@ public class TopicBean {
      * Receive a list of topics separated by comma and verify if they already
      * exist. Topics are created with default values if they don't exist yet.
      */
-    public void consolidateTopics(String topics) {
+    public void consolidateTopics(String topics) throws BusinessLogicException {
         if(topics == null || topics.isEmpty()) {
             return;
         }

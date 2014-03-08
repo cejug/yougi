@@ -22,16 +22,15 @@ package org.cejug.yougi.event.business;
 
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.entity.UserAccount;
 import org.cejug.yougi.event.entity.Attendee;
 import org.cejug.yougi.event.entity.Certificate;
 import org.cejug.yougi.event.entity.Event;
-import org.cejug.yougi.entity.EntitySupport;
 
 /**
  * Manages attendees of events organized by the user group.
@@ -39,8 +38,7 @@ import org.cejug.yougi.entity.EntitySupport;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class AttendeeBean {
+public class AttendeeBean extends AbstractBean<Attendee> {
 
     @PersistenceContext
     private EntityManager em;
@@ -48,15 +46,16 @@ public class AttendeeBean {
     @EJB
     private EventBean eventBean;
 
-    public Attendee findAttendee(String id) {
-        if (id != null) {
-            return em.find(Attendee.class, id);
-        } else {
-            return null;
-        }
+    public AttendeeBean() {
+        super(Attendee.class);
     }
 
-    public Attendee findAttendee(Event event, UserAccount person) {
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+
+    public Attendee find(Event event, UserAccount person) {
         Attendee attendee = null;
         List<Attendee> attendees = em.createQuery("select a from Attendee a where a.userAccount = :person and a.event = :event")
                                      .setParameter("person", person)
@@ -65,7 +64,7 @@ public class AttendeeBean {
         if(!attendees.isEmpty()) {
             attendee = attendees.get(0);
         }
-            
+
         return attendee;
     }
 
@@ -124,18 +123,6 @@ public class AttendeeBean {
                  .setParameter("userAccount", userAccount)
                  .setParameter("attended", true)
                  .getResultList();
-    }
-
-    public void save(Attendee attendee) {
-        attendee.setId(EntitySupport.INSTANCE.generateEntityId());
-        em.persist(attendee);
-    }
-
-    public void remove(String id) {
-        Attendee attendee = em.find(Attendee.class, id);
-        if (attendee != null) {
-            em.remove(attendee);
-        }
     }
 
     /**

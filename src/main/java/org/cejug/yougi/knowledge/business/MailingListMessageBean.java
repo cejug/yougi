@@ -28,11 +28,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.mail.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.business.ApplicationPropertyBean;
 import org.cejug.yougi.entity.ApplicationProperty;
 import org.cejug.yougi.entity.Properties;
@@ -45,10 +45,9 @@ import org.cejug.yougi.entity.EntitySupport;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class MailingListMessageBean {
+public class MailingListMessageBean extends AbstractBean<MailingListMessage> {
 
-    @Resource(name = "mail/ug")
+    @Resource(name = "java:/mail/yougi")
     private Session mailSession;
 
     @EJB
@@ -64,6 +63,15 @@ public class MailingListMessageBean {
 
     @PersistenceContext
     private EntityManager em;
+
+    public MailingListMessageBean() {
+        super(MailingListMessage.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
 
     //@Schedule(hour="*/1",persistent=false) // Production
     //@Schedule(hour="*",minute="*/2",persistent=false) // Development
@@ -99,7 +107,7 @@ public class MailingListMessageBean {
 
                     /* Get the email address of the 'from' field and set the sender. */
                     from = message[i].getFrom()[0].toString();
-                    if(from.indexOf('<') >= 0) {
+                    if(from.contains("<")) {
                         from = from.substring(from.indexOf('<') + 1, from.indexOf('>'));
                     }
                     from = from.toLowerCase();
@@ -158,7 +166,7 @@ public class MailingListMessageBean {
         MailingList mailingList;
         for(int i = 0;i < extendedListAddresses.length;i++) {
             listAddress = extendedListAddresses[i].toString();
-            if(listAddress.indexOf('<') >= 0) {
+            if(listAddress.contains("<")) {
                 listAddress = listAddress.substring(listAddress.indexOf('<') + 1, listAddress.indexOf('>'));
             }
             listAddress = listAddress.toLowerCase();

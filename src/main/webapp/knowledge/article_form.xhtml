@@ -29,88 +29,100 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.article}</ui:define>
             <ui:define name="content">
-                <div class="content">
+                <div class="page-header">
                     <h1>#{bundle.article}</h1>
-                    <h:form>
-                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
-
-                        <div class="form-group">
-                            <h:outputText value="#{bundle.website}" styleClass="fieldLabel"/><br/>
-                            <h:outputLink value="http://#{articleMBean.article.webSource.provider.website}" target="_blank"><h:outputText value="#{articleMBean.article.webSource}" styleClass="form-control-static"/></h:outputLink>
-                        </div>
-
-                        <div class="form-group">
-                            <h:outputText value="#{bundle.permanentLink}" styleClass="fieldLabel"/><br/>
-                            <h:outputLink value="#{article.permanentLink}" target="_blank"><h:outputText value="#{articleMBean.article.permanentLink}" styleClass="form-control-static"/></h:outputLink>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-10">
-                                <div class="form-group">
-                                    <h:outputLabel for="title" value="#{bundle.title}" styleClass="fieldLabel"/>
-                                    <p:inputText id="title" value="#{articleMBean.article.title}" styleClass="form-control" size="83" maxlength="255" required="true"/>
-                                    <h:message for="title" errorClass="errorMessage"/>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <h:outputLabel for="publication" value="#{bundle.publication}" styleClass="fieldLabel"/><br/>
-                                <p:calendar id="publication" value="#{articleMBean.article.publication}" pattern="#{bundle.formatDate}" size="10" timeZone="#{userProfileMBean.timeZone}"/>
-                                <h:message for="publication" errorClass="errorMessage"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <h:outputLabel for="author" value="#{bundle.author}" styleClass="fieldLabel"/>
-                                    <p:inputText id="author" value="#{articleMBean.article.author}" styleClass="form-control" required="true" maxlength="100"/>
-                                    <h:message for="author" errorClass="errorMessage"/>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <h:outputLabel for="topics" value="#{bundle.topics}" styleClass="fieldLabel"/>
-                                    <p:inputText id="topics" value="#{articleMBean.article.topics}" styleClass="form-control" maxlength="100"/>
-                                    <h:message for="topics" errorClass="errorMessage"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <h:outputLabel for="summary" value="#{bundle.summary}" styleClass="fieldLabel"/>
-                                    <h:inputTextarea id="summary" value="#{articleMBean.article.summary}" styleClass="form-control"/>
-                                    <h:message for="summary" errorClass="errorMessage"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <h:outputLabel for="content" value="#{bundle.content}" styleClass="fieldLabel"/>
-                                    <p:editor id="content" value="#{articleMBean.article.content}" required="true" height="400"/>
-                                    <h:message for="content" errorClass="errorMessage"/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <h:inputHidden id="id" value="#{articleMBean.article.id}"/>
-                        <h:inputHidden id="webSource" value="#{articleMBean.article.webSource}">
-                            <f:converter converterId="WebSourceConverter"/>
-                        </h:inputHidden>
-                        <h:inputHidden id="permanentLink" value="#{articleMBean.article.permanentLink}"/>
-                        <h:inputHidden id="published" value="#{articleMBean.article.published}"/>
-
-                        <p/>
-                        <h:panelGroup>
-                            <h:commandButton value="#{bundle.publish}"   action="#{articleMBean.publish}"   rendered="#{!articleMBean.published}" styleClass="btn btn-default"/>&nbsp;
-                            <h:commandButton value="#{bundle.unpublish}" action="#{articleMBean.unpublish}" rendered="#{articleMBean.published}" styleClass="btn btn-default"/>&nbsp;
-                            <h:commandButton value="#{bundle.save}"      action="#{articleMBean.save}"      rendered="#{articleMBean.published}" styleClass="btn btn-default"/>&nbsp;
-                            <h:commandButton value="#{bundle.remove}"    action="#{articleMBean.remove}"    rendered="#{articleMBean.published}" styleClass="btn btn-default"/>&nbsp;
-                            <h:button value="#{bundle.cancel}" outcome="websites" styleClass="btn btn-default"/>
-                        </h:panelGroup>
-                    </h:form>
                 </div>
+                <h:form>
+                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+
+                    <div class="form-group">
+                        <h:outputText value="#{bundle.website}" styleClass="fieldLabel"/><br/>
+                        <h:outputLink value="http://#{articleMBean.article.webSource.provider.website}" target="_blank"><h:outputText value="#{articleMBean.article.webSource}" styleClass="form-control-static"/></h:outputLink>
+                    </div>
+
+                    <div class="form-group">
+                        <h:outputText value="#{bundle.permanentLink}" styleClass="fieldLabel"/><br/>
+                        <h:outputLink value="#{article.permanentLink}" target="_blank"><h:outputText value="#{articleMBean.article.permanentLink}" styleClass="form-control-static"/></h:outputLink>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <h:outputLabel for="title" value="#{bundle.title}" styleClass="fieldLabel"/>
+                                <p:inputText id="title" value="#{articleMBean.article.title}" styleClass="form-control" size="83" maxlength="255" required="true"/>
+                                <h:message for="title" errorClass="errorMessage"/>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <h:outputLabel for="publication" value="#{bundle.publication}" styleClass="fieldLabel"/><br/>
+                            <p:calendar id="publication" value="#{articleMBean.article.publication}" pattern="#{bundle.formatDate}" size="10" timeZone="#{userProfileMBean.timeZone}"/>
+                            <h:message for="publication" errorClass="errorMessage"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <h:outputLabel for="author" value="#{bundle.author}" styleClass="fieldLabel"/>
+                                <p:inputText id="author" value="#{articleMBean.article.author}" styleClass="form-control" required="true" maxlength="100"/>
+                                <h:message for="author" errorClass="errorMessage"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <h:outputLabel for="topics" value="#{bundle.topics}" styleClass="fieldLabel"/> (<i>#{bundle.topicsRules}</i>)
+                                <p:inputText id="topics" value="#{articleMBean.article.topics}" styleClass="form-control" maxlength="100"/>
+                                <h:message for="topics" errorClass="errorMessage"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <h:outputLabel for="summary" value="#{bundle.summary}" styleClass="fieldLabel"/>
+                                <h:inputTextarea id="summary" value="#{articleMBean.article.summary}" styleClass="form-control"/>
+                                <h:message for="summary" errorClass="errorMessage"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <h:outputLabel for="content" value="#{bundle.content}" styleClass="fieldLabel"/>
+                                <p:editor id="content" value="#{articleMBean.article.content}" required="true" height="400"/>
+                                <h:message for="content" errorClass="errorMessage"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h:inputHidden id="id" value="#{articleMBean.article.id}"/>
+                    <h:inputHidden id="webSource" value="#{articleMBean.article.webSource}">
+                        <f:converter converterId="WebSourceConverter"/>
+                    </h:inputHidden>
+                    <h:inputHidden id="permanentLink" value="#{articleMBean.article.permanentLink}"/>
+                    <h:inputHidden id="published" value="#{articleMBean.article.published}"/>
+
+                    <p/>
+
+                    <h:commandButton value="#{bundle.publish}" action="#{articleMBean.publish}"
+                                     rendered="#{empty articleMBean.article.id}"
+                                     styleClass="btn btn-primary"/>
+
+                    <h:commandButton value="#{bundle.unpublish}" action="#{articleMBean.unpublish}"
+                                     rendered="#{! empty articleMBean.article.id}"
+                                     styleClass="btn btn-warning">
+                        <f:param name="id" value="#{articleMBean.article.id}"/>
+                    </h:commandButton>
+
+                    <h:commandButton value="#{bundle.save}" action="#{articleMBean.save}"
+                                     rendered="#{! empty articleMBean.article.id}"
+                                     styleClass="btn btn-primary">
+                        <f:param name="id" value="#{articleMBean.article.id}"/>
+                    </h:commandButton>
+
+                    <h:button value="#{bundle.cancel}" outcome="web_sources" styleClass="btn btn-default"/>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </body>
 </html>

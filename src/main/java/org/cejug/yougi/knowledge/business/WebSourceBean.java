@@ -38,15 +38,15 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ejb.EJB;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.entity.UserAccount;
 import org.cejug.yougi.knowledge.entity.WebSource;
-import org.cejug.yougi.entity.EntitySupport;
 import org.cejug.yougi.knowledge.entity.Article;
+import org.cejug.yougi.util.UrlUtils;
 
 /**
  * Business logic dealing with web sources entities.
@@ -54,19 +54,23 @@ import org.cejug.yougi.knowledge.entity.Article;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class WebSourceBean {
-    
+public class WebSourceBean extends AbstractBean<WebSource> {
+
     private static final Logger LOGGER = Logger.getLogger(WebSourceBean.class.getName());
 
     @PersistenceContext
     private EntityManager em;
-    
+
     @EJB
     private ArticleBean articleBean;
 
-    public WebSource findWebSource(String id) {
-        return em.find(WebSource.class, id);
+    public WebSourceBean() {
+        super(WebSource.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
 
     public WebSource findWebSourceByProvider(UserAccount provider) {
@@ -80,24 +84,193 @@ public class WebSourceBean {
         }
     }
 
-    public void save(WebSource webSource) {
+    public List<WebSource> findWebResources() {
+    	return em.createQuery("select ws from WebSource ws order by ws.title asc", WebSource.class).getResultList();
+    }
 
-        if(EntitySupport.INSTANCE.isIdNotValid(webSource)) {
-            webSource.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(webSource);
+    public List<UserAccount> findNonReferencedProviders() {
+        return em.createQuery("select ua from UserAccount ua " +
+                "where ua.deactivated = false and " +
+                    "ua.confirmationCode is null and " +
+                    "(ua.website is not null and ua.website <> '') and " +
+                    "ua not in (select distinct ws.provider from WebSource ws) " +
+                "order by ua.firstName", UserAccount.class)
+                .getResultList();
+    }
+
+    public List<Article> loadUnpublishedArticles(WebSource webSource) {
+        List<Article> unpublishedArticles = loadArticles(webSource);
+
+        // Remove from the list of unpublished articles the ones that are already published.
+        List<Article> publishedArticles = articleBean.findPublishedArticles(webSource);
+        for(Article publishedArticle: publishedArticles) {
+            unpublishedArticles.remove(publishedArticle);
+        }
+
+        return unpublishedArticles;
+    }
+
+    public List<Article> loadArticles(WebSource webSource) {
+        List<Article> feedArticles = new ArrayList<>();
+
+        try {
+            URL url  = new URL(webSource.getFeed());
+            XmlReader reader = new XmlReader(url);
+            SyndFeed feed = new SyndFeedInput().build(reader);
+            Article article;
+            for (Iterator i = feed.getEntries().iterator(); i.hasNext();) {
+                SyndEntry entry = (SyndEntry) i.next();
+
+                article = new Article();
+                article.setTitle(entry.getTitle());
+                article.setPermanentLink(entry.getLink());
+                if(entry.getAuthor() != null) {
+                    article.setAuthor(entry.getAuthor());
+                }
+                else {
+                    article.setAuthor(webSource.getProvider().getFullName());
+                }
+                if(entry.getUpdatedDate() != null) {
+                    article.setPublication(entry.getUpdatedDate());
+                }
+                else {
+                    article.setPublication(entry.getPublishedDate());
+                }
+                article.setWebSource(webSource);
+                if(entry.getDescription() != null) {
+                    article.setSummary(entry.getDescription().getValue());
+                }
+                SyndContent syndContent;
+                StringBuilder content = new StringBuilder();
+                for(int j = 0;j < entry.getContents().size();j++) {
+                    syndContent = (SyndContent) entry.getContents().get(j);
+                    content.append(syndContent.getValue());
+                }
+                article.setContent(content.toString());
+
+                feedArticles.add(article);
+            }
+        } catch (IllegalArgumentException | FeedException | IOException iae) {
+            LOGGER.log(Level.WARNING, iae.getMessage(), iae);
+        }
+
+        return feedArticles;
+    }
+
+    /**
+     * @param webSource a web source that contains details about a user website.
+     * @return the webSource loaded with feed values.
+     * */
+    public WebSource loadWebSource(WebSource webSource) {
+        String id = webSource.getId();
+        UserAccount provider = webSource.getProvider();
+        WebSource newWebSource = loadWebSource(provider.getWebsite());
+        if(newWebSource != null) {
+            newWebSource.setId(id);
+            newWebSource.setProvider(provider);
+            return newWebSource;
         }
         else {
-            em.merge(webSource);
+            return webSource;
         }
     }
 
-    public void remove(String id) {
-        WebSource webSource = em.find(WebSource.class, id);
-        if(webSource != null) {
-            em.remove(webSource);
+    /**
+     * @param websiteUrl a website url where we can find a feed url.
+     * @return a new webSource filled with feed url and title only. Null if a feed url is not found in the content of
+     * the informed website url.
+     * */
+    public WebSource loadWebSource(String websiteUrl) {
+        WebSource webSource = null;
+        String feedUrl = findWebsiteFeedURL(websiteUrl);
+        LOGGER.log(Level.INFO, "feedUrl: {0}", feedUrl);
+        if(feedUrl != null) {
+            try {
+                URL url  = new URL(feedUrl);
+                XmlReader reader = new XmlReader(url);
+                SyndFeed feed = new SyndFeedInput().build(reader);
+                webSource = new WebSource(feed.getTitle(), feedUrl);
+            } catch (IllegalArgumentException | FeedException | IOException iae) {
+                LOGGER.log(Level.SEVERE, iae.getMessage(), iae);
+            }
         }
+        return webSource;
     }
-    
+
+    /**
+     * @param urlWebsite url used to find the web content where there is probably a feed to be consumed.
+     * @return if a feed url is found in the web content, it is returned. Otherwise, the method returns null.
+     * */
+    public String findWebsiteFeedURL(String urlWebsite) {
+        String feedUrl = null;
+        String websiteContent = retrieveWebsiteContent(urlWebsite);
+        LOGGER.log(Level.INFO, "urlWebsite: {0}", urlWebsite);
+        if(websiteContent == null) {
+            return null;
+        }
+
+        Pattern hrefPattern = Pattern.compile("href=\\W([^(\"|\')])+\\W");
+        Matcher matcher = hrefPattern.matcher(websiteContent);
+
+        while (matcher.find()) {
+            feedUrl = matcher.group();
+            if(feedUrl.contains("\"")) {
+                feedUrl = feedUrl.substring(feedUrl.indexOf("\"") + 1, feedUrl.lastIndexOf("\""));
+            }
+            else if(feedUrl.contains("\'")) {
+                feedUrl = feedUrl.substring(feedUrl.indexOf("\'") + 1, feedUrl.lastIndexOf("\'"));
+            }
+            else {
+                continue;
+            }
+            if(isFeedURL(feedUrl)) {
+                if(UrlUtils.INSTANCE.isRelative(feedUrl)) {
+                    urlWebsite = UrlUtils.INSTANCE.setProtocol(urlWebsite);
+                    feedUrl = UrlUtils.INSTANCE.concatUrlFragment(urlWebsite, feedUrl);
+                }
+                break;
+            }
+        }
+        return feedUrl;
+    }
+
+    /**
+     * @param url candidate to be a feed url.
+     * @return true if the informed url is actually a feed, false otherwise.
+     * */
+    private boolean isFeedURL(String url) {
+        String lowerCaseUrl = url.toLowerCase();
+        if(lowerCaseUrl.contains("feed") || lowerCaseUrl.contains("rss") || lowerCaseUrl.contains("atom")) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param url used to find the web content where there is probably a feed to be consumed.
+     * @return the entire content, which or without url feed.
+     * */
+    private String retrieveWebsiteContent(String url) {
+        StringBuilder content = null;
+        String fullUrl = UrlUtils.INSTANCE.setProtocol(url);
+
+        if(fullUrl != null) {
+            try {
+                URL theUrl = new URL(fullUrl);
+                BufferedReader br = new BufferedReader(new InputStreamReader(theUrl.openStream()));
+                String line = "";
+                content = new StringBuilder();
+                while(null != (line = br.readLine())) {
+                    content.append(line);
+                }
+            }
+            catch (IOException ex) {
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+        return content != null ? content.toString() : null;
+    }
+
     /**
      * @param webSource a web source that contains details about a user website.
      * @return a list of articles found in the informed web source.
@@ -200,7 +373,7 @@ public class WebSourceBean {
                 break;
             }
         }
-        
+
         return feedUrl;
     }
 
@@ -223,7 +396,7 @@ public class WebSourceBean {
     private String retrieveWebsiteContent(String url) {
         StringBuilder content = null;
         String fullUrl = setProtocol(url);
-        
+
         if(fullUrl != null) {
             try {
                 URL theUrl = new URL(fullUrl);
@@ -240,14 +413,14 @@ public class WebSourceBean {
         }
         return content != null ? content.toString() : null;
     }
-    
+
     private String setProtocol(String url) {
         if(url != null && !(url.contains("http://") || url.contains("https://"))) {
             url = "http://" + url;
         }
         return url;
     }
-    
+
     private String concatUrlFragment(String url, String fragment) {
         if(url.endsWith("/") && fragment.startsWith("/")) {
             url = url + fragment.substring(1);
@@ -261,7 +434,7 @@ public class WebSourceBean {
         }
         return url;
     }
-    
+
     private boolean isRelative(String url) {
         if(url.contains("http")) {
             return false;

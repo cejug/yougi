@@ -85,7 +85,7 @@ public class VenueSelectionMBean {
 
     public Venue getVenue() {
         if (this.selectedVenue != null) {
-            return venueBean.findVenue(selectedVenue);
+            return venueBean.find(selectedVenue);
         } else {
             return null;
         }
@@ -93,7 +93,7 @@ public class VenueSelectionMBean {
 
     public Room getRoom() {
         if (this.selectedRoom != null) {
-            return roomBean.findRoom(selectedRoom);
+            return roomBean.find(selectedRoom);
         } else {
             return null;
         }

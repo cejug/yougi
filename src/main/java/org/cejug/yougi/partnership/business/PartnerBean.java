@@ -21,12 +21,11 @@
 package org.cejug.yougi.partnership.business;
 
 import java.util.List;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.partnership.entity.Partner;
-import org.cejug.yougi.entity.EntitySupport;
 
 /**
  * Manages partners of the user group.
@@ -34,40 +33,22 @@ import org.cejug.yougi.entity.EntitySupport;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class PartnerBean {
+public class PartnerBean extends AbstractBean<Partner> {
 
     @PersistenceContext
     private EntityManager em;
 
-    public Partner findPartner(String id) {
-        if(id != null) {
-            return em.find(Partner.class, id);
-        }
-        else {
-            return null;
-        }
+    public PartnerBean() {
+        super(Partner.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
 
     public List<Partner> findPartners() {
         return em.createQuery("select p from Partner p order by p.name asc")
                  .getResultList();
-    }
-
-    public void save(Partner partner) {
-    	if(EntitySupport.INSTANCE.isIdNotValid(partner)) {
-            partner.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(partner);
-        }
-        else {
-            em.merge(partner);
-        }
-    }
-
-    public void remove(String id) {
-        Partner partner = em.find(Partner.class, id);
-        if(partner != null) {
-            em.remove(partner);
-        }
     }
 }

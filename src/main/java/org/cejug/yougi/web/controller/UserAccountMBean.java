@@ -59,7 +59,6 @@ public class UserAccountMBean implements Serializable {
 
     private String password;
     private String passwordConfirmation;
-
     private String validationEmail;
 
     private Boolean validationPrivacy = false;
@@ -185,7 +184,7 @@ public class UserAccountMBean implements Serializable {
         HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String username = request.getRemoteUser();
         if(username != null) {
-            this.userAccount = userAccountBean.findUserAccountByUsername(username);
+            this.userAccount = userAccountBean.findByUsername(username);
 
             if(this.userAccount.getCountry() != null) {
                 locationMBean.setSelectedCountry(this.userAccount.getCountry().getAcronym());
@@ -206,6 +205,10 @@ public class UserAccountMBean implements Serializable {
             }
             else {
                 locationMBean.setSelectedCity(null);
+            }
+
+            if(this.userAccount.getTimeZone() != null) {
+                locationMBean.setSelectedTimeZone(this.userAccount.getTimeZone());
             }
         }
         else {
@@ -246,11 +249,12 @@ public class UserAccountMBean implements Serializable {
 
     public String savePersonalData() {
         if(userAccount != null) {
-            UserAccount existingUserAccount = userAccountBean.findUserAccount(userAccount.getId());
+            UserAccount existingUserAccount = userAccountBean.find(userAccount.getId());
 
             existingUserAccount.setCountry(this.locationMBean.getCountry());
             existingUserAccount.setProvince(this.locationMBean.getProvince());
             existingUserAccount.setCity(this.locationMBean.getCity());
+            existingUserAccount.setTimeZone(this.locationMBean.getSelectedTimeZone());
             existingUserAccount.setFirstName(userAccount.getFirstName());
             existingUserAccount.setLastName(userAccount.getLastName());
             existingUserAccount.setGender(userAccount.getGender());
@@ -266,7 +270,7 @@ public class UserAccountMBean implements Serializable {
 
     public String savePrivacy() {
         if(userAccount != null) {
-            UserAccount existingUserAccount = userAccountBean.findUserAccount(userAccount.getId());
+            UserAccount existingUserAccount = userAccountBean.find(userAccount.getId());
             existingUserAccount.setPublicProfile(userAccount.getPublicProfile());
             existingUserAccount.setMailingList(userAccount.getMailingList());
             existingUserAccount.setNews(userAccount.getNews());

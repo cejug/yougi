@@ -41,15 +41,15 @@
                             </h:panelGrid>
 
                             <h:outputLabel for="reason" value="#{bundle.reasonExtended}" styleClass="fieldLabel"/>
-                            <h:inputTextarea id="reason" label="#{bundle.reason}" cols="65" rows="5" value="#{userAccountMBean.userAccount.deactivationReason}"/>
+                            <h:inputTextarea id="reason" label="#{bundle.reason}" cols="65" rows="5" value="#{userAccountMBean.userAccount.deactivationReason}" styleClass="form-control"/>
                             <h:outputText value="#{bundle.deactivationExplanation}" styleClass="fieldNote"/>
                         </h:panelGrid>
 
                         <h:inputHidden id="id" value="#{userAccountMBean.userAccount.id}"/>
                         <p/>
                         <h:panelGrid columns="2">
-                            <h:commandButton value="#{bundle.deactivateMembership}" action="#{userAccountMBean.deactivateMembership}"/>
-                            <h:button outcome="profile" value="#{bundle.cancel}"/>
+                            <h:commandButton value="#{bundle.deactivateMembership}" action="#{userAccountMBean.deactivateMembership}" styleClass="btn btn-warning"/>
+                            <h:button outcome="profile" value="#{bundle.cancel}" styleClass="btn btn-default"/>
                         </h:panelGrid>
                     </h:form>
                 </div>

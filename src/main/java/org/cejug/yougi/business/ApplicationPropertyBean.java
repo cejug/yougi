@@ -21,20 +21,17 @@
 package org.cejug.yougi.business;
 
 import java.util.*;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import org.cejug.yougi.entity.ApplicationProperty;
 import org.cejug.yougi.entity.Properties;
-import org.cejug.yougi.exception.BusinessLogicException;
 
 /**
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
 public class ApplicationPropertyBean {
 
     @PersistenceContext
@@ -69,7 +66,7 @@ public class ApplicationPropertyBean {
         else if(Properties.values().length < propertiesMap.size()) {
             // entries from database
             Set<Map.Entry<String, String>> propEntries = propertiesMap.entrySet();
-            
+
             Iterator<Map.Entry<String, String>> iProps = propEntries.iterator();
             Map.Entry<String, String> entry;
             Properties[] props = Properties.values();

@@ -73,7 +73,7 @@ public class MailingListMBean {
     @PostConstruct
     public void load() {
         if(id != null && !id.isEmpty()) {
-            this.mailingList = mailingListBean.findMailingList(id);
+            this.mailingList = mailingListBean.find(id);
         }
         else {
             this.mailingList = new MailingList();

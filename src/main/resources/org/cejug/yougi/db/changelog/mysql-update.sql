@@ -349,3 +349,18 @@ alter table user_account change gender gender tinyint(1) null;
 --changeset htmfilho:12
 insert into access_group (id, name, description, user_default) values
     ('PQOWKSIFUSLEOSJFNMDKKIJGEJDKNWJE', 'speakers', 'Speakers', 0);
+
+--changeset htmfilho:13
+insert into access_group (id, name, description, user_default) values
+    ('PQOWKSIQMSLDKFJDUMDKKIJGEJDKNWJE', 'leaders', 'Leaders', 0);
+    
+--changeset kenia:14
+create table project (
+	id           char(32)     not null,
+	name         varchar(100) not null,
+	description  text  null,
+	website      varchar(100) null,
+	source       varchar(100) null
+) engine = innodb;
+
+alter table project add constraint pk_project primary key (id);

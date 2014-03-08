@@ -42,7 +42,7 @@ public class Province implements Serializable, Identified {
     private String name;
     
     @JoinColumn(name = "country")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Country country;
 
     public Province() {

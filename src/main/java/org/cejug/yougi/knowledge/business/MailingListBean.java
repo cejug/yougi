@@ -22,13 +22,12 @@ package org.cejug.yougi.knowledge.business;
 
 import java.util.List;
 import java.util.logging.Logger;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.knowledge.entity.MailingList;
-import org.cejug.yougi.entity.EntitySupport;
 
 /**
  * Implements the business logic related to the management of mailing lists.
@@ -36,16 +35,20 @@ import org.cejug.yougi.entity.EntitySupport;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-@LocalBean
-public class MailingListBean {
+public class MailingListBean extends AbstractBean<MailingList> {
 
     @PersistenceContext
     private EntityManager em;
 
     static final Logger LOGGER = Logger.getLogger(MailingListBean.class.getName());
 
-    public MailingList findMailingList(String id) {
-        return em.find(MailingList.class, id);
+    public MailingListBean() {
+        super(MailingList.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
 
     public List<MailingList> findMailingLists() {
@@ -60,24 +63,6 @@ public class MailingListBean {
         }
         catch(NoResultException nre) {
             return null;
-        }
-    }
-
-    /** Save the mailing list in the database. */
-    public void save(MailingList mailingList) {
-        if(EntitySupport.INSTANCE.isIdNotValid(mailingList)) {
-            mailingList.setId(EntitySupport.INSTANCE.generateEntityId());
-            em.persist(mailingList);
-        }
-        else {
-            em.merge(mailingList);
-        }
-    }
-
-    public void remove(String id) {
-        MailingList mailingList = em.find(MailingList.class, id);
-        if(mailingList != null) {
-            em.remove(mailingList);
         }
     }
 }

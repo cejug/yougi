@@ -71,6 +71,9 @@ public class UserAccountBean extends AbstractBean<UserAccount> {
     @EJB
     private AuthenticationBean authenticationBean;
 
+    @EJB
+    private CityBean cityBean;
+
     @PersistenceContext
     private EntityManager em;
 
@@ -218,8 +221,13 @@ public class UserAccountBean extends AbstractBean<UserAccount> {
      * confirmation, validation or deactivation status.
      */
     public List<UserAccount> findInhabitantsFrom(City city) {
+        if(EntitySupport.INSTANCE.isIdNotValid(city)) {
+            return null;
+        }
+
+        City existingCity = cityBean.find(city.getId());
         return em.createQuery("select u from UserAccount u where u.city = :city order by u.firstName", UserAccount.class)
-                .setParameter("city", city)
+                .setParameter("city", existingCity)
                 .getResultList();
     }
 

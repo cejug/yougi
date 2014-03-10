@@ -46,11 +46,11 @@ public class City implements Serializable, Identified {
     private Boolean valid;
 
     @JoinColumn(name = "country")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Country country;
 
+    @ManyToOne
     @JoinColumn(name = "province")
-    @ManyToOne(fetch = FetchType.LAZY)
     private Province province;
 
     private String latitude;

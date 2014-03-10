@@ -61,6 +61,9 @@ public enum UrlUtils {
     }
 
     public boolean isRelative(String url) {
-        return !url.contains("http");
+        if(url.contains("http")) {
+            return false;
+        }
+        return true;
     }
 }

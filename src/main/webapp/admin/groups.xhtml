@@ -29,28 +29,27 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.groups}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.groups}</h1>
-                    <h:form>
-                        <p:dataTable value="#{accessGroupMBean.groups}" var="group">
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
-                                <h:link outcome="group" value="#{group.name}">
-                                    <f:param name="id" value="#{group.id}"/>
-                                </h:link>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.description}"/></f:facet>
-                                <h:outputText value="#{group.description}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.default}"/></f:facet>
-                                <h:graphicImage rendered="#{group.userDefault}" url="/images/success-icon.png"/>
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                </div>
+                <h1>#{bundle.groups}</h1>
+                <h:form>
+                    <p:dataTable value="#{accessGroupMBean.groups}" var="group">
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
+                            <h:link outcome="group" value="#{group.name}">
+                                <f:param name="id" value="#{group.id}"/>
+                            </h:link>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.description}"/></f:facet>
+                            <h:outputText value="#{group.description}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.default}"/></f:facet>
+                            <h:graphicImage rendered="#{group.userDefault}" url="/images/success-icon.png"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </h:body>
 </html>

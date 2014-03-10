@@ -28,38 +28,36 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.mailingList}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.mailingList}</h1>
-                    <h:form>
-                        <h:panelGrid cellpadding="3">
-                            <h:outputText value="#{mailingListMBean.mailingList.name}" style="font-size: 24px; font-weight: bold;"/>
-                            <h:outputText value="#{mailingListMBean.mailingList.description}" escape="false" style="font-size: 14px;"/>
+                <h1>#{bundle.mailingList}</h1>
+                <h:form>
+                    <h:panelGrid cellpadding="3">
+                        <h:outputText value="#{mailingListMBean.mailingList.name}" style="font-size: 24px; font-weight: bold;"/>
+                        <h:outputText value="#{mailingListMBean.mailingList.description}" escape="false" style="font-size: 14px;"/>
 
-                            <h:outputText value="#{bundle.email}" styleClass="fieldLabel"/>
-                            <h:outputLink value="mailto:#{mailingListMBean.mailingList.email}">
-                                <f:verbatim>#{mailingListMBean.mailingList.email}</f:verbatim>
-                            </h:outputLink>
+                        <h:outputText value="#{bundle.email}" styleClass="fieldLabel"/>
+                        <h:outputLink value="mailto:#{mailingListMBean.mailingList.email}">
+                            <f:verbatim>#{mailingListMBean.mailingList.email}</f:verbatim>
+                        </h:outputLink>
 
-                            <h:outputText value="#{bundle.subscribeTo}" styleClass="fieldLabel"/>
-                            <h:outputLink value="mailto:#{mailingListMBean.mailingList.subscription}">
-                                <f:verbatim>#{mailingListMBean.mailingList.subscription}</f:verbatim>
-                            </h:outputLink>
+                        <h:outputText value="#{bundle.subscribeTo}" styleClass="fieldLabel"/>
+                        <h:outputLink value="mailto:#{mailingListMBean.mailingList.subscription}">
+                            <f:verbatim>#{mailingListMBean.mailingList.subscription}</f:verbatim>
+                        </h:outputLink>
 
-                            <h:outputText value="#{bundle.unsubscribeFrom}" styleClass="fieldLabel"/>
-                            <h:outputLink value="mailto:#{mailingListMBean.mailingList.unsubscription}">
-                                <f:verbatim>#{mailingListMBean.mailingList.unsubscription}</f:verbatim>
-                            </h:outputLink>
-                        </h:panelGrid>
-                        <p/>
-                        <h:button value="#{bundle.edit}" outcome="mailing_list" rendered="#{securityBackingMBean.isUserLeader}">
-                            <f:param name="id" value="#{mailingListMBean.mailingList.id}"/>
-                        </h:button>
-                        <h:button value="#{bundle.searchSubscriptions}" outcome="subscriptions" rendered="#{securityBackingMBean.isUserLeader}">
-                            <f:param name="list" value="#{mailingListMBean.mailingList.id}"/>
-                        </h:button>
-                        <h:button value="#{bundle.back}" outcome="mailing_lists"/>
-                    </h:form>
-                </div>
+                        <h:outputText value="#{bundle.unsubscribeFrom}" styleClass="fieldLabel"/>
+                        <h:outputLink value="mailto:#{mailingListMBean.mailingList.unsubscription}">
+                            <f:verbatim>#{mailingListMBean.mailingList.unsubscription}</f:verbatim>
+                        </h:outputLink>
+                    </h:panelGrid>
+                    <p/>
+                    <h:button value="#{bundle.edit}" outcome="mailing_list" rendered="#{securityBackingMBean.isUserLeader}">
+                        <f:param name="id" value="#{mailingListMBean.mailingList.id}"/>
+                    </h:button>
+                    <h:button value="#{bundle.searchSubscriptions}" outcome="subscriptions" rendered="#{securityBackingMBean.isUserLeader}">
+                        <f:param name="list" value="#{mailingListMBean.mailingList.id}"/>
+                    </h:button>
+                    <h:button value="#{bundle.back}" outcome="mailing_lists"/>
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>

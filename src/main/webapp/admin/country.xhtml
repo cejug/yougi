@@ -28,29 +28,27 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.country}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.country}</h1>
-                    <h:form>
-                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
-                        <h:panelGrid columns="1">
-                            <h:outputLabel for="name" value="#{bundle.name}" styleClass="mandatoryField"/>
-                            <h:inputText id="name" label="#{bundle.name}" required="true" size="30" maxlength="100" value="#{countryMBean.country.name}"/>
-                            <h:message for="name" errorClass="errorMessage"/>
+                <h1>#{bundle.country}</h1>
+                <h:form>
+                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+                    <h:panelGrid columns="1">
+                        <h:outputLabel for="name" value="#{bundle.name}" styleClass="mandatoryField"/>
+                        <h:inputText id="name" label="#{bundle.name}" required="true" size="30" maxlength="100" value="#{countryMBean.country.name}"/>
+                        <h:message for="name" errorClass="errorMessage"/>
 
-                            <h:outputLabel for="acronym" value="#{bundle.acronym}" styleClass="mandatoryField"/>
-                            <h:inputText id="acronym"  label="#{bundle.acronym}" required="true" size="3" maxlength="3" value="#{countryMBean.country.acronym}"/>
-                            <h:message for="acronym" errorClass="errorMessage"/>
-                        </h:panelGrid>
+                        <h:outputLabel for="acronym" value="#{bundle.acronym}" styleClass="mandatoryField"/>
+                        <h:inputText id="acronym"  label="#{bundle.acronym}" required="true" size="3" maxlength="3" value="#{countryMBean.country.acronym}"/>
+                        <h:message for="acronym" errorClass="errorMessage"/>
+                    </h:panelGrid>
 
-                        <h:panelGrid columns="3">
-                            <h:commandButton value="#{bundle.save}" action="#{countryMBean.save}"/>
-                            <h:commandButton value="#{bundle.remove}" rendered="#{not empty param.acronym}" action="#{countryMBean.remove}">
-                                <f:param name="acronym" value="#{countryMBean.country.acronym}" />
-                            </h:commandButton>
-                            <h:button outcome="countries" value="#{bundle.cancel}"/>
-                        </h:panelGrid>
-                    </h:form>
-                </div>
+                    <h:panelGrid columns="3">
+                        <h:commandButton value="#{bundle.save}" action="#{countryMBean.save}"/>
+                        <h:commandButton value="#{bundle.remove}" rendered="#{not empty param.acronym}" action="#{countryMBean.remove}">
+                            <f:param name="acronym" value="#{countryMBean.country.acronym}" />
+                        </h:commandButton>
+                        <h:button outcome="countries" value="#{bundle.cancel}"/>
+                    </h:panelGrid>
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>

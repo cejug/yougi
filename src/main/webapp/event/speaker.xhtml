@@ -30,101 +30,100 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.speaker}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.speaker}</h1>
-                    <h:form>
-                        <h:panelGrid width="100%">
-                            <h:link outcome="event" value="#{speakerMBean.event}" style="font-size: 18px;">
-                                <f:param name="id" value="#{speakerMBean.event.id}"/>
-                            </h:link>
+                <h1>#{bundle.speaker}</h1>
+                <h:form>
+                    <h:panelGrid width="100%">
+                        <h:link outcome="event" value="#{speakerMBean.event}" style="font-size: 18px;">
+                            <f:param name="id" value="#{speakerMBean.event.id}"/>
+                        </h:link>
 
-                            <h:panelGrid columns="2" width="100%" columnClasses="alignColumnLeft, alignColumnRight">
-                                <h:panelGrid columns="2">
-                                    <h:graphicImage value="#{profilePictureFinder.getPictureFromEmail(speakerMBean.speaker.userAccount.email)}"/>
+                        <h:panelGrid columns="2" width="100%" columnClasses="alignColumnLeft, alignColumnRight">
+                            <h:panelGrid columns="2">
+                                <h:graphicImage value="#{profilePictureFinder.getPictureFromEmail(speakerMBean.speaker.userAccount.email)}"/>
 
-                                    <h:panelGrid>
-                                        <h:outputText value="#{speakerMBean.speaker.fullName}" style="font-size: 24px; font-weight: bold;"/>
-                                        <h:outputText value="#{speakerMBean.speaker.organization}" style="font-size: 14px;"/>
-                                    </h:panelGrid>
+                                <h:panelGrid>
+                                    <h:outputText value="#{speakerMBean.speaker.fullName}" style="font-size: 24px; font-weight: bold;"/>
+                                    <h:outputText value="#{speakerMBean.speaker.organization}" style="font-size: 14px;"/>
                                 </h:panelGrid>
-                                
-                                <p:button value="#{bundle.edit}" outcome="speaker_form" rendered="#{securityBackingMBean.isUserLeader}">
-                                    <f:param name="id" value="#{speakerMBean.speaker.id}"/>
-                                </p:button>
                             </h:panelGrid>
-                            
-                            <p:spacer height="10"/>
 
-                            <h:outputText value="#{speakerMBean.speaker.shortCv}" style="font-size: 14px; font-style: italic;"/>
-                            
-                            <p:spacer height="5"/>
-                            
-                            <h:outputText value="#{speakerMBean.speaker.experience}" style="font-size: 14px;"/>
-                            
-                            <p:spacer height="10"/>
-
-                            <p:tabView activeIndex="#{param.tab}">
-                                <p:tab title="#{bundle.events}">
-                                    <h:panelGrid>
-                                        <c:forEach items="#{speakerMBean.events}" var="event">
-                                            <h:link value="#{event.name}" outcome="event" style="font-size: 14px; font-weight: bold;">
-                                                <f:param name="id" value="#{event.id}"/>
-                                            </h:link>
-                                            <h:outputText value="#{event.shortDescription}"/>
-                                            <h:panelGroup>
-                                                <h:outputText value="#{bundle.from} "/>
-                                                <h:outputText value="#{event.startDate}">
-                                                    <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
-                                                </h:outputText>
-                                                <h:outputText value=" at " rendered="#{! empty event.startTime}"/>
-                                                <h:outputText value="#{event.startTime}" rendered="#{! empty event.startTime}">
-                                                    <f:convertDateTime type="time" timeStyle="short" pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
-                                                </h:outputText>
-                                                <h:outputText value=" #{bundle.to} "/>
-                                                <h:outputText value="#{event.endDate}" rendered="#{event.startDate != event.endDate}">
-                                                    <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
-                                                </h:outputText>
-                                                <h:outputText value=" at " rendered="#{! empty event.endTime and event.startDate != event.endDate}"/>
-                                                <h:outputText value="#{event.endTime}" rendered="#{! empty event.startTime}">
-                                                    <f:convertDateTime type="time" timeStyle="short" pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
-                                                </h:outputText>
-                                            </h:panelGroup>
-                                            <h:outputText value="#{event}" escape="false">
-                                                <f:converter converterId="EventVenuesConverter"/>
-                                            </h:outputText>
-                                        </c:forEach>
-                                    </h:panelGrid>
-                                </p:tab>
-                                
-                                <p:tab title="#{bundle.sessions}">
-                                    <h:panelGrid>
-                                        <c:forEach items="#{speakerMBean.sessions}" var="ses">
-                                            <h:panelGroup>
-                                                <h:outputText value="#{ses.startTime}">
-                                                    <f:convertDateTime pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
-                                                </h:outputText>
-                                                <h:outputText value=" - "/>
-                                                <h:outputText value="#{ses.endTime}">
-                                                    <f:convertDateTime pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
-                                                </h:outputText>
-                                                <p:spacer width="10"/>
-                                                <h:link outcome="session" value="#{ses.name}" style="font-weight: bold">
-                                                    <f:param name="id" value="#{ses.id}"/>
-                                                </h:link>
-                                                <h:outputText value=" - " rendered="#{! empty ses.room}"/>
-                                                <h:link outcome="room" value="#{ses.room}" rendered="#{! empty ses.room}">
-                                                    <f:param name="id" value="#{ses.room.id}"/>
-                                                    <f:param name="eventId" value="#{speakerMBean.event.id}"/>
-                                                </h:link>
-                                            </h:panelGroup>
-                                        </c:forEach>
-                                    </h:panelGrid>
-                                </p:tab>
-                            </p:tabView>
+                            <p:button value="#{bundle.edit}" outcome="speaker_form" rendered="#{securityBackingMBean.isUserLeader}">
+                                <f:param name="id" value="#{speakerMBean.speaker.id}"/>
+                            </p:button>
                         </h:panelGrid>
-                    </h:form>
-                </div>
+
+                        <p:spacer height="10"/>
+
+                        <h:outputText value="#{speakerMBean.speaker.shortCv}" style="font-size: 14px; font-style: italic;"/>
+
+                        <p:spacer height="5"/>
+
+                        <h:outputText value="#{speakerMBean.speaker.experience}" style="font-size: 14px;"/>
+
+                        <p:spacer height="10"/>
+
+                        <p:tabView activeIndex="#{param.tab}">
+                            <p:tab title="#{bundle.events}">
+                                <h:panelGrid>
+                                    <c:forEach items="#{speakerMBean.events}" var="event">
+                                        <h:link value="#{event.name}" outcome="event" style="font-size: 14px; font-weight: bold;">
+                                            <f:param name="id" value="#{event.id}"/>
+                                        </h:link>
+                                        <h:outputText value="#{event.shortDescription}"/>
+                                        <h:panelGroup>
+                                            <h:outputText value="#{bundle.from} "/>
+                                            <h:outputText value="#{event.startDate}">
+                                                <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
+                                            </h:outputText>
+                                            <h:outputText value=" at " rendered="#{! empty event.startTime}"/>
+                                            <h:outputText value="#{event.startTime}" rendered="#{! empty event.startTime}">
+                                                <f:convertDateTime type="time" timeStyle="short" pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                                            </h:outputText>
+                                            <h:outputText value=" #{bundle.to} "/>
+                                            <h:outputText value="#{event.endDate}" rendered="#{event.startDate != event.endDate}">
+                                                <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
+                                            </h:outputText>
+                                            <h:outputText value=" at " rendered="#{! empty event.endTime and event.startDate != event.endDate}"/>
+                                            <h:outputText value="#{event.endTime}" rendered="#{! empty event.startTime}">
+                                                <f:convertDateTime type="time" timeStyle="short" pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                                            </h:outputText>
+                                        </h:panelGroup>
+                                        <h:outputText value="#{event}" escape="false">
+                                            <f:converter converterId="EventVenuesConverter"/>
+                                        </h:outputText>
+                                    </c:forEach>
+                                </h:panelGrid>
+                            </p:tab>
+
+                            <p:tab title="#{bundle.sessions}">
+                                <h:panelGrid>
+                                    <c:forEach items="#{speakerMBean.sessions}" var="ses">
+                                        <h:panelGroup>
+                                            <h:outputText value="#{ses.startTime}">
+                                                <f:convertDateTime pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                                            </h:outputText>
+                                            <h:outputText value=" - "/>
+                                            <h:outputText value="#{ses.endTime}">
+                                                <f:convertDateTime pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                                            </h:outputText>
+                                            <p:spacer width="10"/>
+                                            <h:link outcome="session" value="#{ses.name}" style="font-weight: bold">
+                                                <f:param name="id" value="#{ses.id}"/>
+                                            </h:link>
+                                            <h:outputText value=" - " rendered="#{! empty ses.room}"/>
+                                            <h:link outcome="room" value="#{ses.room}" rendered="#{! empty ses.room}">
+                                                <f:param name="id" value="#{ses.room.id}"/>
+                                                <f:param name="eventId" value="#{speakerMBean.event.id}"/>
+                                            </h:link>
+                                        </h:panelGroup>
+                                    </c:forEach>
+                                </h:panelGrid>
+                            </p:tab>
+                        </p:tabView>
+                    </h:panelGrid>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </body>
 </html>

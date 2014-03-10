@@ -28,40 +28,38 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.topic}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.topic}</h1>
-                    <h:form>
-                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
-                        <h:panelGrid>
-                            <h:outputLabel for="name" value="#{bundle.name} *" styleClass="fieldLabel"/>
-                            <h:panelGroup>
-                                <h:inputText id="name" label="#{bundle.name}" required="true" size="20" maxlength="20" value="#{topicMBean.topic.name}" readonly="#{! empty topicMBean.topic.name}"/>
-                                <h:message for="name" errorClass="errorMessage"/>
-                            </h:panelGroup>
+                <h1>#{bundle.topic}</h1>
+                <h:form>
+                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+                    <h:panelGrid>
+                        <h:outputLabel for="name" value="#{bundle.name} *" styleClass="fieldLabel"/>
+                        <h:panelGroup>
+                            <h:inputText id="name" label="#{bundle.name}" required="true" size="20" maxlength="20" value="#{topicMBean.topic.name}" readonly="#{! empty topicMBean.topic.name}"/>
+                            <h:message for="name" errorClass="errorMessage"/>
+                        </h:panelGroup>
 
-                            <h:outputLabel for="label" value="#{bundle.label} *" styleClass="fieldLabel"/>
-                            <h:panelGroup>
-                                <h:inputText id="label" label="#{bundle.label}" required="true" size="20" maxlength="20" value="#{topicMBean.topic.label}"/>
-                                <h:message for="label" errorClass="errorMessage"/>
-                            </h:panelGroup>
+                        <h:outputLabel for="label" value="#{bundle.label} *" styleClass="fieldLabel"/>
+                        <h:panelGroup>
+                            <h:inputText id="label" label="#{bundle.label}" required="true" size="20" maxlength="20" value="#{topicMBean.topic.label}"/>
+                            <h:message for="label" errorClass="errorMessage"/>
+                        </h:panelGroup>
 
-                            <h:panelGroup>
-                                <h:selectBooleanCheckbox id="valid" label="#{bundle.valid}" value="#{topicMBean.topic.valid}"/>
-                                <h:outputLabel for="valid" value="#{bundle.valid}"/>
-                            </h:panelGroup>
+                        <h:panelGroup>
+                            <h:selectBooleanCheckbox id="valid" label="#{bundle.valid}" value="#{topicMBean.topic.valid}"/>
+                            <h:outputLabel for="valid" value="#{bundle.valid}"/>
+                        </h:panelGroup>
 
-                            <h:outputLabel for="description" value="#{bundle.description}" styleClass="fieldLabel"/>
-                            <h:inputTextarea id="description" label="#{bundle.description}" cols="60" rows="5" value="#{topicMBean.topic.description}"/>
-                        </h:panelGrid>
-                        <h:panelGrid columns="3">
-                            <h:commandButton value="#{bundle.save}" action="#{topicMBean.save}" rendered="#{securityBackingMBean.isUserLeader}"/>
-                            <h:commandButton value="#{bundle.remove}" action="#{topicMBean.remove}" rendered="#{securityBackingMBean.isUserLeader and topicMBean.existent}" onclick="return confirmAction('#{bundle.warnCode0005}');">
-                                <f:param name="topic" value="#{topicMBean.topic.name}"/>
-                            </h:commandButton>
-                            <h:button value="#{bundle.cancel}" outcome="topics"/>
-                        </h:panelGrid>
-                    </h:form>
-                </div>
+                        <h:outputLabel for="description" value="#{bundle.description}" styleClass="fieldLabel"/>
+                        <h:inputTextarea id="description" label="#{bundle.description}" cols="60" rows="5" value="#{topicMBean.topic.description}"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="3">
+                        <h:commandButton value="#{bundle.save}" action="#{topicMBean.save}" rendered="#{securityBackingMBean.isUserLeader}"/>
+                        <h:commandButton value="#{bundle.remove}" action="#{topicMBean.remove}" rendered="#{securityBackingMBean.isUserLeader and topicMBean.existent}" onclick="return confirmAction('#{bundle.warnCode0005}');">
+                            <f:param name="topic" value="#{topicMBean.topic.name}"/>
+                        </h:commandButton>
+                        <h:button value="#{bundle.cancel}" outcome="topics"/>
+                    </h:panelGrid>
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>

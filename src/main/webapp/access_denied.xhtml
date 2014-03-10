@@ -27,16 +27,14 @@
         <ui:composition template="/layout.xhtml">
             <ui:define name="title">#{bundle.authorization}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.authorization}</h1>
-                    <p/>
-                    <p><h:outputText styleClass="alertMessage" value="#{bundle.accessDeniedAlert}"/></p>
-                    <h:panelGrid columns="5" cellpadding="5">
-                        <h:link outcome="login" value="#{bundle.signInMorePrivilegedUser}"/>
-                        <h:outputText value=" | "/>
-                        <h:link onclick="history.go(-1)">#{bundle.back}</h:link>
-                    </h:panelGrid>
-                </div>
+                <h1>#{bundle.authorization}</h1>
+                <p/>
+                <p><h:outputText styleClass="alertMessage" value="#{bundle.accessDeniedAlert}"/></p>
+                <h:panelGrid columns="5" cellpadding="5">
+                    <h:link outcome="login" value="#{bundle.signInMorePrivilegedUser}"/>
+                    <h:outputText value=" | "/>
+                    <h:link onclick="history.go(-1)">#{bundle.back}</h:link>
+                </h:panelGrid>
             </ui:define>
         </ui:composition>
     </h:body>

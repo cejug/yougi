@@ -29,27 +29,26 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.users}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.provinces}</h1>
-                    <p><h:link outcome="province" value="#{bundle.new} #{bundle.province}"/></p>
+                <h1>#{bundle.provinces}</h1>
+                <p><h:link outcome="province" value="#{bundle.new} #{bundle.province}"/></p>
 
-                    <h:form>
-                        <p:dataTable id="provinces" value="#{provinceMBean.provinces}" var="province">
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
-                                <h:link outcome="province" value="#{province.name}">
-                                    <f:param name="id" value="#{province.id}"/>
-                                </h:link>
-                            </p:column>
+                <h:form>
+                    <p:dataTable id="provinces" value="#{provinceMBean.provinces}" var="province">
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
+                            <h:link outcome="province" value="#{province.name}">
+                                <f:param name="id" value="#{province.id}"/>
+                            </h:link>
+                        </p:column>
 
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.country}"/></f:facet>
-                                <h:outputText value="#{province.country.name}"/>
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                </div>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.country}"/></f:facet>
+                            <h:outputText value="#{province.country.name}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </h:body>
 </html>

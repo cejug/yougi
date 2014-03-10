@@ -29,25 +29,24 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.partnership}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.partnership}</h1>
-                    <h:form enctype="multipart/form-data">
-                        <h:messages styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+                <h1>#{bundle.partnership}</h1>
+                <h:form enctype="multipart/form-data">
+                    <h:messages styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+                    <h:panelGrid>
                         <h:panelGrid>
-                            <h:panelGrid>
-                                <p><h:outputText styleClass="fieldLabel" value="#{bundle.uploadLogo}"/></p>
-                                <p:growl id="messages" showDetail="true"/>
-                                <p:fileUpload update="messages logoImage" fileUploadListener="#{partnershipMBean.handleLogoFileUpload}" sizeLimit="1024000"/>
-                            </h:panelGrid>
-                            <p:graphicImage value="#{partnershipMBean.logoImage}" id="logoImage" rendered="#{! empty partnershipMBean.logoImage}"/>
+                            <p><h:outputText styleClass="fieldLabel" value="#{bundle.uploadLogo}"/></p>
+                            <p:growl id="messages" showDetail="true"/>
+                            <p:fileUpload update="messages logoImage" fileUploadListener="#{partnershipMBean.handleLogoFileUpload}" sizeLimit="1024000"/>
                         </h:panelGrid>
-                        <p></p>
-                        <h:button value="#{bundle.back}" outcome="profile">
-                            <f:param name="tab" value="2"/>
-                        </h:button>
-                    </h:form>
-                </div>
+                        <p:graphicImage value="#{partnershipMBean.logoImage}" id="logoImage" rendered="#{! empty partnershipMBean.logoImage}"/>
+                    </h:panelGrid>
+                    <p></p>
+                    <h:button value="#{bundle.back}" outcome="profile">
+                        <f:param name="tab" value="2"/>
+                    </h:button>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </body>
 </html>

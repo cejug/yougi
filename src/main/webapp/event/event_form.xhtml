@@ -29,61 +29,60 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.session}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.session}</h1>
-                    <h:form>
-                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
-                        <h:panelGrid>
-                            <h:outputLabel for="name" value="#{bundle.name}" styleClass="requiredFieldLabel"/>
-                            <h:inputText id="name" label="#{bundle.name}" required="true" size="78" maxlength="100" value="#{eventMBean.event.name}" styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all"/>
-                            <h:message for="name" errorClass="errorMessage"/>
+                <h1>#{bundle.session}</h1>
+                <h:form>
+                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+                    <h:panelGrid>
+                        <h:outputLabel for="name" value="#{bundle.name}" styleClass="requiredFieldLabel"/>
+                        <h:inputText id="name" label="#{bundle.name}" required="true" size="78" maxlength="100" value="#{eventMBean.event.name}" styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all"/>
+                        <h:message for="name" errorClass="errorMessage"/>
 
-                            <h:outputLabel for="parent" value="#{bundle.parentEvent}" styleClass="fieldLabel"/>
-                            <h:selectOneMenu id="parent" label="#{bundle.parent}" value="#{eventMBean.selectedParent}">
-                                <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
-                                <f:selectItems value="#{eventMBean.parentEvents}" var="parent" itemLabel="#{parent.name}" itemValue="#{parent.id}"/>
-                            </h:selectOneMenu>
-                            <h:message for="parent" errorClass="errorMessage"/>
+                        <h:outputLabel for="parent" value="#{bundle.parentEvent}" styleClass="fieldLabel"/>
+                        <h:selectOneMenu id="parent" label="#{bundle.parent}" value="#{eventMBean.selectedParent}">
+                            <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
+                            <f:selectItems value="#{eventMBean.parentEvents}" var="parent" itemLabel="#{parent.name}" itemValue="#{parent.id}"/>
+                        </h:selectOneMenu>
+                        <h:message for="parent" errorClass="errorMessage"/>
 
-                            <h:panelGrid columns="4">
-                                <h:outputLabel for="startDate" value="#{bundle.start}" styleClass="requiredFieldLabel"/>
-                                <h:outputText/>
-                                <h:outputLabel for="endDate" value="#{bundle.end}" styleClass="requiredFieldLabel"/>
-                                <h:outputText/>
+                        <h:panelGrid columns="4">
+                            <h:outputLabel for="startDate" value="#{bundle.start}" styleClass="requiredFieldLabel"/>
+                            <h:outputText/>
+                            <h:outputLabel for="endDate" value="#{bundle.end}" styleClass="requiredFieldLabel"/>
+                            <h:outputText/>
 
-                                <p:calendar id="startDate" label="#{bundle.startDate}" value="#{eventMBean.event.startDate}" pattern="#{bundle.formatDate}" required="true" size="10" timeZone="#{userProfileMBean.timeZone}"/>
-                                <p:calendar id="startTime" label="#{bundle.startHour}" value="#{eventMBean.event.startTime}" pattern="#{bundle.formatTime}" size="6" timeOnly="true" required="true"/>
-                                <p:calendar id="endDate" label="#{bundle.endDate}" value="#{eventMBean.event.endDate}" pattern="#{bundle.formatDate}" required="true" size="10" timeZone="#{userProfileMBean.timeZone}"/>
-                                <p:calendar id="endTime" label="#{bundle.endHour}" value="#{eventMBean.event.endTime}" pattern="#{bundle.formatTime}" size="6" timeOnly="true" required="true"/>
+                            <p:calendar id="startDate" label="#{bundle.startDate}" value="#{eventMBean.event.startDate}" pattern="#{bundle.formatDate}" required="true" size="10" timeZone="#{userProfileMBean.timeZone}"/>
+                            <p:calendar id="startTime" label="#{bundle.startHour}" value="#{eventMBean.event.startTime}" pattern="#{bundle.formatTime}" size="6" timeOnly="true" required="true"/>
+                            <p:calendar id="endDate" label="#{bundle.endDate}" value="#{eventMBean.event.endDate}" pattern="#{bundle.formatDate}" required="true" size="10" timeZone="#{userProfileMBean.timeZone}"/>
+                            <p:calendar id="endTime" label="#{bundle.endHour}" value="#{eventMBean.event.endTime}" pattern="#{bundle.formatTime}" size="6" timeOnly="true" required="true"/>
 
-                                <h:outputText value="#{bundle.formatDateLabel}" styleClass="fieldFormat"/>
-                                <h:outputText value="#{bundle.formatTimeLabel}" styleClass="fieldFormat"/>
-                                <h:outputText value="#{bundle.formatDateLabel}" styleClass="fieldFormat"/>
-                                <h:outputText value="#{bundle.formatTimeLabel}" styleClass="fieldFormat"/>
+                            <h:outputText value="#{bundle.formatDateLabel}" styleClass="fieldFormat"/>
+                            <h:outputText value="#{bundle.formatTimeLabel}" styleClass="fieldFormat"/>
+                            <h:outputText value="#{bundle.formatDateLabel}" styleClass="fieldFormat"/>
+                            <h:outputText value="#{bundle.formatTimeLabel}" styleClass="fieldFormat"/>
 
-                                <h:message for="startDate" errorClass="errorMessage"/>
-                                <h:message for="startTime" errorClass="errorMessage"/>
-                                <h:message for="endDate" errorClass="errorMessage"/>
-                                <h:message for="endTime" errorClass="errorMessage"/>
-                            </h:panelGrid>
-
-                            <h:outputLabel for="shortDescription" value="#{bundle.shortDescription}" styleClass="fieldLabel"/>
-                            <h:inputTextarea id="shortDescription" label="#{bundle.shortDescription}" required="false" cols="80" rows="5" value="#{eventMBean.event.shortDescription}" styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all"/>
-
-                            <h:outputLabel for="description" value="#{bundle.detailedDescription}" styleClass="fieldLabel"/>
-                            <p:editor id="description" required="false" width="500" height="200" value="#{eventMBean.event.description}"/>
+                            <h:message for="startDate" errorClass="errorMessage"/>
+                            <h:message for="startTime" errorClass="errorMessage"/>
+                            <h:message for="endDate" errorClass="errorMessage"/>
+                            <h:message for="endTime" errorClass="errorMessage"/>
                         </h:panelGrid>
 
-                        <h:inputHidden id="id" value="#{eventMBean.event.id}"/>
-                        <h:inputHidden id="certificateTemplate" value="#{eventMBean.event.certificateTemplate}"/>
+                        <h:outputLabel for="shortDescription" value="#{bundle.shortDescription}" styleClass="fieldLabel"/>
+                        <h:inputTextarea id="shortDescription" label="#{bundle.shortDescription}" required="false" cols="80" rows="5" value="#{eventMBean.event.shortDescription}" styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all"/>
 
-                        <h:panelGrid columns="2">
-                            <h:commandButton value="#{bundle.save}" action="#{eventMBean.save}"/>
-                            <h:button value="#{bundle.cancel}" outcome="events"/>
-                        </h:panelGrid>
-                    </h:form>
-                </div>
+                        <h:outputLabel for="description" value="#{bundle.detailedDescription}" styleClass="fieldLabel"/>
+                        <p:editor id="description" required="false" width="500" height="200" value="#{eventMBean.event.description}"/>
+                    </h:panelGrid>
+
+                    <h:inputHidden id="id" value="#{eventMBean.event.id}"/>
+                    <h:inputHidden id="certificateTemplate" value="#{eventMBean.event.certificateTemplate}"/>
+
+                    <h:panelGrid columns="2">
+                        <h:commandButton value="#{bundle.save}" action="#{eventMBean.save}"/>
+                        <h:button value="#{bundle.cancel}" outcome="events"/>
+                    </h:panelGrid>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </body>
 </html>

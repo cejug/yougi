@@ -63,9 +63,9 @@ public class FrontPageMBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        List<Event> commingEvents = eventBean.findUpCommingEvents();
+        List<Event> comingEvents = eventBean.findUpCommingEvents();
         List<Article> publishedArticles = articleBean.findPublishedArticles();
-        publicContents.addAll(commingEvents);
+        publicContents.addAll(comingEvents);
         publicContents.addAll(publishedArticles);
 
         if(!publicContents.isEmpty()) {

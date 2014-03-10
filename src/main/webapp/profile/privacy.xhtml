@@ -28,49 +28,47 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.privacy}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.privacy}</h1>
-                    <h:form>
-                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
-                        <h:message for="speaker" errorClass="errorMessage"/>
-                        <h:panelGrid columns="2" width="700" columnClasses="panelGridColumn">
-                            <h:selectBooleanCheckbox id="mailingList" label="#{bundle.mailingList}" value="#{userAccountMBean.userAccount.mailingList}" validator="#{userAccountMBean.validatePrivacyOption}"/>
-                            <h:outputLabel for="mailingList" value="#{bundle.mailingListMessage}"/>
+                <h1>#{bundle.privacy}</h1>
+                <h:form>
+                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+                    <h:message for="speaker" errorClass="errorMessage"/>
+                    <h:panelGrid columns="2" width="700" columnClasses="panelGridColumn">
+                        <h:selectBooleanCheckbox id="mailingList" label="#{bundle.mailingList}" value="#{userAccountMBean.userAccount.mailingList}" validator="#{userAccountMBean.validatePrivacyOption}"/>
+                        <h:outputLabel for="mailingList" value="#{bundle.mailingListMessage}"/>
 
-                            <h:selectBooleanCheckbox id="publicProfile" label="#{bundle.publicProfile}" value="#{userAccountMBean.userAccount.publicProfile}" validator="#{userAccountMBean.validatePrivacyOption}"/>
-                            <h:outputText value="#{bundle.publicProfileMessage}"/>
+                        <h:selectBooleanCheckbox id="publicProfile" label="#{bundle.publicProfile}" value="#{userAccountMBean.userAccount.publicProfile}" validator="#{userAccountMBean.validatePrivacyOption}"/>
+                        <h:outputText value="#{bundle.publicProfileMessage}"/>
 
-                            <h:selectBooleanCheckbox id="event" label="#{bundle.event}" value="#{userAccountMBean.userAccount.event}" validator="#{userAccountMBean.validatePrivacyOption}"/>
-                            <h:outputLabel for="event" value="#{bundle.eventMessage}"/>
+                        <h:selectBooleanCheckbox id="event" label="#{bundle.event}" value="#{userAccountMBean.userAccount.event}" validator="#{userAccountMBean.validatePrivacyOption}"/>
+                        <h:outputLabel for="event" value="#{bundle.eventMessage}"/>
 
-                            <h:selectBooleanCheckbox id="news" label="#{bundle.news}" value="#{userAccountMBean.userAccount.news}" validator="#{userAccountMBean.validatePrivacyOption}"/>
-                            <h:outputLabel for="news" value="#{bundle.newsMessage}"/>
+                        <h:selectBooleanCheckbox id="news" label="#{bundle.news}" value="#{userAccountMBean.userAccount.news}" validator="#{userAccountMBean.validatePrivacyOption}"/>
+                        <h:outputLabel for="news" value="#{bundle.newsMessage}"/>
 
-                            <h:selectBooleanCheckbox id="generalOffer" label="#{bundle.generalOffer}" value="#{userAccountMBean.userAccount.generalOffer}" validator="#{userAccountMBean.validatePrivacyOption}"/>
-                            <h:outputLabel for="generalOffer" value="#{bundle.generalOfferMessage}"/>
+                        <h:selectBooleanCheckbox id="generalOffer" label="#{bundle.generalOffer}" value="#{userAccountMBean.userAccount.generalOffer}" validator="#{userAccountMBean.validatePrivacyOption}"/>
+                        <h:outputLabel for="generalOffer" value="#{bundle.generalOfferMessage}"/>
 
-                            <h:selectBooleanCheckbox id="jobOffer" label="#{bundle.jobOffer}" value="#{userAccountMBean.userAccount.jobOffer}" validator="#{userAccountMBean.validatePrivacyOption}"/>
-                            <h:outputLabel for="jobOffer" value="#{bundle.jobOfferMessage}"/>
+                        <h:selectBooleanCheckbox id="jobOffer" label="#{bundle.jobOffer}" value="#{userAccountMBean.userAccount.jobOffer}" validator="#{userAccountMBean.validatePrivacyOption}"/>
+                        <h:outputLabel for="jobOffer" value="#{bundle.jobOfferMessage}"/>
 
-                            <h:selectBooleanCheckbox id="sponsor" label="#{bundle.sponsorMessage}" value="#{userAccountMBean.userAccount.sponsor}" validator="#{userAccountMBean.validatePrivacyOption}"/>
-                            <h:outputLabel for="sponsor" value="#{bundle.sponsorMessage}"/>
+                        <h:selectBooleanCheckbox id="sponsor" label="#{bundle.sponsorMessage}" value="#{userAccountMBean.userAccount.sponsor}" validator="#{userAccountMBean.validatePrivacyOption}"/>
+                        <h:outputLabel for="sponsor" value="#{bundle.sponsorMessage}"/>
 
-                            <h:selectBooleanCheckbox id="speaker" label="#{bundle.speakerMessage}" value="#{userAccountMBean.userAccount.speaker}" validator="#{userAccountMBean.validatePrivacy}"/>
-                            <h:outputLabel for="speaker" value="#{bundle.speakerMessage}"/>
-                        </h:panelGrid>
+                        <h:selectBooleanCheckbox id="speaker" label="#{bundle.speakerMessage}" value="#{userAccountMBean.userAccount.speaker}" validator="#{userAccountMBean.validatePrivacy}"/>
+                        <h:outputLabel for="speaker" value="#{bundle.speakerMessage}"/>
+                    </h:panelGrid>
 
-                        <h:inputHidden id="id" value="#{userAccountMBean.userAccount.id}"/>
-                        
-                        <h:panelGrid columns="2">
-                            <h:commandButton value="#{bundle.save}" action="#{userAccountMBean.savePrivacy}">
-                                <f:param name="tab" value="1"/>
-                            </h:commandButton>
-                            <h:button value="#{bundle.cancel}" outcome="profile">
-                                <f:param name="tab" value="1"/>
-                            </h:button>
-                        </h:panelGrid>
-                    </h:form>
-                </div>
+                    <h:inputHidden id="id" value="#{userAccountMBean.userAccount.id}"/>
+
+                    <h:panelGrid columns="2">
+                        <h:commandButton value="#{bundle.save}" action="#{userAccountMBean.savePrivacy}">
+                            <f:param name="tab" value="1"/>
+                        </h:commandButton>
+                        <h:button value="#{bundle.cancel}" outcome="profile">
+                            <f:param name="tab" value="1"/>
+                        </h:button>
+                    </h:panelGrid>
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>

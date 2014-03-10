@@ -29,80 +29,79 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.properties}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.properties}</h1>
-                    <h:form>
-                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
-                        <h:panelGrid columns="3" columnClasses="panelGridColumn, panelGridColumn, panelGridColumn">
-                            <p:fieldset legend="#{bundle.application}">
-                                <h:panelGrid>
-                                    <h:outputLabel for="groupName" value="#{bundle.groupName}" styleClass="fieldLabel"/>
-                                    <h:inputText id="groupName" label="#{bundle.groupName}" size="30" maxlength="100" value="#{applicationPropertiesMBean.applicationProperties['groupName']}"/>
-                                    <h:message for="groupName" errorClass="errorMessage"/>
+                <h1>#{bundle.properties}</h1>
+                <h:form>
+                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+                    <h:panelGrid columns="3" columnClasses="panelGridColumn, panelGridColumn, panelGridColumn">
+                        <p:fieldset legend="#{bundle.application}">
+                            <h:panelGrid>
+                                <h:outputLabel for="groupName" value="#{bundle.groupName}" styleClass="fieldLabel"/>
+                                <h:inputText id="groupName" label="#{bundle.groupName}" size="30" maxlength="100" value="#{applicationPropertiesMBean.applicationProperties['groupName']}"/>
+                                <h:message for="groupName" errorClass="errorMessage"/>
 
-                                    <h:outputLabel for="url" value="#{bundle.url}" styleClass="fieldLabel"/>
-                                    <h:inputText id="url" label="#{bundle.url}" size="30" maxlength="100" value="#{applicationPropertiesMBean.applicationProperties['url']}"/>
-                                    <h:message for="url" errorClass="errorMessage"/>
+                                <h:outputLabel for="url" value="#{bundle.url}" styleClass="fieldLabel"/>
+                                <h:inputText id="url" label="#{bundle.url}" size="30" maxlength="100" value="#{applicationPropertiesMBean.applicationProperties['url']}"/>
+                                <h:message for="url" errorClass="errorMessage"/>
 
-                                    <h:outputLabel for="fileRepositoryPath" value="#{bundle.fileRepositoryPath}" styleClass="fieldLabel"/>
-                                    <h:inputText id="fileRepositoryPath" label="#{bundle.fileRepositoryPath}" size="30" maxlength="100" value="#{applicationPropertiesMBean.applicationProperties['fileRepositoryPath']}"/>
-                                    <h:message for="fileRepositoryPath" errorClass="errorMessage"/>
+                                <h:outputLabel for="fileRepositoryPath" value="#{bundle.fileRepositoryPath}" styleClass="fieldLabel"/>
+                                <h:inputText id="fileRepositoryPath" label="#{bundle.fileRepositoryPath}" size="30" maxlength="100" value="#{applicationPropertiesMBean.applicationProperties['fileRepositoryPath']}"/>
+                                <h:message for="fileRepositoryPath" errorClass="errorMessage"/>
+                            </h:panelGrid>
+                        </p:fieldset>
+
+                        <p:fieldset legend="#{bundle.email}">
+                            <h:panelGrid>
+                                <h:outputLabel for="emailServerType" value="#{bundle.emailServerType}" styleClass="fieldLabel"/>
+                                <h:selectOneRadio id="emailServerType" label="#{bundle.emailServerType}" value="#{applicationPropertiesMBean.applicationProperties['emailServerType']}">
+                                    <f:selectItem itemLabel="#{bundle.pop3}" itemValue="pop3"/>
+                                    <f:selectItem itemLabel="#{bundle.imap}" itemValue="imap"/>
+                                </h:selectOneRadio>
+
+                                <h:panelGrid columns="2">
+                                    <h:selectBooleanCheckbox id="sendEmails" label="#{bundle.sendEmails}" value="#{applicationPropertiesMBean.sendEmails}"/>
+                                    <h:outputLabel for="sendEmails" value="#{bundle.sendEmails}"/>
                                 </h:panelGrid>
-                            </p:fieldset>
+                            </h:panelGrid>
+                        </p:fieldset>
 
-                            <p:fieldset legend="#{bundle.email}">
-                                <h:panelGrid>
-                                    <h:outputLabel for="emailServerType" value="#{bundle.emailServerType}" styleClass="fieldLabel"/>
-                                    <h:selectOneRadio id="emailServerType" label="#{bundle.emailServerType}" value="#{applicationPropertiesMBean.applicationProperties['emailServerType']}">
-                                        <f:selectItem itemLabel="#{bundle.pop3}" itemValue="pop3"/>
-                                        <f:selectItem itemLabel="#{bundle.imap}" itemValue="imap"/>
-                                    </h:selectOneRadio>
+                        <p:fieldset legend="#{bundle.internationalization}">
+                            <h:panelGrid>
+                                <h:outputLabel for="timezone" value="#{bundle.timeZone}" styleClass="fieldLabel"/>
+                                <h:selectOneMenu id="timezone" label="#{bundle.timeZone}" value="#{applicationPropertiesMBean.applicationProperties['timezone']}">
+                                    <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
+                                    <f:selectItems value="#{applicationPropertiesMBean.timezones}" var="tz" itemLabel="#{tz.label}" itemValue="#{tz.id}"/>
+                                </h:selectOneMenu>
 
-                                    <h:panelGrid columns="2">
-                                        <h:selectBooleanCheckbox id="sendEmails" label="#{bundle.sendEmails}" value="#{applicationPropertiesMBean.sendEmails}"/>
-                                        <h:outputLabel for="sendEmails" value="#{bundle.sendEmails}"/>
-                                    </h:panelGrid>
-                                </h:panelGrid>
-                            </p:fieldset>
+                                <h:outputLabel for="language" value="#{bundle.language}" styleClass="fieldLabel"/>
+                                <h:selectOneMenu id="language" label="#{bundle.language}" value="#{applicationPropertiesMBean.applicationProperties['language']}">
+                                    <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
+                                    <f:selectItems value="#{applicationPropertiesMBean.languages}" var="lang" itemLabel="#{lang.name}" itemValue="#{lang.acronym}"/>
+                                </h:selectOneMenu>
+                            </h:panelGrid>
+                        </p:fieldset>
 
-                            <p:fieldset legend="#{bundle.internationalization}">
-                                <h:panelGrid>
-                                    <h:outputLabel for="timezone" value="#{bundle.timeZone}" styleClass="fieldLabel"/>
-                                    <h:selectOneMenu id="timezone" label="#{bundle.timeZone}" value="#{applicationPropertiesMBean.applicationProperties['timezone']}">
-                                        <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
-                                        <f:selectItems value="#{applicationPropertiesMBean.timezones}" var="tz" itemLabel="#{tz.label}" itemValue="#{tz.id}"/>
-                                    </h:selectOneMenu>
+                        <p:fieldset legend="#{bundle.security}">
+                            <h:panelGrid>
+                                <h:panelGroup>
+                                    <h:selectBooleanCheckbox id="captchaEnabled" label="#{bundle.captchaEnabled}" value="#{applicationPropertiesMBean.captchaEnabled}"/>
+                                    <h:outputLabel for="captchaEnabled" value="#{bundle.captchaEnabled}"/>
+                                </h:panelGroup>
 
-                                    <h:outputLabel for="language" value="#{bundle.language}" styleClass="fieldLabel"/>
-                                    <h:selectOneMenu id="language" label="#{bundle.language}" value="#{applicationPropertiesMBean.applicationProperties['language']}">
-                                        <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
-                                        <f:selectItems value="#{applicationPropertiesMBean.languages}" var="lang" itemLabel="#{lang.name}" itemValue="#{lang.acronym}"/>
-                                    </h:selectOneMenu>
-                                </h:panelGrid>
-                            </p:fieldset>
+                                <h:outputLabel for="captchaPublicKey" value="#{bundle.publicKey}" styleClass="fieldLabel"/>
+                                <h:inputText id="captchaPublicKey" label="#{bundle.publicKey}" size="40" maxlength="100" value="#{applicationPropertiesMBean.applicationProperties['captchaPublicKey']}"/>
+                                <h:message for="captchaPublicKey" errorClass="errorMessage"/>
 
-                            <p:fieldset legend="#{bundle.security}">
-                                <h:panelGrid>
-                                    <h:panelGroup>
-                                        <h:selectBooleanCheckbox id="captchaEnabled" label="#{bundle.captchaEnabled}" value="#{applicationPropertiesMBean.captchaEnabled}"/>
-                                        <h:outputLabel for="captchaEnabled" value="#{bundle.captchaEnabled}"/>
-                                    </h:panelGroup>
-
-                                    <h:outputLabel for="captchaPublicKey" value="#{bundle.publicKey}" styleClass="fieldLabel"/>
-                                    <h:inputText id="captchaPublicKey" label="#{bundle.publicKey}" size="40" maxlength="100" value="#{applicationPropertiesMBean.applicationProperties['captchaPublicKey']}"/>
-                                    <h:message for="captchaPublicKey" errorClass="errorMessage"/>
-
-                                    <h:outputLabel for="captchaPrivateKey" value="#{bundle.privateKey}" styleClass="fieldLabel"/>
-                                    <h:inputText id="captchaPrivateKey" label="#{bundle.privateKey}" size="40" maxlength="100" value="#{applicationPropertiesMBean.applicationProperties['captchaPrivateKey']}"/>
-                                    <h:message for="captchaPrivateKey" errorClass="errorMessage"/>
-                                </h:panelGrid>
-                            </p:fieldset>
-                        </h:panelGrid>
-                        <p/>
-                        <h:commandButton value="#{bundle.save}" action="#{applicationPropertiesMBean.save}"/>
-                    </h:form>
-                </div>
+                                <h:outputLabel for="captchaPrivateKey" value="#{bundle.privateKey}" styleClass="fieldLabel"/>
+                                <h:inputText id="captchaPrivateKey" label="#{bundle.privateKey}" size="40" maxlength="100" value="#{applicationPropertiesMBean.applicationProperties['captchaPrivateKey']}"/>
+                                <h:message for="captchaPrivateKey" errorClass="errorMessage"/>
+                            </h:panelGrid>
+                        </p:fieldset>
+                    </h:panelGrid>
+                    <p/>
+                    <h:commandButton value="#{bundle.save}" action="#{applicationPropertiesMBean.save}"/>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </h:body>
 </html>

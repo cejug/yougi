@@ -30,84 +30,83 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.attendee}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.attendee}</h1>
-                    <h:form>
-                        <h:panelGrid width="100%">
-                            <h:link outcome="event" value="#{attendeeMBean.attendee.event}" style="font-size: 24px; font-weight: bold;">
-                                <f:param name="id" value="#{param.eventId}"/>
-                            </h:link>
-                            <h:outputText value="#{attendeeMBean.attendee.event.shortDescription}"/>
-                            <h:panelGroup>
-                                <h:outputText value="#{bundle.from} "/>
-                                <h:outputText value="#{attendeeMBean.attendee.event.startDate}">
-                                    <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
-                                </h:outputText>
-                                <h:outputText value=" at " rendered="#{! empty attendeeMBean.attendee.event.startTime}"/>
-                                <h:outputText value="#{attendeeMBean.attendee.event.startTime}" rendered="#{! empty attendeeMBean.attendee.event.startTime}">
-                                    <f:convertDateTime type="time" timeStyle="short" pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
-                                </h:outputText>
-                                <h:outputText value=" #{bundle.to} "/>
-                                <h:outputText value="#{attendeeMBean.attendee.event.endDate}" rendered="#{attendeeMBean.attendee.event.startDate != attendeeMBean.attendee.event.endDate}">
-                                    <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
-                                </h:outputText>
-                                <h:outputText value=" at " rendered="#{! empty attendeeMBean.attendee.event.endTime and attendeeMBean.attendee.event.startDate != attendeeMBean.attendee.event.endDate}"/>
-                                <h:outputText value="#{attendeeMBean.attendee.event.endTime}" rendered="#{! empty attendeeMBean.attendee.event.startTime}">
-                                    <f:convertDateTime type="time" timeStyle="short" pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
-                                </h:outputText>
-                            </h:panelGroup>
-                            
-                            <p:spacer height="10"/>
+                <h1>#{bundle.attendee}</h1>
+                <h:form>
+                    <h:panelGrid width="100%">
+                        <h:link outcome="event" value="#{attendeeMBean.attendee.event}" style="font-size: 24px; font-weight: bold;">
+                            <f:param name="id" value="#{param.eventId}"/>
+                        </h:link>
+                        <h:outputText value="#{attendeeMBean.attendee.event.shortDescription}"/>
+                        <h:panelGroup>
+                            <h:outputText value="#{bundle.from} "/>
+                            <h:outputText value="#{attendeeMBean.attendee.event.startDate}">
+                                <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
+                            </h:outputText>
+                            <h:outputText value=" at " rendered="#{! empty attendeeMBean.attendee.event.startTime}"/>
+                            <h:outputText value="#{attendeeMBean.attendee.event.startTime}" rendered="#{! empty attendeeMBean.attendee.event.startTime}">
+                                <f:convertDateTime type="time" timeStyle="short" pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                            </h:outputText>
+                            <h:outputText value=" #{bundle.to} "/>
+                            <h:outputText value="#{attendeeMBean.attendee.event.endDate}" rendered="#{attendeeMBean.attendee.event.startDate != attendeeMBean.attendee.event.endDate}">
+                                <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
+                            </h:outputText>
+                            <h:outputText value=" at " rendered="#{! empty attendeeMBean.attendee.event.endTime and attendeeMBean.attendee.event.startDate != attendeeMBean.attendee.event.endDate}"/>
+                            <h:outputText value="#{attendeeMBean.attendee.event.endTime}" rendered="#{! empty attendeeMBean.attendee.event.startTime}">
+                                <f:convertDateTime type="time" timeStyle="short" pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                            </h:outputText>
+                        </h:panelGroup>
 
-                            <h:outputText value="#{attendeeMBean.attendee.fullName}" style="font-size: 18px;"/>
-                            <h:outputText value="#{bundle.attendanceNotConfirmedYet}" rendered="#{! attendeeMBean.isAttending}" styleClass="errorMessage"/>
-                            <h:outputFormat value="#{bundle.attendanceAlreadyConfirmed}" rendered="#{attendeeMBean.isAttending}" styleClass="infoMessage">
-                                <f:param value="#{attendeeMBean.attendee.registrationDate}"/>
-                            </h:outputFormat>
-                            <h:commandButton value="#{bundle.attend}" rendered="#{! attendeeMBean.isAttending}" action="#{attendeeMBean.attendEvent}">
-                                <f:param name="eventId" value="#{param.eventId}"/>
-                            </h:commandButton>
-                            <h:commandButton value="#{bundle.cancelAttendance}" rendered="#{attendeeMBean.isAttending}" action="#{attendeeMBean.cancelAttendance}">
-                                <f:param name="eventId" value="#{param.eventId}"/>
-                            </h:commandButton>
-                            
-                            <p:spacer height="10"/>
+                        <p:spacer height="10"/>
 
-                            <p:panel header="#{bundle.previousEvents}">
-                                <h:panelGrid width="100%">
-                                    <c:forEach items="#{attendeeMBean.attendedEvents}" var="event">
-                                        <h:outputText value="#{event.name}" style="font-weight: bold;"/>
+                        <h:outputText value="#{attendeeMBean.attendee.fullName}" style="font-size: 18px;"/>
+                        <h:outputText value="#{bundle.attendanceNotConfirmedYet}" rendered="#{! attendeeMBean.isAttending}" styleClass="errorMessage"/>
+                        <h:outputFormat value="#{bundle.attendanceAlreadyConfirmed}" rendered="#{attendeeMBean.isAttending}" styleClass="infoMessage">
+                            <f:param value="#{attendeeMBean.attendee.registrationDate}"/>
+                        </h:outputFormat>
+                        <h:commandButton value="#{bundle.attend}" rendered="#{! attendeeMBean.isAttending}" action="#{attendeeMBean.attendEvent}">
+                            <f:param name="eventId" value="#{param.eventId}"/>
+                        </h:commandButton>
+                        <h:commandButton value="#{bundle.cancelAttendance}" rendered="#{attendeeMBean.isAttending}" action="#{attendeeMBean.cancelAttendance}">
+                            <f:param name="eventId" value="#{param.eventId}"/>
+                        </h:commandButton>
 
-                                        <h:panelGroup>
-                                            <h:outputText value="#{bundle.from} "/>
-                                            <h:outputText value="#{event.startDate}">
-                                                <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
-                                            </h:outputText>
-                                            <h:outputText value=" #{bundle.from} " rendered="#{! empty event.startTime}"/>
-                                            <h:outputText value="#{event.startTime}" rendered="#{! empty event.startTime}">
-                                                <f:convertDateTime type="time" timeStyle="short" pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
-                                            </h:outputText>
-                                            <h:outputText value=" #{bundle.to} "/>
-                                            <h:outputText value="#{event.endDate}" rendered="#{event.startDate != event.endDate}">
-                                                <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
-                                            </h:outputText>
-                                            <h:outputText value=" #{bundle.at} " rendered="#{! empty event.endTime and event.startDate != event.endDate}"/>
-                                            <h:outputText value="#{event.endTime}" rendered="#{! empty event.startTime}">
-                                                <f:convertDateTime type="time" timeStyle="short" pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
-                                            </h:outputText>
-                                        </h:panelGroup>
+                        <p:spacer height="10"/>
 
-                                        <h:outputText value="#{event}" escape="false">
-                                            <f:converter converterId="EventVenuesConverter"/>
+                        <p:panel header="#{bundle.previousEvents}">
+                            <h:panelGrid width="100%">
+                                <c:forEach items="#{attendeeMBean.attendedEvents}" var="event">
+                                    <h:outputText value="#{event.name}" style="font-weight: bold;"/>
+
+                                    <h:panelGroup>
+                                        <h:outputText value="#{bundle.from} "/>
+                                        <h:outputText value="#{event.startDate}">
+                                            <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
                                         </h:outputText>
-                                        <hr/>
-                                    </c:forEach>
-                                </h:panelGrid>
-                            </p:panel>
-                        </h:panelGrid>
-                    </h:form>
-                </div>
+                                        <h:outputText value=" #{bundle.from} " rendered="#{! empty event.startTime}"/>
+                                        <h:outputText value="#{event.startTime}" rendered="#{! empty event.startTime}">
+                                            <f:convertDateTime type="time" timeStyle="short" pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                                        </h:outputText>
+                                        <h:outputText value=" #{bundle.to} "/>
+                                        <h:outputText value="#{event.endDate}" rendered="#{event.startDate != event.endDate}">
+                                            <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
+                                        </h:outputText>
+                                        <h:outputText value=" #{bundle.at} " rendered="#{! empty event.endTime and event.startDate != event.endDate}"/>
+                                        <h:outputText value="#{event.endTime}" rendered="#{! empty event.startTime}">
+                                            <f:convertDateTime type="time" timeStyle="short" pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                                        </h:outputText>
+                                    </h:panelGroup>
+
+                                    <h:outputText value="#{event}" escape="false">
+                                        <f:converter converterId="EventVenuesConverter"/>
+                                    </h:outputText>
+                                    <hr/>
+                                </c:forEach>
+                            </h:panelGrid>
+                        </p:panel>
+                    </h:panelGrid>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </body>
 </html>

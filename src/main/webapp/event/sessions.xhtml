@@ -29,51 +29,50 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.sessions}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.sessions}</h1>
-                    <h:outputText value="#{sessionMBean.event.name}" style="font-size: 18px; font-weight: bold;"/>
-                    <p><h:link outcome="session" value="#{bundle.newSession}" rendered="#{securityBackingMBean.isUserLeader}">
-                           <f:param name="eventId" value="#{sessionMBean.event.id}"/>
-                       </h:link></p>
-                    <h:form>
-                        <p:dataTable value="#{sessionMBean.eventSessions}" var="sess">
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
-                                <h:link outcome="session" value="#{sess}">
-                                    <f:param name="id" value="#{sess.id}"/>
-                                    <f:param name="eventId" value="#{sess.event.id}"/>
-                                </h:link>
-                            </p:column>
+                <h1>#{bundle.sessions}</h1>
+                <h:outputText value="#{sessionMBean.event.name}" style="font-size: 18px; font-weight: bold;"/>
+                <p><h:link outcome="session" value="#{bundle.newSession}" rendered="#{securityBackingMBean.isUserLeader}">
+                    <f:param name="eventId" value="#{sessionMBean.event.id}"/>
+                </h:link></p>
+                <h:form>
+                    <p:dataTable value="#{sessionMBean.eventSessions}" var="sess">
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
+                            <h:link outcome="session" value="#{sess}">
+                                <f:param name="id" value="#{sess.id}"/>
+                                <f:param name="eventId" value="#{sess.event.id}"/>
+                            </h:link>
+                        </p:column>
 
-                            <p:column style="text-align: right">
-                                <f:facet name="header"><h:outputText value="#{bundle.room}"/></f:facet>
-                                <h:outputText value="#{sess.room}"/>
-                            </p:column>
+                        <p:column style="text-align: right">
+                            <f:facet name="header"><h:outputText value="#{bundle.room}"/></f:facet>
+                            <h:outputText value="#{sess.room}"/>
+                        </p:column>
 
-                            <p:column style="text-align: right">
-                                <f:facet name="header"><h:outputText value="#{bundle.date}"/></f:facet>
-                                <h:outputText value="#{sess.sessionDate}">
-                                    <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
-                                </h:outputText>
-                            </p:column>
+                        <p:column style="text-align: right">
+                            <f:facet name="header"><h:outputText value="#{bundle.date}"/></f:facet>
+                            <h:outputText value="#{sess.sessionDate}">
+                                <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
+                            </h:outputText>
+                        </p:column>
 
-                            <p:column style="text-align: right">
-                                <f:facet name="header"><h:outputText value="#{bundle.start}"/></f:facet>
-                                <h:outputText value="#{sess.startTime}">
-                                    <f:convertDateTime pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
-                                </h:outputText>
-                            </p:column>
+                        <p:column style="text-align: right">
+                            <f:facet name="header"><h:outputText value="#{bundle.start}"/></f:facet>
+                            <h:outputText value="#{sess.startTime}">
+                                <f:convertDateTime pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                            </h:outputText>
+                        </p:column>
 
-                            <p:column style="text-align: right">
-                                <f:facet name="header"><h:outputText value="#{bundle.end}"/></f:facet>
-                                <h:outputText value="#{sess.endTime}">
-                                    <f:convertDateTime pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
-                                </h:outputText>
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                </div>
+                        <p:column style="text-align: right">
+                            <f:facet name="header"><h:outputText value="#{bundle.end}"/></f:facet>
+                            <h:outputText value="#{sess.endTime}">
+                                <f:convertDateTime pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </h:body>
 </html>

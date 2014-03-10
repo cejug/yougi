@@ -29,25 +29,24 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.countries}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.countries}</h1>
-                    <p><h:link outcome="country" value="#{bundle.new} #{bundle.country}"/></p>
-                    <h:form>
-                        <p:dataTable value="#{countryMBean.countries}" var="country">
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
-                                <h:link outcome="country" value="#{country.name}">
-                                    <f:param name="acronym" value="#{country.acronym}"/>
-                                </h:link>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.acronym}"/></f:facet>
-                                <h:outputText value="#{country.acronym}"/>
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                </div>
+                <h1>#{bundle.countries}</h1>
+                <p><h:link outcome="country" value="#{bundle.new} #{bundle.country}"/></p>
+                <h:form>
+                    <p:dataTable value="#{countryMBean.countries}" var="country">
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
+                            <h:link outcome="country" value="#{country.name}">
+                                <f:param name="acronym" value="#{country.acronym}"/>
+                            </h:link>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.acronym}"/></f:facet>
+                            <h:outputText value="#{country.acronym}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </h:body>
 </html>

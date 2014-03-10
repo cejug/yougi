@@ -29,105 +29,104 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.city}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.city}</h1>
-                    <h:form>
-                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+                <h1>#{bundle.city}</h1>
+                <h:form>
+                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
 
-                        <p:tabView>
-                            <p:tab title="#{bundle.properties}">
-                                <h:panelGrid columns="1">
-                                    <h:outputLabel for="name" value="#{bundle.name} *" styleClass="fieldLabel"/>
-                                    <h:inputText id="name" label="#{bundle.name}" required="true" size="30" maxlength="100" value="#{cityMBean.city.name}"/>
-                                    <h:message for="name" errorClass="errorMessage"/>
+                    <p:tabView>
+                        <p:tab title="#{bundle.properties}">
+                            <h:panelGrid columns="1">
+                                <h:outputLabel for="name" value="#{bundle.name} *" styleClass="fieldLabel"/>
+                                <h:inputText id="name" label="#{bundle.name}" required="true" size="30" maxlength="100" value="#{cityMBean.city.name}"/>
+                                <h:message for="name" errorClass="errorMessage"/>
 
-                                    <h:outputLabel for="country" value="#{bundle.country} *" styleClass="fieldLabel"/>
-                                    <h:selectOneMenu id="country" label="#{bundle.country}" value="#{locationMBean.selectedCountry}" required="true">
-                                        <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
-                                        <f:selectItems value="#{locationMBean.countries}" var="country" itemLabel="#{country.name}" itemValue="#{country.acronym}"/>
-                                        <f:ajax render="province"/>
-                                    </h:selectOneMenu>
-                                    <h:message for="country" errorClass="errorMessage"/>
+                                <h:outputLabel for="country" value="#{bundle.country} *" styleClass="fieldLabel"/>
+                                <h:selectOneMenu id="country" label="#{bundle.country}" value="#{locationMBean.selectedCountry}" required="true">
+                                    <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
+                                    <f:selectItems value="#{locationMBean.countries}" var="country" itemLabel="#{country.name}" itemValue="#{country.acronym}"/>
+                                    <f:ajax render="province"/>
+                                </h:selectOneMenu>
+                                <h:message for="country" errorClass="errorMessage"/>
 
-                                    <h:outputLabel for="province" value="#{bundle.province}" styleClass="fieldLabel"/>
-                                    <h:selectOneMenu id="province" label="#{bundle.province}" value="#{locationMBean.selectedProvince}">
-                                        <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
-                                        <f:selectItems value="#{locationMBean.provinces}" var="province" itemLabel="#{province.name}" itemValue="#{province.id}"/>
-                                    </h:selectOneMenu>
+                                <h:outputLabel for="province" value="#{bundle.province}" styleClass="fieldLabel"/>
+                                <h:selectOneMenu id="province" label="#{bundle.province}" value="#{locationMBean.selectedProvince}">
+                                    <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
+                                    <f:selectItems value="#{locationMBean.provinces}" var="province" itemLabel="#{province.name}" itemValue="#{province.id}"/>
+                                </h:selectOneMenu>
 
-                                    <h:panelGrid columns="2">
-                                        <h:selectBooleanCheckbox id="valid" label="#{bundle.valid}" value="#{cityMBean.city.valid}"/>
-                                        <h:outputLabel for="valid" value="#{bundle.valid}"/>
-                                    </h:panelGrid>
-
-                                    <h:panelGrid columns="3">
-                                        <h:outputLabel for="latitude" value="#{bundle.latitude}" styleClass="fieldLabel"/>
-                                        <h:outputLabel for="longitude" value="#{bundle.longitude}" styleClass="fieldLabel"/>
-                                        <h:outputLabel for="timeZone" value="#{bundle.timeZone}" styleClass="fieldLabel"/>
-
-                                        <h:panelGroup>
-                                            <h:inputText id="latitude" label="#{bundle.latitude}" size="15" maxlength="15" value="#{cityMBean.city.latitude}"/>
-                                            <br/><h:message for="latitude" errorClass="errorMessage"/>
-                                        </h:panelGroup>
-                                        <h:panelGroup>
-                                            <h:inputText id="longitude" label="#{bundle.longitude}" size="15" maxlength="15" value="#{cityMBean.city.longitude}"/>
-                                            <br/><h:message for="longitude" errorClass="errorMessage"/>
-                                        </h:panelGroup>
-                                        <h:panelGroup>
-                                            <h:selectOneMenu id="timezone" label="#{bundle.timeZone}" value="#{cityMBean.city.timeZone}">
-                                                <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
-                                                <f:selectItems value="#{cityMBean.timezones}" var="tz" itemLabel="#{tz.offsetLabel}" itemValue="#{tz.id}"/>
-                                            </h:selectOneMenu>
-                                            <br/><h:message for="timeZone" errorClass="errorMessage"/>
-                                        </h:panelGroup>
-                                    </h:panelGrid>
+                                <h:panelGrid columns="2">
+                                    <h:selectBooleanCheckbox id="valid" label="#{bundle.valid}" value="#{cityMBean.city.valid}"/>
+                                    <h:outputLabel for="valid" value="#{bundle.valid}"/>
                                 </h:panelGrid>
-                                <h:inputHidden id="id" value="#{cityMBean.city.id}"/>
 
                                 <h:panelGrid columns="3">
-                                    <h:commandButton value="#{bundle.save}" action="#{cityMBean.save}"/>
-                                    <h:commandButton value="#{bundle.remove}" rendered="#{not empty param.id}" action="#{cityMBean.remove}">
-                                        <f:param name="id" value="#{cityMBean.city.id}" />
-                                    </h:commandButton>
-                                    <h:button value="#{bundle.cancel}" outcome="cities"/>
+                                    <h:outputLabel for="latitude" value="#{bundle.latitude}" styleClass="fieldLabel"/>
+                                    <h:outputLabel for="longitude" value="#{bundle.longitude}" styleClass="fieldLabel"/>
+                                    <h:outputLabel for="timeZone" value="#{bundle.timeZone}" styleClass="fieldLabel"/>
+
+                                    <h:panelGroup>
+                                        <h:inputText id="latitude" label="#{bundle.latitude}" size="15" maxlength="15" value="#{cityMBean.city.latitude}"/>
+                                        <br/><h:message for="latitude" errorClass="errorMessage"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <h:inputText id="longitude" label="#{bundle.longitude}" size="15" maxlength="15" value="#{cityMBean.city.longitude}"/>
+                                        <br/><h:message for="longitude" errorClass="errorMessage"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <h:selectOneMenu id="timezone" label="#{bundle.timeZone}" value="#{cityMBean.city.timeZone}">
+                                            <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
+                                            <f:selectItems value="#{cityMBean.timezones}" var="tz" itemLabel="#{tz.offsetLabel}" itemValue="#{tz.id}"/>
+                                        </h:selectOneMenu>
+                                        <br/><h:message for="timeZone" errorClass="errorMessage"/>
+                                    </h:panelGroup>
                                 </h:panelGrid>
-                            </p:tab>
-                            <p:tab title="#{bundle.inhabitants}">
-                                <p:dataTable value="#{cityMBean.inhabitants}" var="inhabitant">
-                                    <p:column>
-                                        <f:facet name="header"><h:outputText value="#{bundle.firstName}"/></f:facet>
-                                        <h:commandLink value="#{inhabitant.firstName}" action="#{memberMBean.load(inhabitant.id)}"/>
-                                    </p:column>
-                                    <p:column>
-                                        <f:facet name="header"><h:outputText value="#{bundle.lastName}"/></f:facet>
-                                        <h:outputText value="#{inhabitant.lastName}"/>
-                                    </p:column>
-                                    <p:column>
-                                        <f:facet name="header"><h:outputText value="#{bundle.email}"/></f:facet>
-                                        <h:outputText value="#{inhabitant.email}"/>
-                                    </p:column>
-                                    <p:column>
-                                        <f:facet name="header"><h:outputText value="#{bundle.confirmed}"/></f:facet>
-                                        <h:graphicImage rendered="#{inhabitant.confirmed}" url="/images/success-icon.png"/>
-                                    </p:column>
-                                    <p:column>
-                                        <f:facet name="header"><h:outputText value="#{bundle.registrationDate}"/></f:facet>
-                                        <h:outputText value="#{inhabitant.registrationDate}">
-                                            <f:convertDateTime pattern="#{bundle.formatDateAndTime}" timeZone="#{userProfileMBean.timeZone}"/>
-                                        </h:outputText>
-                                    </p:column>
-                                    <p:column>
-                                        <f:facet name="header"><h:outputText value="#{bundle.lastUpdate}"/></f:facet>
-                                        <h:outputText value="#{inhabitant.lastUpdate}">
-                                            <f:convertDateTime pattern="#{bundle.formatDateAndTime}" timeZone="#{userProfileMBean.timeZone}"/>
-                                        </h:outputText>
-                                    </p:column>
-                                </p:dataTable>
-                            </p:tab>
-                        </p:tabView>
-                    </h:form>
-                </div>
+                            </h:panelGrid>
+                            <h:inputHidden id="id" value="#{cityMBean.city.id}"/>
+
+                            <h:panelGrid columns="3">
+                                <h:commandButton value="#{bundle.save}" action="#{cityMBean.save}"/>
+                                <h:commandButton value="#{bundle.remove}" rendered="#{not empty param.id}" action="#{cityMBean.remove}">
+                                    <f:param name="id" value="#{cityMBean.city.id}" />
+                                </h:commandButton>
+                                <h:button value="#{bundle.cancel}" outcome="cities"/>
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="#{bundle.inhabitants}">
+                            <p:dataTable value="#{cityMBean.inhabitants}" var="inhabitant">
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="#{bundle.firstName}"/></f:facet>
+                                    <h:commandLink value="#{inhabitant.firstName}" action="#{memberMBean.load(inhabitant.id)}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="#{bundle.lastName}"/></f:facet>
+                                    <h:outputText value="#{inhabitant.lastName}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="#{bundle.email}"/></f:facet>
+                                    <h:outputText value="#{inhabitant.email}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="#{bundle.confirmed}"/></f:facet>
+                                    <h:graphicImage rendered="#{inhabitant.confirmed}" url="/images/success-icon.png"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="#{bundle.registrationDate}"/></f:facet>
+                                    <h:outputText value="#{inhabitant.registrationDate}">
+                                        <f:convertDateTime pattern="#{bundle.formatDateAndTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="#{bundle.lastUpdate}"/></f:facet>
+                                    <h:outputText value="#{inhabitant.lastUpdate}">
+                                        <f:convertDateTime pattern="#{bundle.formatDateAndTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </body>
 </html>

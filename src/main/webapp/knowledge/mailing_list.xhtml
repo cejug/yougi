@@ -28,41 +28,39 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.mailingList}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.mailingList}</h1>
-                    <h:form>
-                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+                <h1>#{bundle.mailingList}</h1>
+                <h:form>
+                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
 
-                        <h:panelGrid columns="1">
-                            <h:outputLabel for="name" value="#{bundle.name}" styleClass="fieldLabel"/>
-                            <h:inputText id="name" value="#{mailingListMBean.mailingList.name}" size="30" maxlength="50" required="true"/>
-                            <h:message for="name" errorClass="errorMessage"/>
+                    <h:panelGrid columns="1">
+                        <h:outputLabel for="name" value="#{bundle.name}" styleClass="fieldLabel"/>
+                        <h:inputText id="name" value="#{mailingListMBean.mailingList.name}" size="30" maxlength="50" required="true"/>
+                        <h:message for="name" errorClass="errorMessage"/>
 
-                            <h:outputLabel for="description" value="#{bundle.description}" styleClass="fieldLabel"/>
-                            <h:inputTextarea id="description" value="#{mailingListMBean.mailingList.description}" rows="3" cols="40"/>
+                        <h:outputLabel for="description" value="#{bundle.description}" styleClass="fieldLabel"/>
+                        <h:inputTextarea id="description" value="#{mailingListMBean.mailingList.description}" rows="3" cols="40"/>
 
-                            <h:outputLabel for="email" value="#{bundle.email}" styleClass="fieldLabel"/>
-                            <h:inputText id="email" value="#{mailingListMBean.mailingList.email}" size="50" maxlength="100"/>
-                            <h:message for="email" errorClass="errorMessage"/>
+                        <h:outputLabel for="email" value="#{bundle.email}" styleClass="fieldLabel"/>
+                        <h:inputText id="email" value="#{mailingListMBean.mailingList.email}" size="50" maxlength="100"/>
+                        <h:message for="email" errorClass="errorMessage"/>
 
-                            <h:outputLabel for="subscription" value="#{bundle.subscribeTo}" styleClass="fieldLabel"/>
-                            <h:inputText id="subscription" value="#{mailingListMBean.mailingList.subscription}" size="60" maxlength="100"/>
+                        <h:outputLabel for="subscription" value="#{bundle.subscribeTo}" styleClass="fieldLabel"/>
+                        <h:inputText id="subscription" value="#{mailingListMBean.mailingList.subscription}" size="60" maxlength="100"/>
 
-                            <h:outputLabel for="unsubscription" value="#{bundle.unsubscribeFrom}" styleClass="fieldLabel"/>
-                            <h:inputText id="unsubscription" value="#{mailingListMBean.mailingList.unsubscription}" size="60" maxlength="100"/>
-                        </h:panelGrid>
+                        <h:outputLabel for="unsubscription" value="#{bundle.unsubscribeFrom}" styleClass="fieldLabel"/>
+                        <h:inputText id="unsubscription" value="#{mailingListMBean.mailingList.unsubscription}" size="60" maxlength="100"/>
+                    </h:panelGrid>
 
-                        <h:inputHidden id="id" value="#{mailingListMBean.mailingList.id}"/>
+                    <h:inputHidden id="id" value="#{mailingListMBean.mailingList.id}"/>
 
-                        <h:panelGrid columns="3">
-                            <h:commandButton value="#{bundle.save}" action="#{mailingListMBean.save}"/>
-                            <h:commandButton value="#{bundle.remove}" action="#{mailingListMBean.remove}" rendered="#{! empty mailingListMBean.id}">
-                                <f:param name="id" value="#{mailingListMBean.mailingList.id}"/>
-                            </h:commandButton>
-                            <h:button value="#{bundle.cancel}" outcome="mailing_lists"/>
-                        </h:panelGrid>
-                    </h:form>
-                </div>
+                    <h:panelGrid columns="3">
+                        <h:commandButton value="#{bundle.save}" action="#{mailingListMBean.save}"/>
+                        <h:commandButton value="#{bundle.remove}" action="#{mailingListMBean.remove}" rendered="#{! empty mailingListMBean.id}">
+                            <f:param name="id" value="#{mailingListMBean.mailingList.id}"/>
+                        </h:commandButton>
+                        <h:button value="#{bundle.cancel}" outcome="mailing_lists"/>
+                    </h:panelGrid>
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>

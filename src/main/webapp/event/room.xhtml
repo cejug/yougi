@@ -30,69 +30,68 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.room}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.room}</h1>
-                    <h:form>
-                        <h:panelGrid width="100%">
-                            <h:link outcome="event" value="#{roomMBean.event}" style="font-size: 18px;">
-                                <f:param name="id" value="#{roomMBean.event.id}"/>
-                            </h:link>
+                <h1>#{bundle.room}</h1>
+                <h:form>
+                    <h:panelGrid width="100%">
+                        <h:link outcome="event" value="#{roomMBean.event}" style="font-size: 18px;">
+                            <f:param name="id" value="#{roomMBean.event.id}"/>
+                        </h:link>
 
-                            <h:panelGrid columns="2" width="100%" columnClasses="alignColumnLeft, alignColumnRight">
-                                <h:outputText value="#{roomMBean.room}" style="font-size: 26px; font-weight: bold;"/>
-                                <p:button value="#{bundle.edit}" outcome="room_form" rendered="#{securityBackingMBean.isUserLeader}">
-                                    <f:param name="id" value="#{roomMBean.room.id}"/>
-                                </p:button>
-                            </h:panelGrid>
-
-                            <h:outputText value="#{roomMBean.room.venue}" style="font-size: 14px;"/>
-
-                            <p:spacer height="3"/>
-
-                            <h:panelGroup>
-                                <h:outputText value="#{roomMBean.room.description}" style="font-size: 14px;"/>
-                                (<h:outputText value="#{bundle.capacity}"/>:
-                                <h:outputText value=" #{roomMBean.room.capacity}" style="font-size: 14px;"/>
-                                <h:outputText value=" #{bundle.people}"/>)
-                            </h:panelGroup>
-
-                            <p:spacer height="10"/>
-
-                            <h:panelGrid width="100%" columns="2" columnClasses="panelGridColumn,panelGridColumn" rendered="#{! empty roomMBean.event}">
-                                <p:panel header="#{bundle.sessions}">
-                                    <h:panelGrid>
-                                        <c:forEach items="#{roomMBean.sessions}" var="ses">
-                                            <h:panelGroup>
-                                                <h:outputText value="#{ses.startTime}">
-                                                    <f:convertDateTime pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
-                                                </h:outputText>
-                                                <h:outputText value=" - "/>
-                                                <h:outputText value="#{ses.endTime}">
-                                                    <f:convertDateTime pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
-                                                </h:outputText>
-                                                <p:spacer width="10"/>
-                                                <h:link outcome="session" value="#{ses.name}" style="font-weight: bold">
-                                                    <f:param name="id" value="#{ses.id}"/>
-                                                </h:link>
-                                            </h:panelGroup>
-                                        </c:forEach>
-                                    </h:panelGrid>
-                                </p:panel>
-                                <p:panel header="#{bundle.speakers}">
-                                    <h:panelGrid>
-                                        <c:forEach items="#{roomMBean.speakers}" var="spk">
-                                            <h:link outcome="speaker" value="#{spk.fullName}" style="font-weight: bold">
-                                                <f:param name="id" value="#{spk.id}"/>
-                                                <f:param name="eventId" value="#{roomMBean.event.id}"/>
-                                            </h:link>
-                                        </c:forEach>
-                                    </h:panelGrid>
-                                </p:panel>
-                            </h:panelGrid>
+                        <h:panelGrid columns="2" width="100%" columnClasses="alignColumnLeft, alignColumnRight">
+                            <h:outputText value="#{roomMBean.room}" style="font-size: 26px; font-weight: bold;"/>
+                            <p:button value="#{bundle.edit}" outcome="room_form" rendered="#{securityBackingMBean.isUserLeader}">
+                                <f:param name="id" value="#{roomMBean.room.id}"/>
+                            </p:button>
                         </h:panelGrid>
-                    </h:form>
-                </div>
+
+                        <h:outputText value="#{roomMBean.room.venue}" style="font-size: 14px;"/>
+
+                        <p:spacer height="3"/>
+
+                        <h:panelGroup>
+                            <h:outputText value="#{roomMBean.room.description}" style="font-size: 14px;"/>
+                            (<h:outputText value="#{bundle.capacity}"/>:
+                            <h:outputText value=" #{roomMBean.room.capacity}" style="font-size: 14px;"/>
+                            <h:outputText value=" #{bundle.people}"/>)
+                        </h:panelGroup>
+
+                        <p:spacer height="10"/>
+
+                        <h:panelGrid width="100%" columns="2" columnClasses="panelGridColumn,panelGridColumn" rendered="#{! empty roomMBean.event}">
+                            <p:panel header="#{bundle.sessions}">
+                                <h:panelGrid>
+                                    <c:forEach items="#{roomMBean.sessions}" var="ses">
+                                        <h:panelGroup>
+                                            <h:outputText value="#{ses.startTime}">
+                                                <f:convertDateTime pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                                            </h:outputText>
+                                            <h:outputText value=" - "/>
+                                            <h:outputText value="#{ses.endTime}">
+                                                <f:convertDateTime pattern="#{bundle.formatTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                                            </h:outputText>
+                                            <p:spacer width="10"/>
+                                            <h:link outcome="session" value="#{ses.name}" style="font-weight: bold">
+                                                <f:param name="id" value="#{ses.id}"/>
+                                            </h:link>
+                                        </h:panelGroup>
+                                    </c:forEach>
+                                </h:panelGrid>
+                            </p:panel>
+                            <p:panel header="#{bundle.speakers}">
+                                <h:panelGrid>
+                                    <c:forEach items="#{roomMBean.speakers}" var="spk">
+                                        <h:link outcome="speaker" value="#{spk.fullName}" style="font-weight: bold">
+                                            <f:param name="id" value="#{spk.id}"/>
+                                            <f:param name="eventId" value="#{roomMBean.event.id}"/>
+                                        </h:link>
+                                    </c:forEach>
+                                </h:panelGrid>
+                            </p:panel>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </body>
 </html>

@@ -29,78 +29,77 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.profile}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.profile}</h1>
-                    <h:form>
-                        <p:tabView dynamic="false" cache="true" activeIndex="#{param.tab}">
-                            <p:tab title="#{bundle.personalData}">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <h:graphicImage value="#{profilePictureFinder.getPictureFromEmail(userAccountMBean.userAccount.email)}" width="85" height="85"/>
-                                    </div>
-                                    <div class="col-md-10">
-                                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
-
-                                        <dl class="dl-horizontal">
-                                            <dt><h:outputText value="#{bundle.firstName}"/></dt>
-                                            <dd><h:outputText value="#{userAccountMBean.userAccount.firstName}"/></dd>
-                                            <dt><h:outputText value="#{bundle.lastName}"/></dt>
-                                            <dd><h:outputText value="#{userAccountMBean.userAccount.lastName}"/></dd>
-                                            <dt><h:outputText value="#{bundle.gender}"/></dt>
-                                            <dd><h:outputText value="#{userAccountMBean.userAccount.gender}">
-                                                    <f:converter converterId="GenderToString"/>
-                                                </h:outputText></dd>
-                                            <dt><h:outputText value="#{bundle.email}"/></dt>
-                                            <dd><h:outputText value="#{userAccountMBean.userAccount.email}"/></dd>
-                                            <dt><h:outputText value="#{bundle.website}"/></dt>
-                                            <dd><h:outputLink value="http://#{userAccountMBean.userAccount.website}" target="_blank">#{userAccountMBean.userAccount.website}</h:outputLink></dd>
-                                            <dt><h:outputText value="#{bundle.twitter}"/></dt>
-                                            <dd><h:outputLink value="http://twitter.com/#{userAccountMBean.userAccount.twitter}" target="_blank">#{userAccountMBean.userAccount.twitter}</h:outputLink></dd>
-                                            <dt><h:outputText value="#{bundle.country}"/></dt>
-                                            <dd><h:outputText value="#{userAccountMBean.userAccount.country}"/></dd>
-                                            <dt><h:outputText value="#{bundle.province}"/></dt>
-                                            <dd><h:outputText value="#{userAccountMBean.userAccount.province}"/></dd>
-                                            <dt><h:outputText value="#{bundle.city}"/></dt>
-                                            <dd><h:outputText value="#{userAccountMBean.userAccount.city}"/></dd>
-                                            <dt><h:outputText value="#{bundle.timeZone}"/></dt>
-                                            <dd><h:outputText value="#{userAccountMBean.userAccount.timeZone}"/></dd>
-                                        </dl>
-
-                                        <h:button outcome="member" value="#{bundle.update}" styleClass="btn btn-default" style="margin-right: 5px;"/>
-                                        <h:button outcome="member_deactivation" value="#{bundle.deactivateMembership}" styleClass="btn btn-default"/>
-                                    </div>
+                <h1>#{bundle.profile}</h1>
+                <h:form>
+                    <p:tabView dynamic="false" cache="true" activeIndex="#{param.tab}">
+                        <p:tab title="#{bundle.personalData}">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <h:graphicImage value="#{profilePictureFinder.getPictureFromEmail(userAccountMBean.userAccount.email)}" width="85" height="85"/>
                                 </div>
-                            </p:tab>
-                            <p:tab title="#{bundle.partnership}">
-                                <h:panelGroup rendered="#{partnershipMBean.representativeExists}">
-                                    <h:graphicImage value="#{partnershipMBean.logoImage}" rendered="#{! empty partnershipMBean.logoImage}" />
+                                <div class="col-md-10">
+                                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
 
                                     <dl class="dl-horizontal">
-                                        <dt><h:outputText value="#{bundle.name}"/></dt>
-                                        <dd><h:outputText value="#{partnershipMBean.representative.partner.name}"/></dd>
-                                        <dt><h:outputText value="#{bundle.description}"/></dt>
-                                        <dd><h:outputText value="#{partnershipMBean.formattedPartnerDescription}" escape="false"/></dd>
+                                        <dt><h:outputText value="#{bundle.firstName}"/></dt>
+                                        <dd><h:outputText value="#{userAccountMBean.userAccount.firstName}"/></dd>
+                                        <dt><h:outputText value="#{bundle.lastName}"/></dt>
+                                        <dd><h:outputText value="#{userAccountMBean.userAccount.lastName}"/></dd>
+                                        <dt><h:outputText value="#{bundle.gender}"/></dt>
+                                        <dd><h:outputText value="#{userAccountMBean.userAccount.gender}">
+                                                <f:converter converterId="GenderToString"/>
+                                            </h:outputText></dd>
+                                        <dt><h:outputText value="#{bundle.email}"/></dt>
+                                        <dd><h:outputText value="#{userAccountMBean.userAccount.email}"/></dd>
                                         <dt><h:outputText value="#{bundle.website}"/></dt>
-                                        <dd><h:outputLink value="#{partnershipMBean.representative.partner.url}" target="_blank">#{partnershipMBean.representative.partner.url}</h:outputLink></dd>
-                                        <dt><h:outputText value="#{bundle.address}"/></dt>
-                                        <dd><h:outputText value="#{partnershipMBean.formattedPartnerAddress}"/></dd>
-                                        <dt><h:outputText value="#{bundle.representative}"/></dt>
-                                        <dd><h:outputText value="#{partnershipMBean.representative.person}"/></dd>
-                                        <dt><h:outputText value="#{bundle.position}"/></dt>
-                                        <dd><h:outputText value="#{partnershipMBean.representative.position}"/></dd>
-                                        <dt><h:outputText value="#{bundle.phone}"/></dt>
-                                        <dd><h:outputText value="#{partnershipMBean.representative.phone}"/></dd>
+                                        <dd><h:outputLink value="http://#{userAccountMBean.userAccount.website}" target="_blank">#{userAccountMBean.userAccount.website}</h:outputLink></dd>
+                                        <dt><h:outputText value="#{bundle.twitter}"/></dt>
+                                        <dd><h:outputLink value="http://twitter.com/#{userAccountMBean.userAccount.twitter}" target="_blank">#{userAccountMBean.userAccount.twitter}</h:outputLink></dd>
+                                        <dt><h:outputText value="#{bundle.country}"/></dt>
+                                        <dd><h:outputText value="#{userAccountMBean.userAccount.country}"/></dd>
+                                        <dt><h:outputText value="#{bundle.province}"/></dt>
+                                        <dd><h:outputText value="#{userAccountMBean.userAccount.province}"/></dd>
+                                        <dt><h:outputText value="#{bundle.city}"/></dt>
+                                        <dd><h:outputText value="#{userAccountMBean.userAccount.city}"/></dd>
+                                        <dt><h:outputText value="#{bundle.timeZone}"/></dt>
+                                        <dd><h:outputText value="#{userAccountMBean.userAccount.timeZone}"/></dd>
                                     </dl>
 
-                                    <h:button outcome="partnership" value="#{bundle.update}" styleClass="btn btn-default"/>
-                                    <h:button outcome="partnership_logo" value="#{bundle.changeLogo}" styleClass="btn btn-default"/>
-                                </h:panelGroup>
-                                <h:button outcome="partnership" value="#{bundle.becomePartner}" rendered="#{!partnershipMBean.representativeExists}" styleClass="btn btn-default"/>
-                            </p:tab>
-                        </p:tabView>
-                    </h:form>
-                </div>
+                                    <h:button outcome="member" value="#{bundle.update}" styleClass="btn btn-default" style="margin-right: 5px;"/>
+                                    <h:button outcome="member_deactivation" value="#{bundle.deactivateMembership}" styleClass="btn btn-default"/>
+                                </div>
+                            </div>
+                        </p:tab>
+                        <p:tab title="#{bundle.partnership}">
+                            <h:panelGroup rendered="#{partnershipMBean.representativeExists}">
+                                <h:graphicImage value="#{partnershipMBean.logoImage}" rendered="#{! empty partnershipMBean.logoImage}" />
+
+                                <dl class="dl-horizontal">
+                                    <dt><h:outputText value="#{bundle.name}"/></dt>
+                                    <dd><h:outputText value="#{partnershipMBean.representative.partner.name}"/></dd>
+                                    <dt><h:outputText value="#{bundle.description}"/></dt>
+                                    <dd><h:outputText value="#{partnershipMBean.formattedPartnerDescription}" escape="false"/></dd>
+                                    <dt><h:outputText value="#{bundle.website}"/></dt>
+                                    <dd><h:outputLink value="#{partnershipMBean.representative.partner.url}" target="_blank">#{partnershipMBean.representative.partner.url}</h:outputLink></dd>
+                                    <dt><h:outputText value="#{bundle.address}"/></dt>
+                                    <dd><h:outputText value="#{partnershipMBean.formattedPartnerAddress}"/></dd>
+                                    <dt><h:outputText value="#{bundle.representative}"/></dt>
+                                    <dd><h:outputText value="#{partnershipMBean.representative.person}"/></dd>
+                                    <dt><h:outputText value="#{bundle.position}"/></dt>
+                                    <dd><h:outputText value="#{partnershipMBean.representative.position}"/></dd>
+                                    <dt><h:outputText value="#{bundle.phone}"/></dt>
+                                    <dd><h:outputText value="#{partnershipMBean.representative.phone}"/></dd>
+                                </dl>
+
+                                <h:button outcome="partnership" value="#{bundle.update}" styleClass="btn btn-default"/>
+                                <h:button outcome="partnership_logo" value="#{bundle.changeLogo}" styleClass="btn btn-default"/>
+                            </h:panelGroup>
+                            <h:button outcome="partnership" value="#{bundle.becomePartner}" rendered="#{!partnershipMBean.representativeExists}" styleClass="btn btn-default"/>
+                        </p:tab>
+                    </p:tabView>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </body>
 </html>

@@ -29,24 +29,23 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.users}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.messageTemplates}</h1>
-                    <h:form>
-                        <p:dataTable value="#{messageTemplateMBean.messageTemplates}" var="messageTemplate">
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.title}"/></f:facet>
-                                <h:link outcome="message_template" value="#{messageTemplate.title}">
-                                    <f:param name="id" value="#{messageTemplate.id}"/>
-                                </h:link>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.body}"/></f:facet>
-                                <h:outputText value="#{messageTemplate.truncatedBody}"/>
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                </div>
+                <h1>#{bundle.messageTemplates}</h1>
+                <h:form>
+                    <p:dataTable value="#{messageTemplateMBean.messageTemplates}" var="messageTemplate">
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.title}"/></f:facet>
+                            <h:link outcome="message_template" value="#{messageTemplate.title}">
+                                <f:param name="id" value="#{messageTemplate.id}"/>
+                            </h:link>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.body}"/></f:facet>
+                            <h:outputText value="#{messageTemplate.truncatedBody}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </h:body>
 </html>

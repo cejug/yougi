@@ -29,25 +29,24 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.mailingLists}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.mailingLists}</h1>
-                    <h:form>
-                        <p><h:link outcome="mailing_list" value="#{bundle.newMailingList}" rendered="#{securityBackingMBean.isUserLeader}"/></p>
-                        <p:dataTable value="#{mailingListMBean.mailingLists}" var="mailingList">
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
-                                <h:link outcome="mailing_list_view" value="#{mailingList.name}">
-                                    <f:param name="id" value="#{mailingList.id}"/>
-                                </h:link>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.description}"/></f:facet>
-                                <h:outputText value="#{mailingList.description}"/>
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                </div>
+                <h1>#{bundle.mailingLists}</h1>
+                <h:form>
+                    <p><h:link outcome="mailing_list" value="#{bundle.newMailingList}" rendered="#{securityBackingMBean.isUserLeader}"/></p>
+                    <p:dataTable value="#{mailingListMBean.mailingLists}" var="mailingList">
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
+                            <h:link outcome="mailing_list_view" value="#{mailingList.name}">
+                                <f:param name="id" value="#{mailingList.id}"/>
+                            </h:link>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.description}"/></f:facet>
+                            <h:outputText value="#{mailingList.description}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </h:body>
 </html>

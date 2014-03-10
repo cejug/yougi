@@ -28,28 +28,27 @@
         <ui:composition template="/layout.xhtml">
             <ui:define name="title">#{bundle.certificateValidation}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.certificateValidation}</h1>
-                    <h:form>
-                        <p:messages id="messages" showDetail="true" autoUpdate="true"/>
-                        <h:panelGrid>
-                            <h:outputLabel for="fullName" value="#{bundle.fullName} *" styleClass="fieldLabel"/>
-                            <p:inputText id="fullName" value="#{certificateMBean.certificate.certificateFullname}" label="#{bundle.fullName}" size="40" maxlength="100" required="true"/>
+                <h1>#{bundle.certificateValidation}</h1>
+                <h:form>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true"/>
+                    <h:panelGrid>
+                        <h:outputLabel for="fullName" value="#{bundle.fullName} *" styleClass="fieldLabel"/>
+                        <p:inputText id="fullName" value="#{certificateMBean.certificate.certificateFullname}" label="#{bundle.fullName}" size="40" maxlength="100" required="true"/>
 
-                            <h:outputLabel for="event" value="#{bundle.event} *" styleClass="fieldLabel"/>
-                            <p:inputText id="event" value="#{certificateMBean.certificate.certificateEvent}" label="#{bundle.event}" size="40" maxlength="100" required="true"/>
+                        <h:outputLabel for="event" value="#{bundle.event} *" styleClass="fieldLabel"/>
+                        <p:inputText id="event" value="#{certificateMBean.certificate.certificateEvent}" label="#{bundle.event}" size="40" maxlength="100" required="true"/>
 
-                            <h:outputLabel for="venue" value="#{bundle.venue} *" styleClass="fieldLabel"/>
-                            <p:inputText id="venue" value="#{certificateMBean.certificate.certificateVenue}" label="#{bundle.venue}" size="40" maxlength="100" required="true"/>
+                        <h:outputLabel for="venue" value="#{bundle.venue} *" styleClass="fieldLabel"/>
+                        <p:inputText id="venue" value="#{certificateMBean.certificate.certificateVenue}" label="#{bundle.venue}" size="40" maxlength="100" required="true"/>
 
-                            <h:outputLabel for="verificationCode" value="#{bundle.verificationCode} *" styleClass="fieldLabel"/>
-                            <p:inputMask label="#{bundle.verificationCode}" value="#{certificateMBean.certificate.certificateCode}" mask="********-****-****-****-************" size="40" required="true"/>
-                        </h:panelGrid>
-                        <p/>
-                        <p:commandButton value="#{bundle.verify}" action="#{certificateMBean.verifyAuthenticity}"/>
-                    </h:form>
-                </div>
+                        <h:outputLabel for="verificationCode" value="#{bundle.verificationCode} *" styleClass="fieldLabel"/>
+                        <p:inputMask label="#{bundle.verificationCode}" value="#{certificateMBean.certificate.certificateCode}" mask="********-****-****-****-************" size="40" required="true"/>
+                    </h:panelGrid>
+                    <p/>
+                    <p:commandButton value="#{bundle.verify}" action="#{certificateMBean.verifyAuthenticity}"/>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </body>
 </html>

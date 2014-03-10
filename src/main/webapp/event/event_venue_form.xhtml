@@ -28,37 +28,35 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.eventVenue}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.eventVenue}</h1>
-                    <h:form>
-                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
-                        <h:panelGrid>
-                            <h:outputLabel for="event" value="#{bundle.event}" styleClass="requiredFieldLabel"/>
-                            <h:selectOneMenu id="event" label="#{bundle.event}" value="#{eventVenueMBean.selectedEvent}">
-                                <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
-                                <f:selectItems value="#{eventVenueMBean.events}" var="event" itemLabel="#{event.name}" itemValue="#{event.id}"/>
-                                <f:ajax render="venue"/>
-                            </h:selectOneMenu>
-                            <h:message for="event" errorClass="errorMessage"/>
+                <h1>#{bundle.eventVenue}</h1>
+                <h:form>
+                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+                    <h:panelGrid>
+                        <h:outputLabel for="event" value="#{bundle.event}" styleClass="requiredFieldLabel"/>
+                        <h:selectOneMenu id="event" label="#{bundle.event}" value="#{eventVenueMBean.selectedEvent}">
+                            <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
+                            <f:selectItems value="#{eventVenueMBean.events}" var="event" itemLabel="#{event.name}" itemValue="#{event.id}"/>
+                            <f:ajax render="venue"/>
+                        </h:selectOneMenu>
+                        <h:message for="event" errorClass="errorMessage"/>
 
-                            <h:outputLabel for="venue" value="#{bundle.venue}" styleClass="requiredFieldLabel" rendered="true"/>
-                            <h:selectOneMenu id="venue" label="#{bundle.venue}" value="#{eventVenueMBean.selectedVenue}">
-                                <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
-                                <f:selectItems value="#{eventVenueMBean.venues}" var="venue" itemLabel="#{venue.name}" itemValue="#{venue.id}"/>
-                            </h:selectOneMenu>
-                            <h:message for="venue" errorClass="errorMessage"/>
-                        </h:panelGrid>
+                        <h:outputLabel for="venue" value="#{bundle.venue}" styleClass="requiredFieldLabel" rendered="true"/>
+                        <h:selectOneMenu id="venue" label="#{bundle.venue}" value="#{eventVenueMBean.selectedVenue}">
+                            <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
+                            <f:selectItems value="#{eventVenueMBean.venues}" var="venue" itemLabel="#{venue.name}" itemValue="#{venue.id}"/>
+                        </h:selectOneMenu>
+                        <h:message for="venue" errorClass="errorMessage"/>
+                    </h:panelGrid>
 
-                        <h:panelGrid columns="2">
-                            <h:commandButton value="#{bundle.save}" action="#{eventVenueMBean.save}">
-                                <f:param name="eventId" value="#{eventVenueMBean.eventId}"/>
-                            </h:commandButton>
-                            <h:commandButton value="#{bundle.cancel}" action="#{eventVenueMBean.cancel}">
-                                <f:param name="eventId" value="#{eventVenueMBean.eventId}"/>
-                            </h:commandButton>
-                        </h:panelGrid>
-                    </h:form>
-                </div>
+                    <h:panelGrid columns="2">
+                        <h:commandButton value="#{bundle.save}" action="#{eventVenueMBean.save}">
+                            <f:param name="eventId" value="#{eventVenueMBean.eventId}"/>
+                        </h:commandButton>
+                        <h:commandButton value="#{bundle.cancel}" action="#{eventVenueMBean.cancel}">
+                            <f:param name="eventId" value="#{eventVenueMBean.eventId}"/>
+                        </h:commandButton>
+                    </h:panelGrid>
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>

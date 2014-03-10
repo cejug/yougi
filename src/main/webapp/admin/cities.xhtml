@@ -29,42 +29,41 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.cities}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.cities}</h1>
-                    <p><h:link outcome="city" value="#{bundle.newCity}"/></p>
+                <h1>#{bundle.cities}</h1>
+                <p><h:link outcome="city" value="#{bundle.newCity}"/></p>
 
-                    <h:form>
-                        <p:dataTable id="cities" value="#{cityMBean.cities}" var="city">
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
-                                <h:link outcome="city" value="#{city.name}">
-                                    <f:param name="id" value="#{city.id}"/>
-                                </h:link>
-                            </p:column>
+                <h:form>
+                    <p:dataTable id="cities" value="#{cityMBean.cities}" var="city">
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
+                            <h:link outcome="city" value="#{city.name}">
+                                <f:param name="id" value="#{city.id}"/>
+                            </h:link>
+                        </p:column>
 
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.province}"/></f:facet>
-                                <h:outputText value="#{city.province.name}"/>
-                            </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.province}"/></f:facet>
+                            <h:outputText value="#{city.province.name}"/>
+                        </p:column>
 
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.country}"/></f:facet>
-                                <h:outputText value="#{city.country.name}"/>
-                            </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.country}"/></f:facet>
+                            <h:outputText value="#{city.country.name}"/>
+                        </p:column>
 
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.valid}"/></f:facet>
-                                <h:graphicImage rendered="#{city.valid}" url="/images/success-icon.png"/>
-                            </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.valid}"/></f:facet>
+                            <h:graphicImage rendered="#{city.valid}" url="/images/success-icon.png"/>
+                        </p:column>
 
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.timeZone}"/></f:facet>
-                                <h:outputText value="#{city.timeZone}"/>
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                </div>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.timeZone}"/></f:facet>
+                            <h:outputText value="#{city.timeZone}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </h:body>
 </html>

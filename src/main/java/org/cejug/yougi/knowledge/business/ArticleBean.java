@@ -58,14 +58,20 @@ public class ArticleBean extends AbstractBean<Article> {
     }
 
     public List<Article> findPublishedArticles(WebSource webSource) {
-            return em.createQuery("select a from Article a where a.webSource = :webSource order by a.title asc", Article.class)
+            return em.createQuery("select a from Article a where a.webSource = :webSource order by a.publication desc", Article.class)
                                  .setParameter("webSource", webSource)
                                  .getResultList();
     }
 
     public List<Article> findPublishedArticles(Article except) {
-        return em.createQuery("select a from Article a where a.webSource = :webSource and a <> :except order by a.title asc", Article.class)
+        return em.createQuery("select a from Article a where a.webSource = :webSource and a <> :except order by a.publication desc", Article.class)
                 .setParameter("webSource", except.getWebSource())
+                .setParameter("except", except)
+                .getResultList();
+    }
+
+    public List<Article> findOtherPublishedArticles(WebSource except) {
+        return em.createQuery("select a from Article a where a.webSource <> :except order by a.publication desc", Article.class)
                 .setParameter("except", except)
                 .getResultList();
     }

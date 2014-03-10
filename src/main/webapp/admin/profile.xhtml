@@ -28,77 +28,75 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.profile}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.profile}</h1>
-                    <h:form>
-                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
-                        <h:panelGrid columns="2" columnClasses="panelGridColumn">
-                            <h:panelGrid columns="2" cellpadding="3" >
-                                <h:outputText value="#{bundle.firstName}" styleClass="fieldLabel"/>
-                                <h:outputText value="#{bundle.lastName}" styleClass="fieldLabel"/>
+                <h1>#{bundle.profile}</h1>
+                <h:form>
+                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+                    <h:panelGrid columns="2" columnClasses="panelGridColumn">
+                        <h:panelGrid columns="2" cellpadding="3" >
+                            <h:outputText value="#{bundle.firstName}" styleClass="fieldLabel"/>
+                            <h:outputText value="#{bundle.lastName}" styleClass="fieldLabel"/>
 
-                                <h:outputText id="firstName" value="#{profileMBean.userAccount.firstName}"/>
-                                <h:outputText id="lastName" value="#{profileMBean.userAccount.lastName}"/>
+                            <h:outputText id="firstName" value="#{profileMBean.userAccount.firstName}"/>
+                            <h:outputText id="lastName" value="#{profileMBean.userAccount.lastName}"/>
 
-                                <h:outputText value="#{bundle.gender}" styleClass="fieldLabel"/>
-                                <h:outputText/>
+                            <h:outputText value="#{bundle.gender}" styleClass="fieldLabel"/>
+                            <h:outputText/>
 
-                                <h:outputText value="#{profileMBean.userAccount.gender}">
-                                    <f:converter converterId="GenderToString"/>
-                                </h:outputText>
-                                <h:outputText/>
+                            <h:outputText value="#{profileMBean.userAccount.gender}">
+                                <f:converter converterId="GenderToString"/>
+                            </h:outputText>
+                            <h:outputText/>
 
-                                <h:outputText value="#{bundle.email}" styleClass="fieldLabel"/>
-                                <h:outputText/>
+                            <h:outputText value="#{bundle.email}" styleClass="fieldLabel"/>
+                            <h:outputText/>
 
-                                <h:outputText value="#{profileMBean.userAccount.email}"/>
-                                <h:outputText/>
+                            <h:outputText value="#{profileMBean.userAccount.email}"/>
+                            <h:outputText/>
 
-                                <h:outputText value="#{bundle.website}" styleClass="fieldLabel"/>
-                                <h:outputText value="#{bundle.twitter}" styleClass="fieldLabel"/>
+                            <h:outputText value="#{bundle.website}" styleClass="fieldLabel"/>
+                            <h:outputText value="#{bundle.twitter}" styleClass="fieldLabel"/>
 
-                                <h:outputLink value="http://#{profileMBean.userAccount.website}" target="_blank">#{profileMBean.userAccount.website}</h:outputLink>
-                                <h:outputLink value="http://twitter.com/#{profileMBean.userAccount.twitter}" target="_blank">#{profileMBean.userAccount.twitter}</h:outputLink>
+                            <h:outputLink value="http://#{profileMBean.userAccount.website}" target="_blank">#{profileMBean.userAccount.website}</h:outputLink>
+                            <h:outputLink value="http://twitter.com/#{profileMBean.userAccount.twitter}" target="_blank">#{profileMBean.userAccount.twitter}</h:outputLink>
 
-                                <h:outputText value="#{bundle.country}" styleClass="fieldLabel"/>
-                                <h:outputText value="#{bundle.province}" styleClass="fieldLabel"/>
+                            <h:outputText value="#{bundle.country}" styleClass="fieldLabel"/>
+                            <h:outputText value="#{bundle.province}" styleClass="fieldLabel"/>
 
-                                <h:outputText value="#{profileMBean.userAccount.country}"/>
-                                <h:outputText value="#{profileMBean.userAccount.province}"/>
+                            <h:outputText value="#{profileMBean.userAccount.country}"/>
+                            <h:outputText value="#{profileMBean.userAccount.province}"/>
 
-                                <h:outputText value="#{bundle.city}" styleClass="fieldLabel"/>
-                                <h:outputText/>
+                            <h:outputText value="#{bundle.city}" styleClass="fieldLabel"/>
+                            <h:outputText/>
 
-                                <h:outputText value="#{profileMBean.userAccount.city}"/>
-                                <h:outputText/>
-                            </h:panelGrid>
+                            <h:outputText value="#{profileMBean.userAccount.city}"/>
+                            <h:outputText/>
                         </h:panelGrid>
-                        <h:panelGrid columns="2" width="700">
-                            <h:graphicImage rendered="#{profileMBean.userAccount.publicProfile}" url="/images/success-icon.png"/>
-                            <h:outputText rendered="#{profileMBean.userAccount.publicProfile}" value="#{bundle.publicProfileMessage}"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" width="700">
+                        <h:graphicImage rendered="#{profileMBean.userAccount.publicProfile}" url="/images/success-icon.png"/>
+                        <h:outputText rendered="#{profileMBean.userAccount.publicProfile}" value="#{bundle.publicProfileMessage}"/>
 
-                            <h:graphicImage rendered="#{profileMBean.userAccount.mailingList}" url="/images/success-icon.png"/>
-                            <h:outputLabel rendered="#{profileMBean.userAccount.mailingList}" for="mailingList" value="#{bundle.mailingListMessage}"/>
+                        <h:graphicImage rendered="#{profileMBean.userAccount.mailingList}" url="/images/success-icon.png"/>
+                        <h:outputLabel rendered="#{profileMBean.userAccount.mailingList}" for="mailingList" value="#{bundle.mailingListMessage}"/>
 
-                            <h:graphicImage rendered="#{profileMBean.userAccount.event}" url="/images/success-icon.png"/>
-                            <h:outputLabel rendered="#{profileMBean.userAccount.event}" for="event" value="#{bundle.eventMessage}"/>
+                        <h:graphicImage rendered="#{profileMBean.userAccount.event}" url="/images/success-icon.png"/>
+                        <h:outputLabel rendered="#{profileMBean.userAccount.event}" for="event" value="#{bundle.eventMessage}"/>
 
-                            <h:graphicImage rendered="#{profileMBean.userAccount.news}" url="/images/success-icon.png"/>
-                            <h:outputLabel rendered="#{profileMBean.userAccount.news}" for="news" value="#{bundle.newsMessage}"/>
+                        <h:graphicImage rendered="#{profileMBean.userAccount.news}" url="/images/success-icon.png"/>
+                        <h:outputLabel rendered="#{profileMBean.userAccount.news}" for="news" value="#{bundle.newsMessage}"/>
 
-                            <h:graphicImage rendered="#{profileMBean.userAccount.generalOffer}" url="/images/success-icon.png"/>
-                            <h:outputLabel rendered="#{profileMBean.userAccount.generalOffer}" for="generalOffer" value="#{bundle.generalOfferMessage}"/>
+                        <h:graphicImage rendered="#{profileMBean.userAccount.generalOffer}" url="/images/success-icon.png"/>
+                        <h:outputLabel rendered="#{profileMBean.userAccount.generalOffer}" for="generalOffer" value="#{bundle.generalOfferMessage}"/>
 
-                            <h:graphicImage rendered="#{profileMBean.userAccount.jobOffer}" url="/images/success-icon.png"/>
-                            <h:outputLabel rendered="#{profileMBean.userAccount.jobOffer}" for="jobOffer" value="#{bundle.jobOfferMessage}"/>
-                        </h:panelGrid>
-                        <p></p>
-                        <h:panelGrid columns="2">
-                            <h:commandButton value="#{bundle.change}" action="#{memberMBean.load(profileMBean.userAccount.id)}"/>
-                            <h:button outcome="users.xhtml" value="#{bundle.cancel}"/>
-                        </h:panelGrid>
-                    </h:form>
-                </div>
+                        <h:graphicImage rendered="#{profileMBean.userAccount.jobOffer}" url="/images/success-icon.png"/>
+                        <h:outputLabel rendered="#{profileMBean.userAccount.jobOffer}" for="jobOffer" value="#{bundle.jobOfferMessage}"/>
+                    </h:panelGrid>
+                    <p></p>
+                    <h:panelGrid columns="2">
+                        <h:commandButton value="#{bundle.change}" action="#{memberMBean.load(profileMBean.userAccount.id)}"/>
+                        <h:button outcome="users.xhtml" value="#{bundle.cancel}"/>
+                    </h:panelGrid>
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>

@@ -29,52 +29,51 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.attendees}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.attendees}</h1>
-                    <h:outputText value="#{attendeeMBean.event.name}" style="font-size: 18px; font-weight: bold;"/>
-                    <h:form>
-                        <p><h:outputFormat value="#{bundle.numberPeopleAttendingEvent}" style="font-weight: bold; color: blue;">
-                            <f:param value="#{attendeeMBean.numberPeopleAttending}"/>
-                            <f:param value="#{attendeeMBean.numberPeopleAttended}"/>
-                        </h:outputFormat></p>
-                        <p>
-                            <h:panelGrid width="100%" columnClasses="alignColumnRight">
-                                <h:commandButton value="#{bundle.print}" action="#{attendeeMBean.print}"/>
-                            </h:panelGrid>
-                        </p>
-                        <p:dataTable value="#{attendeeMBean.attendees}" var="attendee" selection="#{attendeeMBean.selectedAttendees}" rowKey="#{attendee.id}">
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
-                                <h:outputText value="#{attendee.attendee.firstName}"/>
-                                <h:outputText value=" "/>
-                                <h:outputText value="#{attendee.attendee.lastName}"/>
-                            </p:column>
+                <h1>#{bundle.attendees}</h1>
+                <h:outputText value="#{attendeeMBean.event.name}" style="font-size: 18px; font-weight: bold;"/>
+                <h:form>
+                    <p><h:outputFormat value="#{bundle.numberPeopleAttendingEvent}" style="font-weight: bold; color: blue;">
+                        <f:param value="#{attendeeMBean.numberPeopleAttending}"/>
+                        <f:param value="#{attendeeMBean.numberPeopleAttended}"/>
+                    </h:outputFormat></p>
+                    <p>
+                        <h:panelGrid width="100%" columnClasses="alignColumnRight">
+                            <h:commandButton value="#{bundle.print}" action="#{attendeeMBean.print}"/>
+                        </h:panelGrid>
+                    </p>
+                    <p:dataTable value="#{attendeeMBean.attendees}" var="attendee" selection="#{attendeeMBean.selectedAttendees}" rowKey="#{attendee.id}">
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
+                            <h:outputText value="#{attendee.attendee.firstName}"/>
+                            <h:outputText value=" "/>
+                            <h:outputText value="#{attendee.attendee.lastName}"/>
+                        </p:column>
 
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.email}"/></f:facet>
-                                <h:outputText value="#{attendee.attendee.email}"/>
-                            </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.email}"/></f:facet>
+                            <h:outputText value="#{attendee.attendee.email}"/>
+                        </p:column>
 
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.event}"/></f:facet>
-                                <h:graphicImage rendered="#{attendee.attendee.event}" url="/images/success-icon.png"/>
-                            </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.event}"/></f:facet>
+                            <h:graphicImage rendered="#{attendee.attendee.event}" url="/images/success-icon.png"/>
+                        </p:column>
 
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.registrationDate}"/></f:facet>
-                                <h:outputText value="#{attendee.registrationDate}">
-                                    <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
-                                </h:outputText>
-                            </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.registrationDate}"/></f:facet>
+                            <h:outputText value="#{attendee.registrationDate}">
+                                <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
+                            </h:outputText>
+                        </p:column>
 
-                            <p:column selectionMode="multiple"/>
-                        </p:dataTable>
-                        <p/>
-                        <h:commandButton value="#{bundle.save}" action="#{attendeeMBean.confirmMembersAttended}"/>
-                        <h:button value="#{bundle.back}" outcome="events"/>
-                    </h:form>
-                </div>
+                        <p:column selectionMode="multiple"/>
+                    </p:dataTable>
+                    <p/>
+                    <h:commandButton value="#{bundle.save}" action="#{attendeeMBean.confirmMembersAttended}"/>
+                    <h:button value="#{bundle.back}" outcome="events"/>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </h:body>
 </html>

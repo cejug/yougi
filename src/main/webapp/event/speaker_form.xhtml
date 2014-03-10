@@ -28,46 +28,44 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.speaker}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.speaker}</h1>
-                    <h:form>
-                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
-                        <h:panelGrid>
-                            <h:outputLabel for="userAccount" value="#{bundle.user}" styleClass="fieldLabel"/>
-                            <h:selectOneMenu id="userAccount" label="#{bundle.user}" value="#{speakerMBean.selectedUserAccount}" required="true">
-                                <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
-                                <f:selectItems value="#{speakerMBean.userAccounts}" var="usr" itemLabel="#{usr.fullName}" itemValue="#{usr.id}"/>
-                            </h:selectOneMenu>
-                            <h:message for="userAccount" errorClass="errorMessage"/>
+                <h1>#{bundle.speaker}</h1>
+                <h:form>
+                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+                    <h:panelGrid>
+                        <h:outputLabel for="userAccount" value="#{bundle.user}" styleClass="fieldLabel"/>
+                        <h:selectOneMenu id="userAccount" label="#{bundle.user}" value="#{speakerMBean.selectedUserAccount}" required="true">
+                            <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
+                            <f:selectItems value="#{speakerMBean.userAccounts}" var="usr" itemLabel="#{usr.fullName}" itemValue="#{usr.id}"/>
+                        </h:selectOneMenu>
+                        <h:message for="userAccount" errorClass="errorMessage"/>
 
-                            <h:outputLabel for="organization" value="#{bundle.organization}" styleClass="fieldLabel"/>
-                            <h:inputText id="organization" label="#{bundle.organization}" size="60" maxlength="100" value="#{speakerMBean.speaker.organization}"/>
+                        <h:outputLabel for="organization" value="#{bundle.organization}" styleClass="fieldLabel"/>
+                        <h:inputText id="organization" label="#{bundle.organization}" size="60" maxlength="100" value="#{speakerMBean.speaker.organization}"/>
 
-                            <h:outputLabel for="shortCv" value="#{bundle.shortCv}" styleClass="fieldLabel"/>
-                            <h:inputTextarea id="shortCv" label="#{bundle.shortCv}" cols="60" rows="4" value="#{speakerMBean.speaker.shortCv}"/>
+                        <h:outputLabel for="shortCv" value="#{bundle.shortCv}" styleClass="fieldLabel"/>
+                        <h:inputTextarea id="shortCv" label="#{bundle.shortCv}" cols="60" rows="4" value="#{speakerMBean.speaker.shortCv}"/>
 
-                            <h:outputLabel for="experience" value="#{bundle.experience}" styleClass="fieldLabel"/>
-                            <h:inputTextarea id="experience" label="#{bundle.experience}" cols="60" rows="6" value="#{speakerMBean.speaker.experience}"/>
-                        </h:panelGrid>
+                        <h:outputLabel for="experience" value="#{bundle.experience}" styleClass="fieldLabel"/>
+                        <h:inputTextarea id="experience" label="#{bundle.experience}" cols="60" rows="6" value="#{speakerMBean.speaker.experience}"/>
+                    </h:panelGrid>
 
-                        <h:inputHidden id="id" value="#{speakerMBean.speaker.id}"/>
+                    <h:inputHidden id="id" value="#{speakerMBean.speaker.id}"/>
 
-                        <h:panelGrid columns="3">
-                            <h:commandButton value="#{bundle.save}" action="#{speakerMBean.save}">
-                                <f:param name="eventId" value="#{speakerMBean.eventId}"/>
-                                <f:param name="id" value="#{speakerMBean.speaker.id}"/>
-                            </h:commandButton>
-                            <h:commandButton value="#{bundle.remove}" action="#{speakerMBean.remove}" rendered="#{! empty speakerMBean.id}">
-                                <f:param name="eventId" value="#{speakerMBean.eventId}"/>
-                                <f:param name="id" value="#{speakerMBean.speaker.id}"/>
-                            </h:commandButton>
-                            <h:button value="#{bundle.cancel}" outcome="event">
-                                <f:param name="id" value="#{speakerMBean.eventId}"/>
-                                <f:param name="tab" value="3"/>
-                            </h:button>
-                        </h:panelGrid>
-                    </h:form>
-                </div>
+                    <h:panelGrid columns="3">
+                        <h:commandButton value="#{bundle.save}" action="#{speakerMBean.save}">
+                            <f:param name="eventId" value="#{speakerMBean.eventId}"/>
+                            <f:param name="id" value="#{speakerMBean.speaker.id}"/>
+                        </h:commandButton>
+                        <h:commandButton value="#{bundle.remove}" action="#{speakerMBean.remove}" rendered="#{! empty speakerMBean.id}">
+                            <f:param name="eventId" value="#{speakerMBean.eventId}"/>
+                            <f:param name="id" value="#{speakerMBean.speaker.id}"/>
+                        </h:commandButton>
+                        <h:button value="#{bundle.cancel}" outcome="event">
+                            <f:param name="id" value="#{speakerMBean.eventId}"/>
+                            <f:param name="tab" value="3"/>
+                        </h:button>
+                    </h:panelGrid>
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>

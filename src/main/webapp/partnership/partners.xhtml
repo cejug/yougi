@@ -29,25 +29,24 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.partners}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.partners}</h1>
-                    <p><h:link outcome="partner" value="#{bundle.newPartner}" rendered="#{securityBackingMBean.isUserLeader}"/></p>
-                    <h:form>
-                        <p:dataTable id="partners" value="#{partnerMBean.partners}" var="partner">
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
-                                <h:link value="#{partner.name}" outcome="partner">
-                                    <f:param name="id" value="#{partner.id}"/>
-                                </h:link>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.url}"/></f:facet>
-                                <h:outputLink value="#{partner.url}" target="_blank">#{partner.url}</h:outputLink>
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                </div>
+                <h1>#{bundle.partners}</h1>
+                <p><h:link outcome="partner" value="#{bundle.newPartner}" rendered="#{securityBackingMBean.isUserLeader}"/></p>
+                <h:form>
+                    <p:dataTable id="partners" value="#{partnerMBean.partners}" var="partner">
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
+                            <h:link value="#{partner.name}" outcome="partner">
+                                <f:param name="id" value="#{partner.id}"/>
+                            </h:link>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.url}"/></f:facet>
+                            <h:outputLink value="#{partner.url}" target="_blank">#{partner.url}</h:outputLink>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </h:body>
 </html>

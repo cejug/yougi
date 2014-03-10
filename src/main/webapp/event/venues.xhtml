@@ -29,28 +29,27 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.venues}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.venues}</h1>
-                    <h:form>
-                        <p><h:link outcome="venue_form" value="#{bundle.newVenue}" rendered="#{securityBackingMBean.isUserLeader}"/></p>
-                        <p:dataTable value="#{venueMBean.venues}" var="venue" emptyMessage="#{bundle.noRecordsFound}">
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
-                                <h:link outcome="venue" value="#{venue.name}">
-                                    <f:param name="id" value="#{venue.id}"/>
-                                </h:link>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.location}"/></f:facet>
-                                <h:outputText value="#{venue.location}"/>
-                            </p:column>
-                            <p:column>
-                                <h:outputLink value="http://#{venue.website}" target="_blank"><h:graphicImage url="/images/external_link.png"/></h:outputLink>
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                </div>
+                <h1>#{bundle.venues}</h1>
+                <h:form>
+                    <p><h:link outcome="venue_form" value="#{bundle.newVenue}" rendered="#{securityBackingMBean.isUserLeader}"/></p>
+                    <p:dataTable value="#{venueMBean.venues}" var="venue" emptyMessage="#{bundle.noRecordsFound}">
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
+                            <h:link outcome="venue" value="#{venue.name}">
+                                <f:param name="id" value="#{venue.id}"/>
+                            </h:link>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.location}"/></f:facet>
+                            <h:outputText value="#{venue.location}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputLink value="http://#{venue.website}" target="_blank"><h:graphicImage url="/images/external_link.png"/></h:outputLink>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </h:body>
 </html>

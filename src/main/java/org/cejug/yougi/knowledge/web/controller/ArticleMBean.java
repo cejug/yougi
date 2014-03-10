@@ -43,6 +43,7 @@ public class ArticleMBean {
     private Article article;
 
     private List<Article> articlesFromSameSource;
+    private List<Article> otherPublishedArticles;
 
     @ManagedProperty(value="#{param.id}")
     private String id;
@@ -82,6 +83,13 @@ public class ArticleMBean {
             this.articlesFromSameSource = articleBean.findPublishedArticles(this.article);
         }
         return articlesFromSameSource;
+    }
+
+    public List<Article> getOtherPublishedArticles() {
+        if(this.otherPublishedArticles == null) {
+            otherPublishedArticles = articleBean.findOtherPublishedArticles(this.article.getWebSource());
+        }
+        return otherPublishedArticles;
     }
 
     @PostConstruct

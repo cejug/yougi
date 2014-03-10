@@ -29,57 +29,56 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.subscriptions}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.subscriptions}</h1>
+                <h1>#{bundle.subscriptions}</h1>
 
-                    <h:panelGrid cellpadding="3">
-                        <h:outputText value="#{subscriptionMBean.mailingList.name}" style="font-size: 18px; font-weight: bold;"/>
-                        <h:outputText value="#{subscriptionMBean.mailingList.description}" escape="false" style="font-size: 14px;"/>
+                <h:panelGrid cellpadding="3">
+                    <h:outputText value="#{subscriptionMBean.mailingList.name}" style="font-size: 18px; font-weight: bold;"/>
+                    <h:outputText value="#{subscriptionMBean.mailingList.description}" escape="false" style="font-size: 14px;"/>
+                </h:panelGrid>
+                <p/>
+                <h:form>
+                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+                    <h:panelGrid columns="3">
+                        <h:outputText value="#{bundle.email}"/>
+                        <h:inputText id="searchCriteria" value="#{subscriptionMBean.emailCriteria}" size="40" maxlength="100"/>
+                        <h:commandButton value="#{bundle.search}" action="#{subscriptionMBean.searchByEmail()}">
+                            <f:param name="list" value="#{subscriptionMBean.mailingList.id}"/>
+                        </h:commandButton>
                     </h:panelGrid>
                     <p/>
-                    <h:form>
-                        <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
-                        <h:panelGrid columns="3">
-                            <h:outputText value="#{bundle.email}"/>
-                            <h:inputText id="searchCriteria" value="#{subscriptionMBean.emailCriteria}" size="40" maxlength="100"/>
-                            <h:commandButton value="#{bundle.search}" action="#{subscriptionMBean.searchByEmail()}">
-                                <f:param name="list" value="#{subscriptionMBean.mailingList.id}"/>
-                            </h:commandButton>
-                        </h:panelGrid>
-                        <p/>
-                        <p:dataTable value="#{subscriptionMBean.subscriptions}" var="subscription" emptyMessage="#{bundle.noRecordsFound}">
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.email}"/></f:facet>
-                                <h:link outcome="subscription" value="#{subscription.emailAddress}">
-                                    <f:param name="id" value="#{subscription.id}"/>
-                                </h:link>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
-                                <h:outputText value="#{subscription.userAccount.fullName}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.from}"/></f:facet>
-                                <h:outputText value="#{subscription.subscriptionDate}">
-                                    <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
-                                </h:outputText>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.to}"/></f:facet>
-                                <h:outputText value="#{subscription.unsubscriptionDate}">
-                                    <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
-                                </h:outputText>
-                            </p:column>
-                        </p:dataTable>
-                        <p/>
-                        <h:panelGrid columns="3">
-                            <h:button value="#{bundle.back}" outcome="mailing_list_view">
-                                <f:param name="id" value="#{subscriptionMBean.mailingList.id}"/>
-                            </h:button>
-                        </h:panelGrid>
-                    </h:form>
-                </div>
+                    <p:dataTable value="#{subscriptionMBean.subscriptions}" var="subscription" emptyMessage="#{bundle.noRecordsFound}">
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.email}"/></f:facet>
+                            <h:link outcome="subscription" value="#{subscription.emailAddress}">
+                                <f:param name="id" value="#{subscription.id}"/>
+                            </h:link>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
+                            <h:outputText value="#{subscription.userAccount.fullName}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.from}"/></f:facet>
+                            <h:outputText value="#{subscription.subscriptionDate}">
+                                <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.to}"/></f:facet>
+                            <h:outputText value="#{subscription.unsubscriptionDate}">
+                                <f:convertDateTime pattern="#{bundle.formatDate}" timeZone="#{userProfileMBean.timeZone}"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                    <p/>
+                    <h:panelGrid columns="3">
+                        <h:button value="#{bundle.back}" outcome="mailing_list_view">
+                            <f:param name="id" value="#{subscriptionMBean.mailingList.id}"/>
+                        </h:button>
+                    </h:panelGrid>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </body>
 </html>

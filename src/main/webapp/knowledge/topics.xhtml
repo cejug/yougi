@@ -29,33 +29,32 @@
         <ui:composition template="../layout.xhtml">
             <ui:define name="title">#{bundle.topics}</ui:define>
             <ui:define name="content">
-                <div class="content">
-                    <h1>#{bundle.topics}</h1>
-                    <h:form>
-                        <p><h:link outcome="topic" value="#{bundle.newTopic}" rendered="#{securityBackingMBean.isUserLeader}"/></p>
-                        <p:dataTable value="#{topicMBean.topics}" var="topic" emptyMessage="#{bundle.noRecordsFound}">
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
-                                <h:link outcome="topic" value="#{topic.name}">
-                                    <f:param name="topic" value="#{topic.name}"/>
-                                </h:link>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.label}"/></f:facet>
-                                <h:outputText value="#{topic.label}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.description}"/></f:facet>
-                                <h:outputText value="#{topic.description}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header"><h:outputText value="#{bundle.valid}"/></f:facet>
-                                <h:graphicImage rendered="#{topic.valid}" url="/images/success-icon.png"/>
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                </div>
+                <h1>#{bundle.topics}</h1>
+                <h:form>
+                    <p><h:link outcome="topic" value="#{bundle.newTopic}" rendered="#{securityBackingMBean.isUserLeader}"/></p>
+                    <p:dataTable value="#{topicMBean.topics}" var="topic" emptyMessage="#{bundle.noRecordsFound}">
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
+                            <h:link outcome="topic" value="#{topic.name}">
+                                <f:param name="topic" value="#{topic.name}"/>
+                            </h:link>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.label}"/></f:facet>
+                            <h:outputText value="#{topic.label}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.description}"/></f:facet>
+                            <h:outputText value="#{topic.description}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="#{bundle.valid}"/></f:facet>
+                            <h:graphicImage rendered="#{topic.valid}" url="/images/success-icon.png"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </ui:define>
+            <ui:define name="jquery"></ui:define>
         </ui:composition>
     </h:body>
 </html>

@@ -29,7 +29,7 @@ import org.cejug.yougi.business.AbstractBean;
 import org.cejug.yougi.business.AccessGroupBean;
 import org.cejug.yougi.entity.AccessGroup;
 import org.cejug.yougi.event.entity.Event;
-import org.cejug.yougi.event.entity.Session;
+import org.cejug.yougi.event.entity.SessionEvent;
 import org.cejug.yougi.event.entity.Speaker;
 import org.cejug.yougi.entity.UserAccount;
 
@@ -63,13 +63,13 @@ public class SpeakerBean extends AbstractBean<Speaker> {
         List<UserAccount> candidates;
         AccessGroup accessGroup = accessGroupBean.findAccessGroupByName("speakers");
         if(except != null) {
-            candidates = em.createQuery("select ug.userAccount from UserGroup ug where ug.accessGroup = :group and ug.userAccount not in (select s.userAccount from Speaker s where s.userAccount <> :except) order by ug.userAccount.firstName, ug.userAccount.lastName asc")
+            candidates = em.createQuery("select ug.userAccount from UserGroup ug where ug.accessGroup = :group and ug.userAccount not in (select s.userAccount from Speaker s where s.userAccount <> :except) order by ug.userAccount.firstName, ug.userAccount.lastName asc", UserAccount.class)
                            .setParameter("except", except)
                            .setParameter("group", accessGroup)
                            .getResultList();
         }
         else {
-            candidates = em.createQuery("select ug.userAccount from UserGroup ug where ug.accessGroup = :group and ug.userAccount not in (select s.userAccount from Speaker s) order by ug.userAccount.firstName, ug.userAccount.lastName asc")
+            candidates = em.createQuery("select ug.userAccount from UserGroup ug where ug.accessGroup = :group and ug.userAccount not in (select s.userAccount from Speaker s) order by ug.userAccount.firstName, ug.userAccount.lastName asc", UserAccount.class)
                            .setParameter("group", accessGroup)
                            .getResultList();
         }
@@ -80,23 +80,23 @@ public class SpeakerBean extends AbstractBean<Speaker> {
      * Returns the entire list of speakers from all registered events.
      */
     public List<Speaker> findSpeakers() {
-        return em.createQuery("select distinct s from Speaker s order by s.userAccount.firstName asc").getResultList();
+        return em.createQuery("select distinct s from Speaker s order by s.userAccount.firstName asc", Speaker.class).getResultList();
     }
 
     /**
      * Returns the list of speakers from a specific event only.
      */
     public List<Speaker> findSpeakers(Event event) {
-        return em.createQuery("select distinct ss.speaker from SpeakerSession ss where ss.session.event = :event order by ss.speaker.userAccount.firstName asc")
-                                   .setParameter("event", event)
+        return em.createQuery("select distinct ss.speaker from SpeakerSession ss where ss.sessionEvent.event.id = :event order by ss.speaker.userAccount.firstName asc", Speaker.class)
+                                   .setParameter("event", event.getId())
                                    .getResultList();
     }
 
     /**
      * Returns the list of speakers from a specific session only.
      */
-    public List<Speaker> findSpeakers(Session session) {
-        return em.createQuery("select ss.speaker from SpeakerSession ss where ss.session = :session order by ss.speaker.userAccount.firstName asc")
+    public List<Speaker> findSpeakers(SessionEvent session) {
+        return em.createQuery("select ss.speaker from SpeakerSession ss where ss.sessionEvent = :session order by ss.speaker.userAccount.firstName asc", Speaker.class)
                  .setParameter("session", session)
                  .getResultList();
     }

@@ -38,7 +38,7 @@
                                 <f:param name="id" value="#{sessionMBean.session.event.id}"/>
                             </h:link>
                             <h:outputText value=" / " style="font-size: 18px;" rendered="#{! empty sessionMBean.session.track}"/>
-                            <h:link outcome="track" value="#{sessionMBean.session.track}" style="font-size: 18px;">
+                            <h:link outcome="track" value="#{sessionMBean.session.track}" style="font-size: 18px;" rendered="#{! empty sessionMBean.session.track}">
                                 <f:param name="id" value="#{sessionMBean.session.track.id}"/>
                             </h:link>
                         </h:panelGroup>
@@ -83,15 +83,6 @@
                         <p:separator/>
 
                         <h:outputText value="#{sessionMBean.session.description}" escape="false" style="font-size: 14px; font-style: italic;"/>
-
-                        <p:spacer height="5"/>
-
-                        <h:panelGroup>
-                            <h:outputText value="#{bundle.topics}: "/>
-                            <h:outputText value="#{sessionMBean.session.topics}" escape="false">
-                                <f:converter converterId="TopicsConverter"/>
-                            </h:outputText>
-                        </h:panelGroup>
 
                         <p:spacer height="5"/>
 

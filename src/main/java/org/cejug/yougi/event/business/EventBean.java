@@ -77,22 +77,22 @@ public class EventBean extends AbstractBean<Event> {
     }
 
     public List<Event> findParentEvents() {
-    	List<Event> events =  em.createQuery("select e from Event e where e.parent is null order by e.endDate desc")
+    	List<Event> events =  em.createQuery("select e from Event e where e.parent is null order by e.endDate desc", Event.class)
         		        .getResultList();
 
         return loadVenues(events);
     }
 
     public List<Event> findEvents(Event parent) {
-        List<Event> events = em.createQuery("select e from Event e where e.parent = :parent order by e.startDate asc")
-                               .setParameter("parent", parent)
+        List<Event> events = em.createQuery("select e from Event e where e.parent.id = :parent order by e.startDate asc", Event.class)
+                               .setParameter("parent", parent.getId())
                                .getResultList();
         return loadVenues(events);
     }
 
     public List<Event> findUpCommingEvents() {
     	Calendar today = Calendar.getInstance();
-        List<Event> events = em.createQuery("select e from Event e where e.endDate >= :today and e.parent is null order by e.startDate asc")
+        List<Event> events = em.createQuery("select e from Event e where e.endDate >= :today and e.parent is null order by e.startDate asc", Event.class)
         		       .setParameter("today", today.getTime())
                                .getResultList();
         return loadVenues(events);

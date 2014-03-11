@@ -31,7 +31,7 @@ import org.cejug.yougi.event.business.EventBean;
 import org.cejug.yougi.event.business.SessionBean;
 import org.cejug.yougi.event.business.TrackBean;
 import org.cejug.yougi.event.entity.Event;
-import org.cejug.yougi.event.entity.Session;
+import org.cejug.yougi.event.entity.SessionEvent;
 import org.cejug.yougi.event.entity.Track;
 
 /**
@@ -61,20 +61,17 @@ public class SessionMBean implements Serializable {
     @ManagedProperty(value = "#{venueSelectionMBean}")
     private VenueSelectionMBean venueSelectionMBean;
 
-    private Session session;
+    private SessionEvent session;
 
     private List<Event> events;
-    private List<Session> sessions;
-    private List<Session> relatedSessions;
-    private List<Session> sessionsInTheSameRoom;
-    private List<Session> sessionsInParallel;
+    private List<SessionEvent> sessions;
+    private List<SessionEvent> relatedSessions;
+    private List<SessionEvent> sessionsInTheSameRoom;
+    private List<SessionEvent> sessionsInParallel;
     private List<Track> tracks;
 
     private String selectedEvent;
     private String selectedTrack;
-
-    public SessionMBean() {
-    }
 
     public String getId() {
         return id;
@@ -96,15 +93,15 @@ public class SessionMBean implements Serializable {
         this.venueSelectionMBean = venueSelectionMBean;
     }
 
-    public Session getSession() {
+    public SessionEvent getSession() {
         return session;
     }
 
-    public void setSession(Session session) {
+    public void setSession(SessionEvent session) {
         this.session = session;
     }
 
-    public List<Session> getSessions() {
+    public List<SessionEvent> getSessions() {
         if (this.sessions == null) {
             Event event = new Event(selectedEvent);
             this.sessions = sessionBean.findSessionsWithSpeakers(event);
@@ -112,21 +109,21 @@ public class SessionMBean implements Serializable {
         return this.sessions;
     }
 
-    public List<Session> getRelatedSessions() {
+    public List<SessionEvent> getRelatedSessions() {
         if (this.relatedSessions == null) {
             this.relatedSessions = sessionBean.findRelatedSessions(this.session);
         }
         return this.relatedSessions;
     }
 
-    public List<Session> getSessionsInTheSameRoom() {
+    public List<SessionEvent> getSessionsInTheSameRoom() {
         if (this.sessionsInTheSameRoom == null) {
             this.sessionsInTheSameRoom = sessionBean.findSessionsInTheSameRoom(this.session);
         }
         return this.sessionsInTheSameRoom;
     }
 
-    public List<Session> getSessionsInParallel() {
+    public List<SessionEvent> getSessionsInParallel() {
         if(this.sessionsInParallel == null) {
             this.sessionsInParallel = sessionBean.findSessionsInParallel(this.session);
         }
@@ -164,11 +161,11 @@ public class SessionMBean implements Serializable {
         return this.events;
     }
 
-    public Session getPreviousSession() {
+    public SessionEvent getPreviousSession() {
         return sessionBean.findPreviousSession(this.session);
     }
 
-    public Session getNextSession() {
+    public SessionEvent getNextSession() {
         return sessionBean.findNextSession(this.session);
     }
 
@@ -176,14 +173,15 @@ public class SessionMBean implements Serializable {
     public void load() {
         if (this.eventId != null && !this.eventId.isEmpty()) {
             Event event = eventBean.find(eventId);
-            this.session = new Session();
+            this.session = new SessionEvent();
             this.session.setEvent(event);
             this.selectedEvent = event.getId();
             this.venueSelectionMBean.setSelectedEvent(this.selectedEvent);
         }
 
         if (this.id != null && !this.id.isEmpty()) {
-            this.session = sessionBean.findSession(id);
+            this.session = sessionBean.find(this.id);
+            System.out.println("session: "+ this.session);
             Event event = this.session.getEvent();
             this.selectedEvent = event.getId();
             if(this.session.getTrack() != null) {
@@ -197,7 +195,7 @@ public class SessionMBean implements Serializable {
         }
 
         if(this.session == null) {
-            this.session = new Session();
+            this.session = new SessionEvent();
         }
     }
 

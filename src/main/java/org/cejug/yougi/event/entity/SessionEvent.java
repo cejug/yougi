@@ -31,7 +31,7 @@ import org.cejug.yougi.entity.Identified;
  */
 @Entity
 @Table(name = "session")
-public class Session implements Serializable, Identified {
+public class SessionEvent implements Serializable, Identified {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,13 +39,11 @@ public class Session implements Serializable, Identified {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name="event", nullable=false)
+    @JoinColumn(name="event")
     private Event event;
 
-    @Column(name="name" ,nullable=false)
     private String name;
 
-    @Column(name="description")
     private String description;
 
     @Column(name="detailed_description")
@@ -74,11 +72,11 @@ public class Session implements Serializable, Identified {
     private Date endTime;
 
     @ManyToOne
-    @JoinColumn(name="room", nullable=false)
+    @JoinColumn(name="room")
     private Room room;
 
     @ManyToOne
-    @JoinColumn(name="track", nullable=false)
+    @JoinColumn(name="track")
     private Track track;
 
     private Boolean approved;
@@ -86,10 +84,10 @@ public class Session implements Serializable, Identified {
     @Transient
     private List<Speaker> speakers;
 
-    public Session() {
+    public SessionEvent() {
     }
 
-    public Session(String id) {
+    public SessionEvent(String id) {
         this.id = id;
     }
 
@@ -224,10 +222,10 @@ public class Session implements Serializable, Identified {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Session)) {
+        if (!(object instanceof SessionEvent)) {
             return false;
         }
-        Session other = (Session) object;
+        SessionEvent other = (SessionEvent) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

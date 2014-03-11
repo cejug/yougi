@@ -31,7 +31,7 @@ import org.cejug.yougi.event.business.EventBean;
 import org.cejug.yougi.event.business.SessionBean;
 import org.cejug.yougi.event.business.TrackBean;
 import org.cejug.yougi.event.entity.Event;
-import org.cejug.yougi.event.entity.Session;
+import org.cejug.yougi.event.entity.SessionEvent;
 import org.cejug.yougi.event.entity.Speaker;
 import org.cejug.yougi.event.entity.Track;
 
@@ -62,7 +62,7 @@ public class TrackMBean implements Serializable {
     private Track track;
 
     private List<Event> events;
-    private List<Session> sessions;
+    private List<SessionEvent> sessions;
     private List<Speaker> speakers;
 
     private String selectedEvent;
@@ -110,7 +110,7 @@ public class TrackMBean implements Serializable {
         return this.events;
     }
 
-    public List<Session> getSessions() {
+    public List<SessionEvent> getSessions() {
         if (this.sessions == null) {
             this.sessions = sessionBean.findSessionsByTrack(this.track);
         }

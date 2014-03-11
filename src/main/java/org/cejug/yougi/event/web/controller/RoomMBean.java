@@ -31,11 +31,8 @@ import org.cejug.yougi.event.business.EventBean;
 import org.cejug.yougi.event.business.RoomBean;
 import org.cejug.yougi.event.business.SessionBean;
 import org.cejug.yougi.event.business.VenueBean;
-import org.cejug.yougi.event.entity.Event;
-import org.cejug.yougi.event.entity.Room;
-import org.cejug.yougi.event.entity.Session;
-import org.cejug.yougi.event.entity.Speaker;
-import org.cejug.yougi.event.entity.Venue;
+import org.cejug.yougi.event.entity.*;
+import org.cejug.yougi.event.entity.SessionEvent;
 
 /**
  * @author Hildeberto Mendonca - http://www.hildeberto.com
@@ -70,7 +67,7 @@ public class RoomMBean implements Serializable {
     private Event event;
     private Room room;
 
-    private List<Session> sessions;
+    private List<SessionEvent> sessions;
     private List<Speaker> speakers;
     private List<Venue> venues;
 
@@ -128,7 +125,7 @@ public class RoomMBean implements Serializable {
         this.selectedVenue = selectedVenue;
     }
 
-    public List<Session> getSessions() {
+    public List<SessionEvent> getSessions() {
         if (this.sessions == null) {
             this.sessions = sessionBean.findSessionsByRoom(this.event, this.room);
         }

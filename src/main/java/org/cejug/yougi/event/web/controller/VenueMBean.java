@@ -34,7 +34,7 @@ import org.cejug.yougi.event.business.SessionBean;
 import org.cejug.yougi.event.business.VenueBean;
 import org.cejug.yougi.event.entity.Event;
 import org.cejug.yougi.event.entity.Room;
-import org.cejug.yougi.event.entity.Session;
+import org.cejug.yougi.event.entity.SessionEvent;
 import org.cejug.yougi.event.entity.Venue;
 import org.cejug.yougi.web.controller.LocationMBean;
 
@@ -123,7 +123,7 @@ public class VenueMBean implements Serializable {
         this.locationMBean = locationMBean;
     }
 
-    public List<Session> getSessions(Room room) {
+    public List<SessionEvent> getSessions(Room room) {
         return sessionBean.findSessionsByRoom(this.event, room);
     }
 

@@ -33,7 +33,7 @@ import org.cejug.yougi.event.business.EventBean;
 import org.cejug.yougi.event.business.SessionBean;
 import org.cejug.yougi.event.business.SpeakerBean;
 import org.cejug.yougi.event.entity.Event;
-import org.cejug.yougi.event.entity.Session;
+import org.cejug.yougi.event.entity.SessionEvent;
 import org.cejug.yougi.event.entity.Speaker;
 
 /**
@@ -69,7 +69,7 @@ public class SpeakerMBean implements Serializable {
 
     private List<Event> events;
 
-    private List<Session> sessions;
+    private List<SessionEvent> sessions;
 
     private List<UserAccount> userAccounts;
 
@@ -151,7 +151,7 @@ public class SpeakerMBean implements Serializable {
     /**
      * @return the sessions
      */
-    public List<Session> getSessions() {
+    public List<SessionEvent> getSessions() {
         if(this.sessions == null) {
             if(this.event != null) {
                 this.sessions = sessionBean.findSessions(this.event);
@@ -183,7 +183,7 @@ public class SpeakerMBean implements Serializable {
     /**
      * @param sessions the sessions to set
      */
-    public void setSessions(List<Session> sessions) {
+    public void setSessions(List<SessionEvent> sessions) {
         this.sessions = sessions;
     }
 

@@ -51,13 +51,8 @@ import org.cejug.yougi.event.business.SessionBean;
 import org.cejug.yougi.event.business.SpeakerBean;
 import org.cejug.yougi.event.business.SponsorshipEventBean;
 import org.cejug.yougi.event.business.TrackBean;
-import org.cejug.yougi.event.entity.Attendee;
-import org.cejug.yougi.event.entity.Event;
-import org.cejug.yougi.event.entity.Session;
-import org.cejug.yougi.event.entity.Speaker;
-import org.cejug.yougi.event.entity.SponsorshipEvent;
-import org.cejug.yougi.event.entity.Track;
-import org.cejug.yougi.event.entity.Venue;
+import org.cejug.yougi.event.entity.*;
+import org.cejug.yougi.event.entity.SessionEvent;
 import org.cejug.yougi.web.controller.UserProfileMBean;
 import org.cejug.yougi.web.report.EventAttendeeCertificate;
 import org.cejug.yougi.util.ResourceBundleHelper;
@@ -114,7 +109,7 @@ public class EventMBean {
     private List<Event> subEvents;
     private List<Event> parentEvents;
     private List<Venue> venues;
-    private List<Session> sessions;
+    private List<SessionEvent> sessions;
     private List<Track> tracks;
     private List<Speaker> speakers;
     private List<Attendee> attendees;
@@ -214,14 +209,14 @@ public class EventMBean {
         return subEvents;
     }
 
-    public List<Session> getSessions() {
+    public List<SessionEvent> getSessions() {
         if (sessions == null) {
             sessions = sessionBean.findSessionsWithSpeakers(this.event);
         }
         return sessions;
     }
 
-    public List<Session> getSessions(Event event) {
+    public List<SessionEvent> getSessions(Event event) {
         return sessionBean.findSessionsWithSpeakers(event);
     }
 

@@ -61,6 +61,6 @@ public abstract class AbstractBean<T extends Identified> {
     }
 
     public T find(String id) {
-        return getEntityManager().find(entityClass, id);
+        return getEntityManager().find(this.entityClass, id);
     }
 }

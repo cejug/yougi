@@ -86,9 +86,7 @@
 
                     <h:panelGrid columns="2">
                         <h:commandButton value="#{bundle.save}" action="#{venueMBean.save}"/>
-                        <h:button value="#{bundle.cancel}" outcome="venue">
-                            <f:param name="id" value="#{venueMBean.venue.id}"/>
-                        </h:button>
+                        <h:button value="#{bundle.cancel}" outcome="venues"/>
                     </h:panelGrid>
                 </h:form>
             </ui:define>

@@ -32,7 +32,7 @@
                 <h1>#{bundle.venue}</h1>
                 <h:form>
                     <h:panelGrid width="100%">
-                        <h:link outcome="event" value="#{venueMBean.event}" style="font-size: 18px;">
+                        <h:link outcome="event" value="#{venueMBean.event}" style="font-size: 18px;" rendered="#{! empty venueMBean.event}">
                             <f:param name="id" value="#{venueMBean.event.id}"/>
                         </h:link>
 

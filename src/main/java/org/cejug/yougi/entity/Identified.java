@@ -27,6 +27,6 @@ package org.cejug.yougi.entity;
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 public interface Identified {
-    String getId();
-    void setId(String id);
+    public String getId();
+    public void setId(String id);
 }

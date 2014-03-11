@@ -30,19 +30,15 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.cejug.yougi.business.AbstractBean;
-import org.cejug.yougi.event.entity.Event;
-import org.cejug.yougi.event.entity.Session;
+import org.cejug.yougi.event.entity.*;
+import org.cejug.yougi.event.entity.SessionEvent;
 import org.cejug.yougi.knowledge.business.TopicBean;
-import org.cejug.yougi.event.entity.Room;
-import org.cejug.yougi.event.entity.Speaker;
-import org.cejug.yougi.event.entity.Track;
-import org.cejug.yougi.event.entity.Venue;
 
 /**
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @Stateless
-public class SessionBean extends AbstractBean<Session> {
+public class SessionBean extends AbstractBean<SessionEvent> {
 
     @PersistenceContext
     private EntityManager em;
@@ -57,7 +53,7 @@ public class SessionBean extends AbstractBean<Session> {
     private RoomBean roomBean;
 
     public SessionBean() {
-        super(Session.class);
+        super(SessionEvent.class);
     }
 
     @Override
@@ -65,19 +61,8 @@ public class SessionBean extends AbstractBean<Session> {
         return em;
     }
 
-    public Session findSession(String id) {
-        Session session = null;
-        if (id != null) {
-            session = em.find(Session.class, id);
-            if(session != null) {
-                session.setSpeakers(speakerBean.findSpeakers(session));
-            }
-        }
-        return session;
-    }
-
-    public List<Session> findSessions(Event event) {
-        return em.createQuery("select s from Session s where s.event = :event order by s.startDate, s.startTime asc")
+    public List<SessionEvent> findSessions(Event event) {
+        return em.createQuery("select s from SessionEvent s where s.event = :event order by s.startDate, s.startTime asc", SessionEvent.class)
                  .setParameter("event", event)
                  .getResultList();
     }
@@ -87,25 +72,25 @@ public class SessionBean extends AbstractBean<Session> {
      * A session may contain more than one speaker.
      * @param event The event with which the sessions are related.
      */
-    public List<Session> findSessionsWithSpeakers(Event event) {
-        List<Session> sessions = em.createQuery("select s from Session s where s.event = :event order by s.startDate, s.startTime asc")
-                                   .setParameter("event", event)
+    public List<SessionEvent> findSessionsWithSpeakers(Event event) {
+        List<SessionEvent> sessions = em.createQuery("select s from SessionEvent s where s.event.id = :event order by s.startDate, s.startTime asc", SessionEvent.class)
+                                   .setParameter("event", event.getId())
                                    .getResultList();
 
         return loadSpeakers(sessions);
     }
 
-    private List<Session> loadSpeakers(List<Session> sessions) {
+    private List<SessionEvent> loadSpeakers(List<SessionEvent> sessions) {
         if(sessions != null) {
-            for(Session session: sessions) {
+            for(SessionEvent session: sessions) {
                 session.setSpeakers(speakerBean.findSpeakers(session));
             }
         }
         return sessions;
     }
 
-    public Session findPreviousSession(Session currentSession) {
-        List<Session> foundSessions = em.createQuery("select s from Session s where s.event = :event and s.startDate <= :startDate and s.startTime < :startTime order by s.startDate, s.startTime desc")
+    public SessionEvent findPreviousSession(SessionEvent currentSession) {
+        List<SessionEvent> foundSessions = em.createQuery("select s from SessionEvent s where s.event = :event and s.startDate <= :startDate and s.startTime < :startTime order by s.startDate, s.startTime desc", SessionEvent.class)
                                         .setParameter("event", currentSession.getEvent())
                                         .setParameter("startDate", currentSession.getStartDate())
                                         .setParameter("startTime", currentSession.getStartTime())
@@ -118,8 +103,8 @@ public class SessionBean extends AbstractBean<Session> {
         return null;
     }
 
-    public Session findNextSession(Session currentSession) {
-        List<Session> foundSessions = em.createQuery("select s from Session s where s.event = :event and s.startDate >= :startDate and s.startTime > :startTime order by s.startDate, s.startTime asc")
+    public SessionEvent findNextSession(SessionEvent currentSession) {
+        List<SessionEvent> foundSessions = em.createQuery("select s from SessionEvent s where s.event = :event and s.startDate >= :startDate and s.startTime > :startTime order by s.startDate, s.startTime asc", SessionEvent.class)
                 .setParameter("event", currentSession.getEvent())
                 .setParameter("startDate", currentSession.getStartDate())
                 .setParameter("startTime", currentSession.getStartTime())
@@ -132,77 +117,77 @@ public class SessionBean extends AbstractBean<Session> {
         return null;
     }
 
-    public List<Session> findSessionsByTopic(String topic) {
-        return em.createQuery("select s from Session s where s.topics like '%"+ topic +"%'").getResultList();
+    public List<SessionEvent> findSessionsByTopic(String topic) {
+        return em.createQuery("select s from SessionEvent s where s.topics like '%"+ topic +"%'", SessionEvent.class).getResultList();
     }
 
-    public List<Session> findSessionsInByTopic(String topic) {
-        return em.createQuery("select s from Session s where s.topics like '%"+ topic +"%'").getResultList();
+    public List<SessionEvent> findSessionsInByTopic(String topic) {
+        return em.createQuery("select s from SessionEvent s where s.topics like '%"+ topic +"%'", SessionEvent.class).getResultList();
     }
 
-    public List<Session> findSessionsByTrack(Track track) {
-        return em.createQuery("select s from Session s where s.track = :track order by s.startDate asc")
+    public List<SessionEvent> findSessionsByTrack(Track track) {
+        return em.createQuery("select s from SessionEvent s where s.track = :track order by s.startDate asc", SessionEvent.class)
                  .setParameter("track", track)
                  .getResultList();
     }
 
-    public List<Session> findSessionsByRoom(Event event, Room room) {
-        return em.createQuery("select s from Session s where s.event = :event and s.room = :room order by s.startDate asc")
+    public List<SessionEvent> findSessionsByRoom(Event event, Room room) {
+        return em.createQuery("select s from SessionEvent s where s.event = :event and s.room = :room order by s.startDate asc", SessionEvent.class)
                  .setParameter("event", event)
                  .setParameter("room", room)
                  .getResultList();
     }
 
-    public List<Session> findSessionsByVenue(Event event, Venue venue) {
+    public List<SessionEvent> findSessionsByVenue(Event event, Venue venue) {
         List<Room> rooms = roomBean.findRooms(venue);
-        List<Session> sessions = new ArrayList<>();
+        List<SessionEvent> sessions = new ArrayList<>();
         for(Room room: rooms) {
             sessions.addAll(findSessionsByRoom(event, room));
         }
         return sessions;
     }
 
-    public List<Session> findSessionsSpeaker(Speaker speaker) {
-        return em.createQuery("select ss.session from SpeakerSession ss where ss.speaker = :speaker")
+    public List<SessionEvent> findSessionsSpeaker(Speaker speaker) {
+        return em.createQuery("select ss.sessionEvent from SpeakerSession ss where ss.speaker = :speaker", SessionEvent.class)
                  .setParameter("speaker", speaker)
                  .getResultList();
     }
 
     public List<Event> findEventsSpeaker(Speaker speaker) {
-        return em.createQuery("select ss.session.event from SpeakerSession ss where ss.speaker = :speaker")
+        return em.createQuery("select ss.sessionEvent.event from SpeakerSession ss where ss.speaker = :speaker", Event.class)
                  .setParameter("speaker", speaker)
                  .getResultList();
     }
 
     public List<Speaker> findSessionSpeakersByRoom(Event event, Room room) {
-        List<Session> sessions = findSessionsByRoom(event, room);
+        List<SessionEvent> sessions = findSessionsByRoom(event, room);
         sessions = loadSpeakers(sessions);
         Set<Speaker> speakers = new HashSet<>();
-        for(Session session: sessions) {
+        for(SessionEvent session: sessions) {
             speakers.addAll(session.getSpeakers());
         }
         return new ArrayList<>(speakers);
     }
 
     public List<Speaker> findSessionSpeakersByTrack(Track track) {
-        List<Session> sessions = findSessionsByTrack(track);
+        List<SessionEvent> sessions = findSessionsByTrack(track);
         sessions = loadSpeakers(sessions);
         Set<Speaker> speakers = new HashSet<>();
-        for(Session session: sessions) {
+        for(SessionEvent session: sessions) {
             speakers.addAll(session.getSpeakers());
         }
         return new ArrayList<>(speakers);
     }
 
-    public List<Session> findSessionsInTheSameRoom(Session session) {
-        return em.createQuery("select s from Session s where s <> :session and s.room = :room order by s.startDate asc")
+    public List<SessionEvent> findSessionsInTheSameRoom(SessionEvent session) {
+        return em.createQuery("select s from SessionEvent s where s <> :session and s.room = :room order by s.startDate asc", SessionEvent.class)
                  .setParameter("session", session)
                  .setParameter("room", session.getRoom())
                  .getResultList();
     }
 
-    public List<Session> findSessionsInParallel(Session session) {
-        return em.createQuery("select s from Session s where s <> :except and s.startDate = :date and (s.startTime between :otherStartTime1 and :otherEndTime1 or s.endTime between :otherStartTime2 and :otherEndTime2)")
+    public List<SessionEvent> findSessionsInParallel(SessionEvent session) {
+        return em.createQuery("select s from SessionEvent s where s <> :except and s.startDate = :date and (s.startTime between :otherStartTime1 and :otherEndTime1 or s.endTime between :otherStartTime2 and :otherEndTime2)", SessionEvent.class)
                  .setParameter("except", session)
                  .setParameter("date", session.getStartDate())
                  .setParameter("otherStartTime1", session.getStartTime())
@@ -212,14 +197,14 @@ public class SessionBean extends AbstractBean<Session> {
                  .getResultList();
     }
 
-    public List<Session> findRelatedSessions(Session session) {
+    public List<SessionEvent> findRelatedSessions(SessionEvent session) {
         String strTopics = session.getTopics();
         if(strTopics == null) {
             return null;
         }
 
         StringTokenizer st = new StringTokenizer(strTopics, ",");
-        Set<Session> relatedSessions = new HashSet<>();
+        Set<SessionEvent> relatedSessions = new HashSet<>();
         String topic;
         while(st.hasMoreTokens()) {
             topic = st.nextToken().trim();

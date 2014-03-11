@@ -31,7 +31,7 @@ import javax.persistence.Table;
 import org.cejug.yougi.entity.Identified;
 
 /**
- * Associates a speaker to a session.
+ * Associates a speaker to a sessionEvent.
  *
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
@@ -49,7 +49,7 @@ public class AttendeeSession implements Serializable, Identified {
 
     @ManyToOne
     @JoinColumn(name = "session", nullable = false)
-    private Session session;
+    private SessionEvent sessionEvent;
 
     private Boolean bookmark;
 
@@ -74,12 +74,12 @@ public class AttendeeSession implements Serializable, Identified {
         this.attendee = attendee;
     }
 
-    public Session getSession() {
-        return session;
+    public SessionEvent getSessionEvent() {
+        return sessionEvent;
     }
 
-    public void setSession(Session session) {
-        this.session = session;
+    public void setSessionEvent(SessionEvent sessionEvent) {
+        this.sessionEvent = sessionEvent;
     }
 
     public Boolean getBookmark() {
@@ -119,6 +119,6 @@ public class AttendeeSession implements Serializable, Identified {
 
     @Override
     public String toString() {
-        return this.session.getName() + " - " + this.attendee.getUserAccount().getFullName();
+        return this.sessionEvent.getName() + " - " + this.attendee.getUserAccount().getFullName();
     }
 }

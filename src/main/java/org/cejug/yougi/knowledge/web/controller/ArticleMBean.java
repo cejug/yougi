@@ -112,8 +112,8 @@ public class ArticleMBean {
     }
 
     public String unpublish() {
-        this.unpublishedArticlesMBean.addArticle(this.article);
         articleBean.unpublish(this.article);
+        this.unpublishedArticlesMBean.addArticle(this.article);
         return "web_source?faces-redirect=true&id="+ this.article.getWebSource().getId();
     }
 

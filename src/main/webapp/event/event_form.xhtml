@@ -50,9 +50,9 @@
                             <h:outputLabel for="endDate" value="#{bundle.end}" styleClass="requiredFieldLabel"/>
                             <h:outputText/>
 
-                            <p:calendar id="startDate" label="#{bundle.startDate}" value="#{eventMBean.event.startDate}" pattern="#{bundle.formatDate}" required="true" size="10" timeZone="#{userProfileMBean.timeZone}"/>
+                            <p:calendar id="startDate" readonly="true" label="#{bundle.startDate}" value="#{eventMBean.event.startDate}" pattern="#{bundle.formatDate}" required="true" size="10" timeZone="#{userProfileMBean.timeZone}"/>
                             <p:calendar id="startTime" label="#{bundle.startHour}" value="#{eventMBean.event.startTime}" pattern="#{bundle.formatTime}" size="6" timeOnly="true" required="true"/>
-                            <p:calendar id="endDate" label="#{bundle.endDate}" value="#{eventMBean.event.endDate}" pattern="#{bundle.formatDate}" required="true" size="10" timeZone="#{userProfileMBean.timeZone}"/>
+                            <p:calendar id="endDate" readonly="true" label="#{bundle.endDate}" value="#{eventMBean.event.endDate}" pattern="#{bundle.formatDate}" required="true" size="10" timeZone="#{userProfileMBean.timeZone}"/>
                             <p:calendar id="endTime" label="#{bundle.endHour}" value="#{eventMBean.event.endTime}" pattern="#{bundle.formatTime}" size="6" timeOnly="true" required="true"/>
 
                             <h:outputText value="#{bundle.formatDateLabel}" styleClass="fieldFormat"/>

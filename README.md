@@ -12,7 +12,7 @@ Contact
             Email Address: me at hildeberto.com
    
           Project Website: http://www.yougi.org
-     Existing Deployments: http://www.cejug.org/ug
+     Existing Deployments: http://www.cejug.org/
                            http://www.yougi.net
                   Twitter: https://twitter.com/youginet (Follow @youginet)
 

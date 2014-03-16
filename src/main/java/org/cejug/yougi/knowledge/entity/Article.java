@@ -132,7 +132,7 @@ public class Article implements Serializable, Identified, PublicContent {
 
     @Override
     public String getUrl() {
-        return "knowledge/article";
+        return "/knowledge/article";
     }
 
     /**

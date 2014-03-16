@@ -103,7 +103,7 @@
                         <div class="nav navbar-nav navbar-right">
                             <c:if test="#{empty request.remoteUser}">
                                 <ul class="nav navbar-nav">
-                                    <li><h:commandLink action="#{securityBackingMBean.login}" value="#{bundle.signIn}"/></li>
+                                    <li><h:link outcome="/profile/home" value="#{bundle.signIn}"/></li>
                                     <li><h:commandLink action="#{securityBackingMBean.register}" value="#{bundle.register}"/></li>
                                 </ul>
                             </c:if>
@@ -121,7 +121,9 @@
             </div>
         </nav>
 
-        <div class="container">
+        <ui:insert name="showcase"></ui:insert>
+
+        <div class="container" style="padding-top: 20px;">
             <ui:insert name="content">Content</ui:insert>
         </div>
 

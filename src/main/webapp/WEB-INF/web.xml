@@ -113,6 +113,7 @@
             <url-pattern>/event/track_form.xhtml</url-pattern>
             <url-pattern>/event/venue_form.xhtml</url-pattern>
             <url-pattern>/knowledge/web_source_form.xhtml</url-pattern>
+            <url-pattern>/knowledge/article_form.xhtml</url-pattern>
             <http-method>GET</http-method>
             <http-method>POST</http-method>
         </web-resource-collection>

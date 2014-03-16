@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- Yougi is a web application conceived to manage user groups or
+ * communities focused on a certain domain of knowledge, whose members are
+ * constantly sharing information and participating in social and educational
+ * events. Copyright (C) 2011 Hildeberto Mendonça.
+ *
+ * This application is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
+ *
+ * This application is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ *
+ * There is a full copy of the GNU Lesser General Public License along with
+ * this library. Look for the file license.txt at the root level. If you do not
+ * find it, write to the Free Software Foundation, Inc., 59 Temple Place,
+ * Suite 330, Boston, MA 02111-1307 USA.
+ * -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<!-- INTERFACE -->
+<cc:interface>
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+    <div id="container" class="js-masonry" data-masonry-options='{ "columnWidth": ".grid-sizer", "itemSelector": ".item", "gutter": 20, "transitionDuration": "0.4s" }'>
+        <div class="grid-sizer"></div>
+        <c:forEach items="#{frontPageMBean.publicContents}" var="publicContent">
+            <div class="item">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="text-info">
+                            <h:link value="#{publicContent.title}" outcome="#{publicContent.url}">
+                                <f:param name="id" value="#{publicContent.id}"/>
+                            </h:link>
+                            <small><i><h:outputText value="#{bundle.by} " rendered="#{! empty publicContent.author}"/>
+                                <h:outputText value="#{publicContent.author}" rendered="#{! empty publicContent.author}"/></i></small>
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                        <p><h:outputText value="#{publicContent.summary}" escape="false"/></p>
+                    </div>
+                    <div class="panel-footer">
+                        <p class="text-right">
+                            <h:link value="#{bundle.readMore}..." outcome="#{publicContent.url}">
+                                <f:param name="id" value="#{publicContent.id}"/>
+                            </h:link>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+    <script src="#{request.contextPath}/resources/js/masonry.pkgd.min.js"></script>
+</cc:implementation>
+</html>

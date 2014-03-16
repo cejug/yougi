@@ -32,7 +32,7 @@
                 <div class="page-header">
                     <h1>#{bundle.article}</h1>
                 </div>
-                <h:form>
+                <h:form id="form">
                     <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
 
                     <div class="form-group">
@@ -43,6 +43,9 @@
                     <div class="form-group">
                         <h:outputText value="#{bundle.permanentLink}" styleClass="fieldLabel"/><br/>
                         <h:outputLink value="#{article.permanentLink}" target="_blank"><h:outputText value="#{articleMBean.article.permanentLink}" styleClass="form-control-static"/></h:outputLink>
+                        <h:commandButton value="#{bundle.reloadFromSource}" styleClass="btn btn-default" style="margin-left: 30px;">
+                            <f:ajax execute="@form" render="title publication author summary content" listener="#{articleMBean.reloadFromSource}"/>
+                        </h:commandButton>
                     </div>
 
                     <div class="row">
@@ -79,7 +82,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <h:outputLabel for="summary" value="#{bundle.summary}" styleClass="fieldLabel"/>
-                                <h:inputTextarea id="summary" value="#{articleMBean.article.summary}" styleClass="form-control"/>
+                                <h:inputTextarea id="summary" value="#{articleMBean.article.summary}" styleClass="form-control" rows="5"/>
                                 <h:message for="summary" errorClass="errorMessage"/>
                             </div>
                         </div>

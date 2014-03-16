@@ -25,7 +25,10 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.event.AjaxBehaviorEvent;
+
 import org.cejug.yougi.knowledge.business.ArticleBean;
+import org.cejug.yougi.knowledge.business.WebSourceBean;
 import org.cejug.yougi.knowledge.entity.Article;
 
 import java.util.List;
@@ -39,6 +42,9 @@ public class ArticleMBean {
 
     @EJB
     private ArticleBean articleBean;
+
+    @EJB
+    private WebSourceBean webSourceBean;
 
     private Article article;
 
@@ -120,5 +126,11 @@ public class ArticleMBean {
     public String save() {
         articleBean.save(this.article);
         return "web_source?faces-redirect=true&id="+ this.article.getWebSource().getId();
+    }
+
+    public void reloadFromSource() {
+        this.article = articleBean.find(this.article.getId());
+        this.article = this.webSourceBean.loadOriginalArticle(this.article);
+        this.article.setPublished(true);
     }
 }

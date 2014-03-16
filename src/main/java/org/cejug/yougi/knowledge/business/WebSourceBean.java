@@ -73,17 +73,6 @@ public class WebSourceBean extends AbstractBean<WebSource> {
         return em;
     }
 
-    public WebSource findWebSourceByProvider(UserAccount provider) {
-        try {
-            return (WebSource) em.createQuery("select ws from WebSource ws where ws.provider = :provider order by ws.title asc")
-                                 .setParameter("provider", provider)
-                                 .getSingleResult();
-        }
-        catch(NoResultException nre) {
-            return null;
-        }
-    }
-
     public List<WebSource> findWebResources() {
     	return em.createQuery("select ws from WebSource ws order by ws.title asc", WebSource.class).getResultList();
     }
@@ -96,6 +85,16 @@ public class WebSourceBean extends AbstractBean<WebSource> {
                     "ua not in (select distinct ws.provider from WebSource ws) " +
                 "order by ua.firstName", UserAccount.class)
                 .getResultList();
+    }
+
+    public Article loadOriginalArticle(Article article) {
+        List<Article> articles = loadArticles(article.getWebSource());
+        for(Article originalArticle:articles) {
+            if(article.getPermanentLink().equals(originalArticle.getPermanentLink())) {
+                return originalArticle;
+            }
+        }
+        return article;
     }
 
     public List<Article> loadUnpublishedArticles(WebSource webSource) {

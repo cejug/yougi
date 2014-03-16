@@ -199,7 +199,7 @@ public class Event implements Serializable, Identified, PublicContent {
 
     @Override
     public String getUrl() {
-        return "event/event";
+        return "/event/event";
     }
 
     public String getAuthor() {

@@ -30,23 +30,22 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <h:form id="loginForm" styleClass="form">
+        <form id="loginForm" method="post" action="j_security_check">
             <div class="form-group">
-                <h:outputLabel for="username" value="#{bundle.email}" styleClass="fieldLabel"/>
-                <h:inputText id="username" value="#{securityBackingMBean.username}" required="true" onchange="formatEmail(this);" styleClass="form-control"/>
+                <label for="j_username" class="control-label">#{bundle.email}</label>
+                <input type="text" id="j_username" name="j_username" onchange="formatEmail(this);" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="j_password" class="control-label">#{bundle.password}</label>
+                <input type="password" id="j_password" name="j_password" class="form-control"/>
             </div>
 
-            <div class="form-group">
-                <h:outputLabel for="password" value="#{bundle.password}" styleClass="fieldLabel"/>
-                <h:inputSecret id="password" value="#{securityBackingMBean.password}" required="true" styleClass="form-control"/>
-            </div>
+            <input type="submit" name="submit" value="#{bundle.signIn}" class="btn btn-primary"/>
 
-            <h:commandButton value="#{bundle.signIn}" class="btn btn-primary" action="#{securityBackingMBean.authenticate()}"/>
-                
             <p/>
             <h:link outcome="request_password_change" value="#{bundle.forgotPassword}"/>
             <h:outputText value=" | "/>
             <h:link outcome="registration" value="#{bundle.register}"/>
-        </h:form>
+        </form>
     </cc:implementation>
 </html>

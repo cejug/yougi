@@ -23,91 +23,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:ug="http://java.sun.com/jsf/composite/yougi">
     <h:body>
         <ui:composition template="/layout.xhtml">
             <ui:define name="title">#{bundle.home}</ui:define>
+            <ui:define name="showcase">
+                <ug:showcase/>
+            </ui:define>
             <ui:define name="content">
-                <div class="row">
-                    <c:if test="#{empty request.remoteUser}">
-                        <div class="col-md-8">
-                            <div class="jumbotron">
-                                <h2 class="text-primary">
-                                    <h:link value="#{frontPageMBean.mainPublicContent.title}" outcome="#{frontPageMBean.mainPublicContent.url}">
-                                        <f:param name="id" value="#{frontPageMBean.mainPublicContent.id}"/>
-                                    </h:link>
-                                    <small><h:outputText value="#{bundle.by} " rendered="#{! empty frontPageMBean.mainPublicContent.author}"/>
-                                    <h:outputText value="#{frontPageMBean.mainPublicContent.author}" rendered="#{! empty frontPageMBean.mainPublicContent.author}"/></small>
-                                </h2>
-                                <p><h:outputText value="#{frontPageMBean.mainPublicContent.summary}" escape="false"/></p>
-                                <p class="text-right">
-                                    <h:link value="#{bundle.readMore}..." outcome="#{frontPageMBean.mainPublicContent.url}">
-                                        <f:param name="id" value="#{frontPageMBean.mainPublicContent.id}"/>
-                                    </h:link>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">Login</div>
-                                <div class="panel-body">
-                                    <ug:loginPanel/>
-                                </div>
-                            </div>
-                        </div>
-                    </c:if>
-                    <c:if test="#{! empty request.remoteUser}">
-                        <div class="col-md-12">
-                            <div class="jumbotron">
-                                <h2 class="text-primary">
-                                    <h:link value="#{frontPageMBean.mainPublicContent.title}" outcome="#{frontPageMBean.mainPublicContent.url}">
-                                        <f:param name="id" value="#{frontPageMBean.mainPublicContent.id}"/>
-                                    </h:link>
-                                    <small><h:outputText value="#{bundle.by} " rendered="#{! empty frontPageMBean.mainPublicContent.author}"/>
-                                    <h:outputText value="#{frontPageMBean.mainPublicContent.author}" rendered="#{! empty frontPageMBean.mainPublicContent.author}"/></small>
-                                </h2>
-                                <p><h:outputText value="#{frontPageMBean.mainPublicContent.summary}" escape="false"/></p>
-                                <p class="text-right">
-                                    <h:link value="#{bundle.readMore}..." outcome="#{frontPageMBean.mainPublicContent.url}">
-                                        <f:param name="id" value="#{frontPageMBean.mainPublicContent.id}"/>
-                                    </h:link>
-                                </p>
-                            </div>
-                        </div>
-                    </c:if>
-                </div>
-
-                <div id="container" class="js-masonry" data-masonry-options='{ "columnWidth": ".grid-sizer", "itemSelector": ".item", "gutter": 20, "transitionDuration": "0.4s" }'>
-                    <div class="grid-sizer"></div>
-                    <c:forEach items="#{frontPageMBean.publicContents}" var="publicContent">
-                        <div class="item">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="text-info">
-                                        <h:link value="#{publicContent.title}" outcome="#{publicContent.url}">
-                                            <f:param name="id" value="#{publicContent.id}"/>
-                                        </h:link>
-                                        <small><i><h:outputText value="#{bundle.by} " rendered="#{! empty publicContent.author}"/>
-                                                <h:outputText value="#{publicContent.author}" rendered="#{! empty publicContent.author}"/></i></small>
-                                    </h4>
-                                </div>
-                                <div class="panel-body">
-                                    <p><h:outputText value="#{publicContent.summary}" escape="false"/></p>
-                                </div>
-                                <div class="panel-footer">
-                                    <p class="text-right">
-                                        <h:link value="#{bundle.readMore}..." outcome="#{publicContent.url}">
-                                            <f:param name="id" value="#{publicContent.id}"/>
-                                        </h:link>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </c:forEach>
-                </div>
-                <script src="#{request.contextPath}/resources/js/masonry.pkgd.min.js"></script>
+                <ug:frontPage/>
             </ui:define>
         </ui:composition>
     </h:body>

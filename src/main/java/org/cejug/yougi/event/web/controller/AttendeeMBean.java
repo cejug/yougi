@@ -20,27 +20,47 @@
  * */
 package org.cejug.yougi.event.web.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfWriter;
+import org.cejug.yougi.business.ApplicationPropertyBean;
+import org.cejug.yougi.entity.ApplicationProperty;
+import org.cejug.yougi.entity.Properties;
 import org.cejug.yougi.entity.UserAccount;
 import org.cejug.yougi.event.business.AttendeeBean;
 import org.cejug.yougi.event.business.EventBean;
+import org.cejug.yougi.event.business.EventVenueBean;
 import org.cejug.yougi.event.entity.Attendee;
 import org.cejug.yougi.event.entity.Event;
+import org.cejug.yougi.event.entity.Venue;
+import org.cejug.yougi.util.ResourceBundleHelper;
 import org.cejug.yougi.web.controller.UserProfileMBean;
+import org.cejug.yougi.web.report.EventAttendeeCertificate;
 
-/**
+ /**
  * @author Hildeberto Mendonca - http://www.hildeberto.com
  */
 @ManagedBean
 @RequestScoped
 public class AttendeeMBean implements Serializable {
+
+    static final Logger LOGGER = Logger.getLogger(AttendeeMBean.class.getName());
 
     private static final long serialVersionUID = 1L;
 
@@ -49,6 +69,12 @@ public class AttendeeMBean implements Serializable {
 
     @EJB
     private EventBean eventBean;
+
+     @EJB
+     private EventVenueBean eventVenueBean;
+
+    @EJB
+    private ApplicationPropertyBean applicationPropertyBean;
 
     @ManagedProperty(value = "#{param.id}")
     private String id;
@@ -71,16 +97,8 @@ public class AttendeeMBean implements Serializable {
         this.id = id;
     }
 
-    public String getEventId() {
-        return this.eventId;
-    }
-
     public void setEventId(String eventId) {
         this.eventId = eventId;
-    }
-
-    public UserProfileMBean getUserProfileMBean() {
-        return userProfileMBean;
     }
 
     public void setUserProfileMBean(UserProfileMBean userProfileMBean) {
@@ -96,12 +114,11 @@ public class AttendeeMBean implements Serializable {
     }
 
     public Boolean getIsAttending() {
-        if(this.attendee.getId() != null) {
-            return Boolean.TRUE;
-        }
-        else {
-            return Boolean.FALSE;
-        }
+        return (this.attendee != null && this.attendee.getId() != null);
+    }
+
+    public Boolean getAttended() {
+        return (this.attendee != null && this.attendee.getAttended() != null && this.attendee.getAttended());
     }
 
     public List<Event> getAttendedEvents() {
@@ -122,6 +139,57 @@ public class AttendeeMBean implements Serializable {
         this.attendee.setId(null);
         return "attendee";
     }
+
+    public String confirmAttendance() {
+        this.attendee.setAttended(Boolean.TRUE);
+        attendeeBean.save(this.attendee);
+        return "event?faces-redirect=true&id="+ this.attendee.getEvent().getId() + "&tab=4";
+    }
+
+     public void getCertificate() {
+         if(this.attendee.getAttended() != null && !this.attendee.getAttended()) {
+             return;
+         }
+
+         FacesContext context = FacesContext.getCurrentInstance();
+         HttpServletResponse response = (HttpServletResponse)context.getExternalContext().getResponse();
+         response.setContentType("application/pdf");
+         response.setHeader("Content-disposition", "inline=filename=file.pdf");
+
+         try {
+             Document document = new Document(PageSize.A4.rotate());
+             ByteArrayOutputStream output = new ByteArrayOutputStream();
+             PdfWriter writer = PdfWriter.getInstance(document, output);
+             document.open();
+
+             ApplicationProperty fileRepositoryPath = applicationPropertyBean.findApplicationProperty(Properties.FILE_REPOSITORY_PATH);
+
+             EventAttendeeCertificate eventAttendeeCertificate = new EventAttendeeCertificate(document);
+             if(this.attendee.getEvent().getCertificateTemplate() != null && !this.attendee.getEvent().getCertificateTemplate().isEmpty()) {
+                StringBuilder certificateTemplatePath = new StringBuilder();
+                certificateTemplatePath.append(fileRepositoryPath.getPropertyValue());
+                certificateTemplatePath.append("/");
+                certificateTemplatePath.append(this.attendee.getEvent().getCertificateTemplate());
+                eventAttendeeCertificate.setCertificateTemplate(writer, certificateTemplatePath.toString());
+             }
+
+             List<Venue> venues = eventVenueBean.findEventVenues(this.attendee.getEvent());
+             System.out.println("Venues: "+ venues);
+             this.attendee.getEvent().setVenues(venues);
+             this.attendee.generateCertificateData();
+             this.attendeeBean.save(this.attendee);
+             eventAttendeeCertificate.generateCertificate(this.attendee);
+
+             document.close();
+
+             response.getOutputStream().write(output.toByteArray());
+             response.getOutputStream().flush();
+             response.getOutputStream().close();
+             context.responseComplete();
+         } catch (IOException | DocumentException ioe) {
+             LOGGER.log(Level.SEVERE, ioe.getMessage(), ioe);
+         }
+     }
 
     @PostConstruct
     public void load() {

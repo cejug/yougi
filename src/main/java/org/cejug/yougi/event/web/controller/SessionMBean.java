@@ -181,7 +181,6 @@ public class SessionMBean implements Serializable {
 
         if (this.id != null && !this.id.isEmpty()) {
             this.session = sessionBean.find(this.id);
-            System.out.println("session: "+ this.session);
             Event event = this.session.getEvent();
             this.selectedEvent = event.getId();
             if(this.session.getTrack() != null) {

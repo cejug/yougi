@@ -20,16 +20,9 @@
  * */
 package org.cejug.yougi.event.web.controller;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.pdf.PdfWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -38,11 +31,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.cejug.yougi.business.ApplicationPropertyBean;
 import org.cejug.yougi.business.UserAccountBean;
-import org.cejug.yougi.entity.ApplicationProperty;
-import org.cejug.yougi.entity.Properties;
 import org.cejug.yougi.entity.UserAccount;
 import org.cejug.yougi.event.business.AttendeeBean;
 import org.cejug.yougi.event.business.EventBean;
@@ -54,8 +44,6 @@ import org.cejug.yougi.event.business.TrackBean;
 import org.cejug.yougi.event.entity.*;
 import org.cejug.yougi.event.entity.SessionEvent;
 import org.cejug.yougi.web.controller.UserProfileMBean;
-import org.cejug.yougi.web.report.EventAttendeeCertificate;
-import org.cejug.yougi.util.ResourceBundleHelper;
 import org.cejug.yougi.util.WebTextUtils;
 import org.primefaces.model.chart.PieChartModel;
 
@@ -302,6 +290,7 @@ public class EventMBean {
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String username = request.getRemoteUser();
             UserAccount person = userAccountBean.findByUsername(username);
+
             this.attendee = attendeeBean.find(this.event, person);
 
             this.numberPeopleAttending = attendeeBean.findNumberPeopleAttending(this.event);
@@ -311,84 +300,10 @@ public class EventMBean {
         }
     }
 
-    public String confirmAttendance() {
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        String username = request.getRemoteUser();
-        UserAccount person = userAccountBean.findByUsername(username);
-
-        this.event = eventBean.find(event.getId());
-
-        Attendee newAttendee = new Attendee();
-        newAttendee.setEvent(this.event);
-        newAttendee.setUserAccount(person);
-        newAttendee.setRegistrationDate(Calendar.getInstance().getTime());
-        attendeeBean.save(newAttendee);
-        eventBean.sendConfirmationEventAttendance(newAttendee.getUserAccount(),
-                newAttendee.getEvent(),
-                ResourceBundleHelper.INSTANCE.getMessage("formatDate"),
-                ResourceBundleHelper.INSTANCE.getMessage("formatTime"),
-                userProfileMBean.getTimeZone());
-        return "events?faces-redirect=true";
-    }
-
-    public String cancelAttendance() {
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        String username = request.getRemoteUser();
-        UserAccount person = userAccountBean.findByUsername(username);
-
-        this.event = eventBean.find(event.getId());
-
-        Attendee existingAttendee = attendeeBean.find(event, person);
-        attendeeBean.remove(existingAttendee.getId());
-
-        return "events?faces-redirect=true";
-    }
-
-    public void getCertificate() {
-        if(!this.attendee.getAttended()) {
-            return;
-        }
-
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletResponse response = (HttpServletResponse)context.getExternalContext().getResponse();
-        response.setContentType("application/pdf");
-        response.setHeader("Content-disposition", "inline=filename=file.pdf");
-
-        try {
-            Document document = new Document(PageSize.A4.rotate());
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            PdfWriter writer = PdfWriter.getInstance(document, output);
-            document.open();
-
-            ApplicationProperty fileRepositoryPath = applicationPropertyBean.findApplicationProperty(Properties.FILE_REPOSITORY_PATH);
-
-            EventAttendeeCertificate eventAttendeeCertificate = new EventAttendeeCertificate(document);
-            StringBuilder certificateTemplatePath = new StringBuilder();
-            certificateTemplatePath.append(fileRepositoryPath.getPropertyValue());
-            certificateTemplatePath.append("/");
-            certificateTemplatePath.append(event.getCertificateTemplate());
-            eventAttendeeCertificate.setCertificateTemplate(writer, certificateTemplatePath.toString());
-
-            this.attendee.generateCertificateData();
-            this.attendeeBean.save(this.attendee);
-            eventAttendeeCertificate.generateCertificate(this.attendee);
-
-            document.close();
-
-            response.getOutputStream().write(output.toByteArray());
-            response.getOutputStream().flush();
-            response.getOutputStream().close();
-            context.responseComplete();
-        } catch (IOException | DocumentException ioe) {
-            LOGGER.log(Level.SEVERE, ioe.getMessage(), ioe);
-        }
-    }
-
     public String save() {
         if(selectedParent != null && !selectedParent.isEmpty()) {
             this.event.setParent(new Event(selectedParent));
         }
-
         eventBean.save(this.event);
 
         return "events?faces-redirect=true";

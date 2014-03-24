@@ -175,6 +175,7 @@ public class Attendee implements Serializable, Identified {
             this.certificateEvent = this.event.getName();
             this.certificateDate = this.event.getStartDate();
             this.certificateCode = UUID.randomUUID().toString().toUpperCase();
+            this.certificateVenue = this.event.getVenues().get(0).getName();
         }
     }
 

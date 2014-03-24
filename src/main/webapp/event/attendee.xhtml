@@ -33,7 +33,7 @@
                 <h1>#{bundle.attendee}</h1>
                 <h:form>
                     <h:panelGrid width="100%">
-                        <h:link outcome="event" value="#{attendeeMBean.attendee.event}" style="font-size: 24px; font-weight: bold;">
+                        <h:link outcome="event" value="#{attendeeMBean.attendee.event}" style="font-size: 24px; font-weight: bold;" rendered="#{! empty param.eventId}">
                             <f:param name="id" value="#{param.eventId}"/>
                         </h:link>
                         <h:outputText value="#{attendeeMBean.attendee.event.shortDescription}"/>
@@ -59,16 +59,28 @@
                         <p:spacer height="10"/>
 
                         <h:outputText value="#{attendeeMBean.attendee.fullName}" style="font-size: 18px;"/>
-                        <h:outputText value="#{bundle.attendanceNotConfirmedYet}" rendered="#{! attendeeMBean.isAttending}" styleClass="errorMessage"/>
-                        <h:outputFormat value="#{bundle.attendanceAlreadyConfirmed}" rendered="#{attendeeMBean.isAttending}" styleClass="infoMessage">
+                        <h:outputText value="#{bundle.attendanceNotRegisteredYet}" rendered="#{! attendeeMBean.isAttending}" styleClass="errorMessage"/>
+                        <h:outputFormat value="#{bundle.attendanceRegistered}" rendered="#{attendeeMBean.isAttending}" styleClass="infoMessage">
                             <f:param value="#{attendeeMBean.attendee.registrationDate}"/>
                         </h:outputFormat>
-                        <h:commandButton value="#{bundle.attend}" rendered="#{! attendeeMBean.isAttending}" action="#{attendeeMBean.attendEvent}">
-                            <f:param name="eventId" value="#{param.eventId}"/>
-                        </h:commandButton>
-                        <h:commandButton value="#{bundle.cancelAttendance}" rendered="#{attendeeMBean.isAttending}" action="#{attendeeMBean.cancelAttendance}">
-                            <f:param name="eventId" value="#{param.eventId}"/>
-                        </h:commandButton>
+                        <h:panelGroup>
+                            <h:commandButton value="#{bundle.attend}" rendered="#{! attendeeMBean.isAttending}" action="#{attendeeMBean.attendEvent}" styleClass="btn btn-primary">
+                                <f:param name="eventId" value="#{param.eventId}"/>
+                            </h:commandButton>
+                            <h:commandButton value="#{bundle.cancelAttendance}" rendered="#{attendeeMBean.isAttending}" action="#{attendeeMBean.cancelAttendance}" styleClass="btn btn-warning">
+                                <f:param name="eventId" value="#{param.eventId}"/>
+                            </h:commandButton>
+                            <h:commandButton value="#{bundle.confirmAttendance}" rendered="#{securityBackingMBean.isUserLeader}" action="#{attendeeMBean.confirmAttendance}" styleClass="btn btn-default">
+                                <f:param name="eventId" value="#{param.eventId}"/>
+                            </h:commandButton>
+                            <h:commandButton value="#{bundle.getCertificate}" action="#{attendeeMBean.getCertificate}" rendered="#{attendeeMBean.attended}" styleClass="btn btn-default">
+                                <f:param name="eventId" value="#{param.eventId}"/>
+                            </h:commandButton>
+                            <h:button outcome="event" value="#{bundle.back}" styleClass="btn btn-default">
+                                <f:param name="id" value="#{param.eventId}"/>
+                                <f:param name="tab" value="4"/>
+                            </h:button>
+                        </h:panelGroup>
 
                         <p:spacer height="10"/>
 

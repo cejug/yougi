@@ -114,7 +114,7 @@ public class UserProfileMBean implements Serializable {
         if(userAccount != null && userAccount.getTimeZone() != null && !userAccount.getTimeZone().isEmpty()) {
             if(timezone == null) {
                 timezone = userAccount.getTimeZone();
-                LOGGER.log(Level.INFO, "User timezone: {0}",timezone);
+                //LOGGER.log(Level.INFO, "User timezone: {0}",timezone);
             }
             return timezone;
         }
@@ -122,11 +122,11 @@ public class UserProfileMBean implements Serializable {
             ApplicationProperty appPropTimeZone = applicationPropertyBean.findApplicationProperty(Properties.TIMEZONE);
             if(appPropTimeZone.getPropertyValue() == null || appPropTimeZone.getPropertyValue().isEmpty()) {
                 Timezone tz = timezoneBean.findDefaultTimezone();
-                LOGGER.log(Level.INFO, "Default timezone: {0}",tz.getId());
+                //LOGGER.log(Level.INFO, "Default timezone: {0}",tz.getId());
                 return tz.getId();
             }
             else {
-                LOGGER.log(Level.INFO, "App timezone: {0}",appPropTimeZone.getPropertyValue());
+                //LOGGER.log(Level.INFO, "App timezone: {0}",appPropTimeZone.getPropertyValue());
                 return appPropTimeZone.getPropertyValue();
             }
         }

@@ -50,7 +50,7 @@ public class EventAttendeeCertificate extends PdfPageEventHelper {
         canvas.saveState();
         canvas.beginText();
         canvas.setFontAndSize(baseFont, 12);
-        canvas.showTextAligned(Element.ALIGN_LEFT, "Validation code: " + attendee.getCertificateCode() + " ( http://www.cejug.org/jug/certificate_validation.xhtml) ", 30, 30, 0);
+        canvas.showTextAligned(Element.ALIGN_LEFT, "Validation code: " + attendee.getCertificateCode() + " ( http://www.cejug.org/certificate_validation.xhtml) ", 30, 30, 0);
         canvas.endText();
         canvas.restoreState();
 

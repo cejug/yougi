@@ -38,9 +38,6 @@
                             <p:button value="#{bundle.attend}" outcome="attendee">
                                 <f:param name="eventId" value="#{eventMBean.event.id}"/>
                             </p:button>
-                            <p:commandButton value="#{bundle.getCertificate}" action="#{eventMBean.getCertificate}" rendered="#{eventMBean.attended and eventMBean.happened}">
-                                <f:param name="id" value="#{eventMBean.event.id}"/>
-                            </p:commandButton>
                             <p:button value="#{bundle.edit}" outcome="event_form" rendered="#{securityBackingMBean.isUserLeader}">
                                 <f:param name="id" value="#{eventMBean.event.id}"/>
                             </p:button>
@@ -276,6 +273,7 @@
                                         <f:facet name="header"><h:outputText value="#{bundle.name}"/></f:facet>
                                         <h:link outcome="attendee" value="#{attendee.fullName}">
                                             <f:param name="id" value="#{attendee.id}"/>
+                                            <f:param name="eventId" value="#{param.id}"/>
                                         </h:link>
                                     </p:column>
 

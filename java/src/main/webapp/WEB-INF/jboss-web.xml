@@ -21,5 +21,5 @@
 * -->
 <jboss-web>
     <security-domain>Ug</security-domain>
-    <context-root>/ug</context-root>
+    <context-root>/</context-root>
 </jboss-web>

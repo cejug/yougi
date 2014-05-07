@@ -37,7 +37,7 @@ iText 5.1: Library to generate PDF files.
 
 JUnit 4.11: Unit test framework.
 
-Arquillian 1.0.3: Integration test framework.
+Arquillian 1.1.4.Final: Integration test framework.
 
 --------------------------------------------
 Copyright (C) 2011-2013, Hildeberto Mendonca

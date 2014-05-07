@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- Yougi is a web application conceived to manage user groups or
+ * communities focused on a certain domain of knowledge, whose members are
+ * constantly sharing information and participating in social and educational
+ * events. Copyright (C) 2011 Hildeberto Mendonça.
+ *
+ * This application is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
+ *
+ * This application is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ *
+ * There is a full copy of the GNU Lesser General Public License along with
+ * this library. Look for the file license.txt at the root level. If you do not
+ * find it, write to the Free Software Foundation, Inc., 59 Temple Place,
+ * Suite 330, Boston, MA 02111-1307 USA.
+ * -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h ="http://xmlns.jcp.org/jsf/html"
+      xmlns:f ="http://xmlns.jcp.org/jsf/core"
+      xmlns:p ="http://primefaces.org/ui">
+    <body>
+        <ui:composition template="../layout.xhtml">
+            <ui:define name="content">
+                <div class="page-header">
+                    <h1>#{bundle.job}</h1>
+                </div>
+                <h:form id="form">
+                    <h:messages styleClass="alertMessage" globalOnly="true" infoClass="infoMessage" errorClass="errorMessage"/>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name">#{bundle.name}</label>
+                                <h:selectOneMenu id="name" label="#{bundle.name}" value="#{jobSchedulerMBean.jobScheduler.name}" class="form-control" required="true">
+                                    <f:selectItem itemLabel="#{bundle.select}" itemValue=""/>
+                                    <f:selectItems value="#{jobSchedulerMBean.jobNames}" var="name" itemLabel="#{name}" itemValue="#{name}"/>
+                                </h:selectOneMenu>
+                                <h:message for="name" errorClass="errorMessage"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="owner">#{bundle.owner}</label>
+                                <h:selectOneMenu id="owner" label="#{bundle.owner}" value="#{jobSchedulerMBean.selectedOwner}" class="form-control" required="true">
+                                    <f:selectItem itemLabel="#{bundle.select}" itemValue=""/>
+                                    <f:selectItems value="#{jobSchedulerMBean.userAccounts}" var="user" itemLabel="#{user.fullName}" itemValue="#{user.id}"/>
+                                </h:selectOneMenu>
+                                <h:message for="owner" errorClass="errorMessage"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">#{bundle.description}</label>
+                        <h:inputTextarea id="description" value="#{jobSchedulerMBean.jobScheduler.description}" styleClass="form-control"/>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="frequencyType">#{bundle.frequencyType}</label>
+                                <h:selectOneMenu id="frequencyType" label="#{bundle.frequencyType}" value="#{jobSchedulerMBean.frequencyType}" class="form-control" required="true">
+                                    <f:selectItem itemLabel="#{bundle.select}" itemValue=""/>
+                                    <f:selectItem itemLabel="#{bundle.instant}" itemValue="INSTANT"/>
+                                    <f:selectItem itemLabel="#{bundle.once}" itemValue="ONCE"/>
+                                    <f:selectItem itemLabel="#{bundle.daily}" itemValue="DAILY"/>
+                                    <f:selectItem itemLabel="#{bundle.weekly}" itemValue="WEEKLY"/>
+                                    <f:selectItem itemLabel="#{bundle.monthly}" itemValue="MONTHLY"/>
+                                    <f:selectItem itemLabel="#{bundle.yearly}" itemValue="YEARLY"/>
+                                    <f:ajax render="panelTime panelFrequency"/>
+                                </h:selectOneMenu>
+                                <h:message for="frequencyType" errorClass="errorMessage"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h:panelGroup id="panelFrequency">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel for="frequency" value="#{bundle.frequency}" rendered="#{(! empty jobSchedulerMBean.frequencyType) and jobSchedulerMBean.frequencyType != 'INSTANT' and jobSchedulerMBean.frequencyType != 'ONCE'}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <h:outputText value="#{bundle.every}&nbsp;" rendered="#{(! empty jobSchedulerMBean.frequencyType) and jobSchedulerMBean.frequencyType != 'INSTANT' and jobSchedulerMBean.frequencyType != 'ONCE'}"/>
+                                            <p:spinner id="frequency" label="#{bundle.frequency}" value="#{jobSchedulerMBean.jobScheduler.frequency}" size="2" min="1" max="30" rendered="#{(! empty jobSchedulerMBean.frequencyType) and jobSchedulerMBean.frequencyType != 'INSTANT' and jobSchedulerMBean.frequencyType != 'ONCE'}"/>
+                                            <h:outputText value="&nbsp;#{bundle.days}&nbsp;&nbsp;&nbsp;" rendered="#{jobSchedulerMBean.frequencyType == 'DAILY'}"/>
+                                            <h:outputText value="&nbsp;#{bundle.weeks}" rendered="#{jobSchedulerMBean.frequencyType == 'WEEKLY'}"/>
+                                            <h:outputText value="&nbsp;#{bundle.months}" rendered="#{jobSchedulerMBean.frequencyType == 'MONTHLY'}"/>
+                                            <h:outputText value="&nbsp;#{bundle.years}" rendered="#{jobSchedulerMBean.frequencyType == 'YEARLY'}"/>
+                                            <h:selectBooleanCheckbox id="workingDaysOnly" label="#{bundle.workingDaysOnly}" value="#{jobSchedulerMBean.workingDaysOnly}" rendered="#{jobSchedulerMBean.frequencyType == 'DAILY'}"/>
+                                            <h:outputLabel for="workingDaysOnly" value="&nbsp;#{bundle.workingDaysOnly}" rendered="#{jobSchedulerMBean.frequencyType == 'DAILY'}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </h:panelGroup>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h:panelGroup id="panelTime">
+                            <div class="col-md-3">
+                                <h:panelGroup id="panelStartDate" rendered="#{jobSchedulerMBean.frequencyType != 'INSTANT'}">
+                                    <div class="form-group">
+                                        <label for="startDate">#{bundle.startDate}</label><br/>
+                                        <p:calendar id="startDate" label="#{bundle.startDate}" value="#{jobSchedulerMBean.jobScheduler.startDate}" pattern="#{bundle.formatDate}" required="true" size="10"/>
+                                        <h:message for="startDate" errorClass="errorMessage"/>
+                                    </div>
+                                </h:panelGroup>
+                            </div>
+                            <div class="col-md-3">
+                                <h:panelGroup id="panelStartTime" rendered="#{jobSchedulerMBean.frequencyType != 'INSTANT'}">
+                                    <div class="form-group">
+                                        <label for="startTime">#{bundle.startHour}</label><br/>
+                                        <p:calendar id="startTime" label="#{bundle.startHour}" value="#{jobSchedulerMBean.jobScheduler.startTime}" pattern="#{bundle.formatTime}" size="6" timeOnly="true" required="true"/>
+                                        <h:message for="endDate" errorClass="errorMessage"/>
+                                    </div>
+                                </h:panelGroup>
+                            </div>
+                            <div class="col-md-3">
+                                <h:panelGroup id="panelEndDate" rendered="#{jobSchedulerMBean.frequencyType != 'INSTANT' and jobSchedulerMBean.frequencyType != 'ONCE'}">
+                                    <div class="form-group">
+                                        <label for="endDate">#{bundle.endDate}</label><br/>
+                                        <p:calendar id="endDate" label="#{bundle.endDate}" value="#{jobSchedulerMBean.jobScheduler.endDate}" pattern="#{bundle.formatDate}" size="10"/>
+                                        <h:message for="endDate" errorClass="errorMessage"/>
+                                    </div>
+                                </h:panelGroup>
+                            </div>
+                        </h:panelGroup>
+                    </div>
+
+                    <div class="checkbox-inline">
+                        <h:selectBooleanCheckbox id="active" label="#{bundle.active}" value="#{jobSchedulerMBean.jobScheduler.active}"/>
+                        <label for="active">#{bundle.active}</label>
+                    </div>
+
+                    <h:inputHidden value="#{jobSchedulerMBean.jobScheduler.id}"/>
+                    <br/>
+                    <h:commandButton styleClass="btn btn-primary" value="#{bundle.save}" action="#{jobSchedulerMBean.save}"/>&nbsp;
+                    <h:button outcome="job_schedulers" value="#{bundle.back}" styleClass="btn btn-default"/>
+                </h:form>
+            </ui:define>
+            <ui:define name="jquery"></ui:define>
+        </ui:composition>
+    </body>
+</html>

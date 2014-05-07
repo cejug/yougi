@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Yougi is a web application conceived to manage user groups or
+* communities focused on a certain domain of knowledge, whose members are
+* constantly sharing information and participating in social and educational
+* events. Copyright (C) 2011 Hildeberto Mendonça.
+*
+* This application is free software; you can redistribute it and/or modify it
+* under the terms of the GNU Lesser General Public License as published by the
+* Free Software Foundation; either version 2.1 of the License, or (at your
+* option) any later version.
+*
+* This application is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+* or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+* License for more details.
+*
+* There is a full copy of the GNU Lesser General Public License along with
+* this library. Look for the file license.txt at the root level. If you do not
+* find it, write to the Free Software Foundation, Inc., 59 Temple Place,
+* Suite 330, Boston, MA 02111-1307 USA.
+* -->
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    <display-name>Yougi</display-name>
+    <!-- JSF -->
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Production</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>com.sun.faces.allowTextChildren</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <!-- Primefaces -->
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>bootstrap</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+        <param-value></param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+        <param-value></param-value>
+    </context-param>
+    <!-- Liquibase -->
+    <context-param>
+        <param-name>liquibase.changelog</param-name>
+        <param-value>org/cejug/yougi/db/changelog.xml</param-value>
+    </context-param>
+    <context-param>
+        <param-name>liquibase.datasource</param-name>
+        <param-value>java:/jdbc/UgDS</param-value> <!-- WildFly -->
+    </context-param>
+    <context-param>
+        <param-name>liquibase.onerror.fail</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>EmailConfirmation Servlet</servlet-name>
+        <servlet-class>org.cejug.yougi.web.controller.EmailConfirmationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.xhtml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EmailConfirmation Servlet</servlet-name>
+        <url-pattern>/EmailConfirmation</url-pattern>
+    </servlet-mapping>
+
+    <listener>
+        <listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
+    </listener>
+
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>index.xhtml</welcome-file>
+    </welcome-file-list>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/access_denied.xhtml</location>
+    </error-page>
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/index.xhtml</location>
+    </error-page>
+
+    <security-constraint>
+        <display-name>Admin Constraints</display-name>
+        <web-resource-collection>
+            <web-resource-name>admins</web-resource-name>
+            <description></description>
+            <url-pattern>/admin/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Leaders Constraints</display-name>
+        <web-resource-collection>
+            <web-resource-name>leaders</web-resource-name>
+            <description></description>
+            <url-pattern>/event/event_form.xhtml</url-pattern>
+            <url-pattern>/event/event_venue_form.xhtml</url-pattern>
+            <url-pattern>/event/room_form.xhtml</url-pattern>
+            <url-pattern>/event/session_form.xhtml</url-pattern>
+            <url-pattern>/event/speaker_form.xhtml</url-pattern>
+            <url-pattern>/event/sponsor_form.xhtml</url-pattern>
+            <url-pattern>/event/track_form.xhtml</url-pattern>
+            <url-pattern>/event/venue_form.xhtml</url-pattern>
+            <url-pattern>/knowledge/web_source_form.xhtml</url-pattern>
+            <url-pattern>/knowledge/article_form.xhtml</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>leader</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Members Constraints</display-name>
+        <web-resource-collection>
+            <web-resource-name>members</web-resource-name>
+            <description></description>
+            <url-pattern>/profile/*</url-pattern>
+            <url-pattern>/event/attendee.xhtml</url-pattern>
+            <url-pattern>/members/members.xhtml</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>member</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Partnership Constraints</display-name>
+        <web-resource-collection>
+            <web-resource-name>partners</web-resource-name>
+            <description></description>
+            <url-pattern>/partnership/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>partner</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>ug-realm</realm-name>
+        <form-login-config>
+            <form-login-page>/login.xhtml</form-login-page>
+            <form-error-page>/login.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <description></description>
+        <role-name>admin</role-name>
+    </security-role>
+    <security-role>
+        <description></description>
+        <role-name>leader</role-name>
+    </security-role>
+    <security-role>
+        <description></description>
+        <role-name>helper</role-name>
+    </security-role>
+    <security-role>
+        <description></description>
+        <role-name>member</role-name>
+    </security-role>
+    <security-role>
+        <description></description>
+        <role-name>partner</role-name>
+    </security-role>
+    <security-role>
+        <description></description>
+        <role-name>speaker</role-name>
+    </security-role>
+</web-app>

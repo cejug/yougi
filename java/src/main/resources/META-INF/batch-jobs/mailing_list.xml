@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job id="mailing_list" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
+    <listeners>
+        <listener ref="defaultJobListener"/>
+    </listeners>
+    <step id="storeMessages">
+        <chunk item-count="3" skip-limit="3">
+            <reader ref="mailingListReader"/>
+            <processor ref="mailingListProcessor"/>
+            <writer ref="mailingListWriter"/>
+        </chunk>
+    </step>
+</job>

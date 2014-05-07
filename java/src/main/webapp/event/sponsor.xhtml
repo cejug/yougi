@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- Yougi is a web application conceived to manage user groups or
+ * communities focused on a certain domain of knowledge, whose members are
+ * constantly sharing information and participating in social and educational
+ * events. Copyright (C) 2011 Hildeberto Mendonça.
+ *
+ * This application is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
+ *
+ * This application is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ *
+ * There is a full copy of the GNU Lesser General Public License along with
+ * this library. Look for the file license.txt at the root level. If you do not
+ * find it, write to the Free Software Foundation, Inc., 59 Temple Place,
+ * Suite 330, Boston, MA 02111-1307 USA.
+ * -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <body>
+        <ui:composition template="../layout.xhtml">
+            <ui:define name="title">#{bundle.sponsor}</ui:define>
+            <ui:define name="content">
+                <h1>#{bundle.sponsor}</h1>
+                <h:form>
+                    <h:panelGrid columns="2" width="100%" columnClasses="alignColumnLeft, alignColumnRight">
+                        <h:outputText value="#{sponsorshipEventMBean.sponsorshipEvent.partner}" style="font-size: 26px; font-weight: bold;"/>
+                        <h:panelGroup>
+                            <p:button value="#{bundle.edit}" outcome="sponsor_form" rendered="#{securityBackingMBean.isUserLeader}">
+                                <f:param name="id" value="#{sponsorshipEventMBean.sponsorshipEvent.id}"/>
+                                <f:param name="eventId" value="#{param.eventId}"/>
+                            </p:button>
+                            <p:button value="#{bundle.back}" outcome="event">
+                                <f:param name="id" value="#{param.eventId}"/>
+                                <f:param name="tab" value="6"/>
+                            </p:button>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <h:panelGrid width="100%">
+                        <h:link outcome="event" value="#{sponsorshipEventMBean.sponsorshipEvent.event}" style="font-size: 18px;">
+                            <f:param name="id" value="#{sponsorshipEventMBean.sponsorshipEvent.event.id}"/>
+                        </h:link>
+
+                        <h:outputText value="#{sponsorshipEventMBean.sponsorshipEvent.sponsorshipLevel}" style="font-size: 14px;">
+                            <f:converter converterId="SponsorshipLevelConverter"/>
+                        </h:outputText>
+
+                        <p:spacer height="10"/>
+
+                        <h:panelGroup rendered="#{securityBackingMBean.isUserLeader}">
+                            <h:outputText value="#{bundle.amount}: " style="font-size: 12px; font-weight: bold;"/>
+                            <h:outputText value="#{sponsorshipEventMBean.sponsorshipEvent.amount}">
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                            </h:outputText>
+                        </h:panelGroup>
+
+                        <p:spacer height="10"/>
+
+                        <h:outputText value="#{sponsorshipEventMBean.sponsorshipEvent.description}" escape="false" style="font-size: 14px; font-style: italic;" rendered="#{securityBackingMBean.isUserLeader}"/>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+            <ui:define name="jquery"></ui:define>
+        </ui:composition>
+    </body>
+</html>

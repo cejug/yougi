@@ -1,63 +1,31 @@
+# Netbeans
 nbactions.xml
-/docs/yougi-doc.aux
-/docs/yougi-doc.idx
-/docs/yougi-doc.lof
-/docs/yougi-doc.log
-/docs/yougi-doc.lot
-/docs/yougi-doc.out
-/docs/yougi-doc.pdf
-/docs/yougi-doc.synctex.gz
-/docs/yougi-doc.toc
-/docs/yougi-doc-pt_br.aux
-/docs/yougi-doc-pt_br.idx
-/docs/yougi-doc-pt_br.lof
-/docs/yougi-doc-pt_br.log
-/docs/yougi-doc-pt_br.lot
-/docs/yougi-doc-pt_br.out
-/docs/yougi-doc-pt_br.pdf
-/docs/yougi-doc-pt_br.synctex.gz
-/docs/yougi-doc-pt_br.toc
-/yougi-ear/nbactions.xml
-/yougi-ear/target/
-/yougi-ejb/nbactions.xml
-/yougi-ejb/target/
-/yougi-web/faces-config.NavData
-/yougi-web/nbactions.xml
-/yougi-web/target/
-/yougi-web/target/
-/yougi-ejb/derby.log
-/yougi-ejb/null/__timer_service_shutdown__.dat
-/yougi-ejb/src/test/resources/glassfish/META-INF/MANIFEST.MF
-/yougi-ejb/src/test/resources/glassfish/__cp_jdbc_ra.rar
-/yougi-ejb/src/test/resources/glassfish/__dm_jdbc_ra.rar
-/yougi-ejb/src/test/resources/glassfish/__ds_jdbc_ra.rar
-/yougi-ejb/src/test/resources/glassfish/__xa_jdbc_ra.rar
-/yougi-ejb/src/test/resources/glassfish/lib/install/applications/__cp_jdbc_ra/META-INF/MANIFEST.MF
-/yougi-ejb/src/test/resources/glassfish/lib/install/applications/__cp_jdbc_ra/__cp_jdbc_ra.jar
-/yougi-ejb/src/test/resources/glassfish/lib/install/applications/__dm_jdbc_ra/META-INF/MANIFEST.MF
-/yougi-ejb/src/test/resources/glassfish/lib/install/applications/__dm_jdbc_ra/__dm_jdbc_ra.jar
-/yougi-ejb/src/test/resources/glassfish/lib/install/applications/__ds_jdbc_ra/META-INF/MANIFEST.MF
-/yougi-ejb/src/test/resources/glassfish/lib/install/applications/__ds_jdbc_ra/__ds_jdbc_ra.jar
-/yougi-ejb/src/test/resources/glassfish/lib/install/applications/__xa_jdbc_ra/META-INF/MANIFEST.MF
-/yougi-ejb/src/test/resources/glassfish/lib/install/applications/__xa_jdbc_ra/__xa_jdbc_ra.jar
-/yougi-ejb/src/test/resources/glassfish/lib/install/applications/ejb-timer-service-app.war
+
+# IntelliJ IDEA
 /.idea/
+/scala/.idea
 /yougi.iml
-/yougi-ear/yougi-ear.iml
-/yougi-ejb/yougi-ejb.iml
-/yougi-web/yougi-web.iml
 /.project
-yougi-ear/nb-configuration.xml
 /target/
 
-# eclipse settings
+# eclipse
 .classpath
 .settings/
 .project
 *.class
 *.jar
 
+# play framework
+/scala/logs/
+/scala/project/project/
+/scala/project/target/
+/scala/target/
+/scala/tmp/
+/scala/dist/
+/scala/.cache
+
 # bkp files
 *~
 
 !/.gitignore
+src/main/resources/rebel.xml

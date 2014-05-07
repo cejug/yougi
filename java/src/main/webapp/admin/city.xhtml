@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- Yougi is a web application conceived to manage user groups or
+ * communities focused on a certain domain of knowledge, whose members are
+ * constantly sharing information and participating in social and educational
+ * events. Copyright (C) 2011 Hildeberto Mendonça.
+ *
+ * This application is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
+ *
+ * This application is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ *
+ * There is a full copy of the GNU Lesser General Public License along with
+ * this library. Look for the file license.txt at the root level. If you do not
+ * find it, write to the Free Software Foundation, Inc., 59 Temple Place,
+ * Suite 330, Boston, MA 02111-1307 USA.
+ * -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <body>
+        <ui:composition template="../layout.xhtml">
+            <ui:define name="title">#{bundle.city}</ui:define>
+            <ui:define name="content">
+                <h1>#{bundle.city}</h1>
+                <h:form>
+                    <h:messages globalOnly="true" styleClass="alertMessage" infoClass="infoMessage" errorClass="errorMessage"/>
+
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#properties" data-toggle="tab">#{bundle.properties}</a></li>
+                        <li><a href="#inhabitants" data-toggle="tab">#{bundle.inhabitants}</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="properties">
+                            <h:panelGrid columns="1">
+                                <h:outputLabel for="name" value="#{bundle.name} *" styleClass="fieldLabel"/>
+                                <h:inputText id="name" label="#{bundle.name}" required="true" size="30" maxlength="100" value="#{cityMBean.city.name}" styleClass="form-control"/>
+                                <h:message for="name" errorClass="errorMessage"/>
+
+                                <h:outputLabel for="country" value="#{bundle.country} *" styleClass="fieldLabel"/>
+                                <h:selectOneMenu id="country" label="#{bundle.country}" value="#{locationMBean.selectedCountry}" required="true" styleClass="form-control">
+                                    <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
+                                    <f:selectItems value="#{locationMBean.countries}" var="country" itemLabel="#{country.name}" itemValue="#{country.acronym}"/>
+                                    <f:ajax render="province"/>
+                                </h:selectOneMenu>
+                                <h:message for="country" errorClass="errorMessage"/>
+
+                                <h:outputLabel for="province" value="#{bundle.province}" styleClass="fieldLabel"/>
+                                <h:selectOneMenu id="province" label="#{bundle.province}" value="#{locationMBean.selectedProvince}" styleClass="form-control">
+                                    <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
+                                    <f:selectItems value="#{locationMBean.provinces}" var="province" itemLabel="#{province.name}" itemValue="#{province.id}"/>
+                                </h:selectOneMenu>
+
+                                <h:panelGrid columns="2">
+                                    <h:selectBooleanCheckbox id="valid" label="#{bundle.valid}" value="#{cityMBean.city.valid}"/>
+                                    <h:outputLabel for="valid" value="#{bundle.valid}"/>
+                                </h:panelGrid>
+
+                                <h:panelGrid columns="3">
+                                    <h:outputLabel for="latitude" value="#{bundle.latitude}" styleClass="fieldLabel"/>
+                                    <h:outputLabel for="longitude" value="#{bundle.longitude}" styleClass="fieldLabel"/>
+                                    <h:outputLabel for="timezone" value="#{bundle.timeZone}" styleClass="fieldLabel"/>
+
+                                    <h:panelGroup>
+                                        <h:inputText id="latitude" label="#{bundle.latitude}" size="15" maxlength="15" value="#{cityMBean.city.latitude}" styleClass="form-control"/>
+                                        <br/><h:message for="latitude" errorClass="errorMessage"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <h:inputText id="longitude" label="#{bundle.longitude}" size="15" maxlength="15" value="#{cityMBean.city.longitude}" styleClass="form-control"/>
+                                        <br/><h:message for="longitude" errorClass="errorMessage"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <h:selectOneMenu id="timezone" label="#{bundle.timeZone}" value="#{cityMBean.city.timeZone}" styleClass="form-control">
+                                            <f:selectItem itemLabel="#{bundle.select}" itemValue="" />
+                                            <f:selectItems value="#{cityMBean.timezones}" var="tz" itemLabel="#{tz.offsetLabel}" itemValue="#{tz.id}"/>
+                                        </h:selectOneMenu>
+                                        <br/><h:message for="timezone" errorClass="errorMessage"/>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </h:panelGrid>
+                            <h:inputHidden id="id" value="#{cityMBean.city.id}"/>
+
+                            <h:panelGrid columns="3">
+                                <h:commandButton value="#{bundle.save}" action="#{cityMBean.save}" styleClass="btn btn-primary"/>
+                                <h:commandButton value="#{bundle.remove}" rendered="#{not empty param.id}" action="#{cityMBean.remove}" styleClass="btn btn-warning" onclick="return confirmAction('#{bundle.warnCode0005}');">
+                                    <f:param name="id" value="#{cityMBean.city.id}" />
+                                </h:commandButton>
+                                <h:button value="#{bundle.cancel}" outcome="cities" styleClass="btn btn-default"/>
+                            </h:panelGrid>
+                        </div>
+                        <div class="tab-pane" id="inhabitants">
+                            <h:dataTable value="#{cityMBean.inhabitants}" var="inhabitant" styleClass="table table-striped">
+                                <h:column>
+                                    <f:facet name="header"><h:outputText value="#{bundle.firstName}"/></f:facet>
+                                    <h:commandLink value="#{inhabitant.firstName}" action="#{memberMBean.load(inhabitant.id)}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header"><h:outputText value="#{bundle.lastName}"/></f:facet>
+                                    <h:outputText value="#{inhabitant.lastName}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header"><h:outputText value="#{bundle.email}"/></f:facet>
+                                    <h:outputText value="#{inhabitant.email}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header"><h:outputText value="#{bundle.confirmed}"/></f:facet>
+                                    <h:graphicImage rendered="#{inhabitant.confirmed}" url="/images/success-icon.png"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header"><h:outputText value="#{bundle.registrationDate}"/></f:facet>
+                                    <h:outputText value="#{inhabitant.registrationDate}">
+                                        <f:convertDateTime pattern="#{bundle.formatDateAndTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                                    </h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header"><h:outputText value="#{bundle.lastUpdate}"/></f:facet>
+                                    <h:outputText value="#{inhabitant.lastUpdate}">
+                                        <f:convertDateTime pattern="#{bundle.formatDateAndTime}" timeZone="#{userProfileMBean.timeZone}"/>
+                                    </h:outputText>
+                                </h:column>
+                            </h:dataTable>
+                          </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
